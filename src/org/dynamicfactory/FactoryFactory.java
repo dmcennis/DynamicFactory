@@ -1,7 +1,6 @@
 package org.dynamicfactory;
 
-import org.dynamicfactory.descriptors.Parameter;
-import org.dynamicfactory.descriptors.Properties;
+import org.dynamicfactory.descriptors.*;
 
 import java.util.HashMap;
 import java.util.logging.Level;
@@ -47,6 +46,17 @@ public class FactoryFactory extends AbstractFactory<AbstractFactory> {
     public FactoryFactory(){
         classObjects = new HashMap<String,Class>();
 
+        BasicParameter factoryType = new BasicParameter();
+        factoryType.setType("FactoryClass");
+        factoryType.setDescription("Name of the Factory type to return");
+        factoryType.setParameterClass(String.class);
+        factoryType.add("PropertiesFactory");
+        PropertyRestriction restriction = new PropertyRestriction();
+        restriction.setMinCount(1);
+        restriction.setMaxCount(1);
+        factoryType.setRestrictions(restriction);
+        properties.add(factoryType);
+
     }
 
     public Class getType(String name){
@@ -76,11 +86,30 @@ public class FactoryFactory extends AbstractFactory<AbstractFactory> {
 
     @Override
     public Parameter getClassParameter() {
-        return null;
+        return new BasicParameter("FactoryName",String.class);
+    }
+
+    public Class getFactoryType(String type){
+        if(classObjects.containsKey(type)){
+            return classObjects.get(type);
+        }else{
+            return null;
+        }
     }
 
     @Override
     public AbstractFactory create(Properties props) {
-        return null;
+        if((props != null)&&(props.get("FactoryName") != null)&&(props.get("FactoryName").getValue().size()>0)&&(map.containsKey(props.get("FactoryName").getValue().iterator().next()))&&(props.get("FactoryName").getParameterClass().getName().equals("java.lang.String"))){
+            return map.get("FactoryName");
+        }else{
+            if(props == null){
+                Logger.getLogger(FactoryFactory.class.getName()).log(Level.SEVERE, "Null properties found.");
+            }else if((props.get("FactoryName") != null)&&(props.get("FactoryName").getValue().size()>0)&&(props.get("FactoryName").getParameterClass().getName().equals("java.lang.String"))){
+                Logger.getLogger(FactoryFactory.class.getName()).log(Level.SEVERE, "The factory name "+props.get("FactoryName").getValue().iterator().next()+" is not registered.");
+            }else{
+                Logger.getLogger(FactoryFactory.class.getName()).log(Level.SEVERE, "The factory name is missing");
+            }
+            return PropertiesFactory.newInstance();
+        }
     }
 }
