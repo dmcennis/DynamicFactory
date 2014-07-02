@@ -202,7 +202,7 @@ public class PropertyRestrictionTest extends TestCase {
         instance.setMaxCount(2);
         instance.setMinCount(2);
         StringQuery q = new StringQuery();
-        q.buildQuery("[0-9]*", true, Operation.MATCHES);
+        q.buildQuery("[0-9]", false, Operation.MATCHES);
         instance.setPropertyQuery(q);
         boolean expResult = false;
         boolean result = instance.check(type);
@@ -302,7 +302,7 @@ public class PropertyRestrictionTest extends TestCase {
         PropertyRestriction instance = new PropertyRestriction();
         instance.setClassType(String.class);
         StringQuery q = new StringQuery();
-        q.buildQuery("[0-9]*", true, Operation.MATCHES);
+        q.buildQuery("[0-9]", true, Operation.MATCHES);
         instance.setPropertyQuery(q);
         boolean expResult = false;
         boolean result = instance.check(type);
@@ -612,13 +612,13 @@ public class PropertyRestrictionTest extends TestCase {
     public void testBadPropertyCheck_String_Object() throws InvalidObjectTypeException {
         System.out.println("check");
         String type = "Type";
-        Object o = "Value 2";
+        Object o = "Value ";
         PropertyRestriction instance = new PropertyRestriction();
         instance.setMinCount(1);
         instance.setMaxCount(1);
         instance.setClassType(String.class);
         StringQuery q = new StringQuery();
-        q.buildQuery("[0-9]*", true, Operation.MATCHES);
+        q.buildQuery("[0-9]+", false, Operation.MATCHES);
         instance.setPropertyQuery(q);
         boolean expResult = false;
         boolean result = instance.check(type, o);

@@ -356,6 +356,7 @@ public class PropertiesImplementationTest extends TestCase {
      */
     public void testBadLeftCheck_Properties() {
         System.out.println("check");
+        //TODO: How does one handle when checks fail on set?
         ParameterInternal param1 = ParameterFactory.newInstance().create("Type", String.class);
         SyntaxObject syntax = SyntaxCheckerFactory.newInstance().create(1, 1, null, String.class);
         param1.setRestrictions(syntax);
@@ -367,7 +368,7 @@ public class PropertiesImplementationTest extends TestCase {
         param2.setRestrictions(syntax);
         param2.add("Correct");
         instance.add(param2);
-        boolean expResult = true;
+        boolean expResult = false;
         boolean result = instance.check(props);
         assertEquals(expResult, result);
     }
@@ -423,7 +424,7 @@ public class PropertiesImplementationTest extends TestCase {
         System.out.println("check");
         PropertiesImplementation props = null;
         PropertiesImplementation instance = new PropertiesImplementation();
-        boolean expResult = false;
+        boolean expResult = true;
         boolean result = instance.check(props);
         assertEquals(expResult, result);
     }
@@ -486,7 +487,8 @@ public class PropertiesImplementationTest extends TestCase {
         instance.add(param);
         PropertiesInternal result = instance.merge(right);
         assertEquals(1,result.get().size());
-        assertSame(param,result.get("Tye"));
+        assertSame(String.class,result.get("Tye").getParameterClass());
+        assertEquals(0,result.get("Tye").getValue().size());
     }
 
     /**
@@ -502,9 +504,7 @@ public class PropertiesImplementationTest extends TestCase {
         PropertiesImplementation instance = new PropertiesImplementation();
         instance.add(param1);
         PropertiesInternal result = instance.merge(right);
-        assertEquals(1,result.get().size());
-        assertEquals(1,result.get("Type").getValue());
-        assertEquals("String",result.get("Type").get());
+        assertEquals(0,result.get().size());
     }
 
 
@@ -525,7 +525,7 @@ public class PropertiesImplementationTest extends TestCase {
         PropertiesImplementation instance = new PropertiesImplementation();
         instance.add(param1);
         PropertiesInternal result = instance.merge(right);
-        assertNull(result);
+        assertEquals(0,result.get().size());
     }
 
     /**
@@ -539,7 +539,8 @@ public class PropertiesImplementationTest extends TestCase {
         instance.add(param1);
         PropertiesInternal result = instance.merge(right);
         assertEquals(1,result.get().size());
-        assertSame(param1,result.get("Type"));
+        assertEquals(param1.getParameterClass(),result.get("Type").getParameterClass());
+        assertEquals(1,result.get().size());
     }
 
     /**
@@ -553,7 +554,8 @@ public class PropertiesImplementationTest extends TestCase {
         right.add(param1);
         PropertiesInternal result = instance.merge(right);
         assertEquals(1,result.get().size());
-        assertSame(param1,result.get("Type"));
+        assertEquals(param1.getParameterClass(),result.get("Type").getParameterClass());
+        assertEquals(1,result.get().size());
     }
 
     /**
@@ -565,12 +567,12 @@ public class PropertiesImplementationTest extends TestCase {
         ParameterInternal param1 = ParameterFactory.newInstance().create("Type", String.class);
         right.add(param1);
         PropertiesImplementation instance = new PropertiesImplementation();
-        ParameterInternal param2 = ParameterFactory.newInstance().create("Type2", String.class);
+        ParameterInternal param2 = ParameterFactory.newInstance().create("Type2", Double.class);
         instance.add(param2);
         PropertiesInternal result = instance.merge(right);
         assertEquals(2,result.get().size());
-        assertSame(param1,result.get("Type"));
-        assertSame(param2,result.get("Type2"));
+        assertEquals(param1.getParameterClass(),result.get("Type").getParameterClass());
+        assertEquals(param2.getParameterClass(),result.get("Type2").getParameterClass());
     }
 
     /**
@@ -590,9 +592,7 @@ public class PropertiesImplementationTest extends TestCase {
         PropertiesImplementation instance = new PropertiesImplementation();
         instance.add(param1);
         PropertiesInternal result = instance.merge(right);
-        assertEquals(1,result.get().size());
-        assertEquals(1,result.get("Type").getValue().size());
-        assertSame(param1,result.get("Type"));
+        assertEquals(0,result.get().size());
     }
 
     /**
@@ -612,7 +612,7 @@ public class PropertiesImplementationTest extends TestCase {
         PropertiesImplementation instance = new PropertiesImplementation();
         instance.add(param1);
         PropertiesInternal result = instance.merge(right);
-        assertNull(result);
+        assertEquals(0,result.get().size());
     }
 
     /**

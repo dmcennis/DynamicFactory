@@ -153,7 +153,7 @@ public class PropertiesImplementation implements PropertiesInternal {
     public boolean check(Properties props){
         boolean good = true;
         if(props == null){
-            return good;
+            return true;
         }
         Iterator<Parameter> it = props.get().iterator();
         while(it.hasNext()){
@@ -170,13 +170,37 @@ public class PropertiesImplementation implements PropertiesInternal {
         }
     }
 
+    protected boolean badMerge(Parameter r, Parameter l){
+        for(Object right : r.getValue() ){
+            for(Object left : l.getValue()){
+                if(right.equals(left)){
+                    continue;
+                }
+            }
+            return true;
+        }
+        for(Object left : l.getValue() ){
+            for(Object right : r.getValue()){
+                if(right.equals(left)){
+                    continue;
+                }
+            }
+            return true;
+        }
+        return false;
+    }
+
     public PropertiesInternal merge(Properties right){
         PropertiesInternal ret = this.duplicate();
         Iterator<Parameter> names = right.get().iterator();
         while(names.hasNext()){
             Parameter param = names.next();
             if(ret.get(param.getType())!=null){
-                ret.remove(param.getType());
+                if(badMerge(param,ret.get(param.getType()))){
+                    Logger.getLogger(PropertiesImplementation.class.getName()).log(Level.SEVERE,"Inconsistent merging detected on entry "+param.getType()+": skipping this entry");
+                    ret.remove(param.getType());
+                    continue;
+                }
             }
             ret.add(((ParameterInternal)param).duplicate());
         }
