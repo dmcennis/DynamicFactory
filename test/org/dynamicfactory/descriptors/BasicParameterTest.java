@@ -247,7 +247,7 @@ public class BasicParameterTest extends TestCase {
         Property property = PropertyFactory.newInstance().create("BasicProperty","Type", String.class);
         BasicParameter instance = new BasicParameter();
         instance.setParameterClass(String.class);
-        instance.setType("Default");
+        instance.setType("Type");
         boolean expResult = true;
         boolean result = instance.check(property);
         assertEquals(expResult, result);
@@ -290,7 +290,7 @@ public class BasicParameterTest extends TestCase {
         Property property = PropertyFactory.newInstance().create("BasicProperty","Type", String.class);
         property.add("Value 1");
         BasicParameter instance = new BasicParameter();
-        instance.setType("Default");
+        instance.setType("Type");
         instance.setParameterClass(String.class);
         instance.add("Original Value");
         boolean expResult = true;

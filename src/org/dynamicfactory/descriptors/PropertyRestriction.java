@@ -116,7 +116,7 @@ public class PropertyRestriction implements SyntaxObject {
                 Logger.getLogger(this.getClass().getName()).log(Level.INFO, "Property failed the query check");
                 return false;
             } else {
-                return false;
+                return true;
             }
         } else {
             Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "Null Query provided, leaving the original unchanged.");

@@ -144,6 +144,9 @@ public class BasicParameter implements ParameterInternal {
         if(!property.getType().contentEquals(this.getType())){
            return false;
         }
+        if(!property.getPropertyClass().equals(this.getParameterClass())){
+            return false;
+        }
         return restrictions.check(property);
     }
 

@@ -700,13 +700,13 @@ public class PropertyRestrictionTest extends TestCase {
         System.out.println("check");
         String type = "Type";
         LinkedList list = new LinkedList<String>();
-        list.add("Value 2");
+        list.add("Value ");
         PropertyRestriction instance = new PropertyRestriction();
         instance.setMinCount(1);
         instance.setMaxCount(1);
         instance.setClassType(String.class);
         StringQuery q = new StringQuery();
-        q.buildQuery("[0-9]*", true, Operation.MATCHES);
+        q.buildQuery("[0-9]", false, Operation.MATCHES);
         instance.setPropertyQuery(q);
         boolean expResult = false;
         boolean result = instance.check(type, list);
