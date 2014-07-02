@@ -83,7 +83,7 @@ public class BasicParameterTest extends TestCase {
      */
     public void testSet_Property() {
         System.out.println("set");
-        Property o = PropertyFactory.newInstance().create("Param", String.class);
+        Property o = PropertyFactory.newInstance().create("BasicProperty","Param", String.class);
         BasicParameter instance = new BasicParameter();
         instance.set(o);
     }
@@ -244,10 +244,10 @@ public class BasicParameterTest extends TestCase {
      */
     public void testCheck_Default_Property() {
         System.out.println("checkDefaultDefault");
-        Property property = PropertyFactory.newInstance().create("Type", String.class);
+        Property property = PropertyFactory.newInstance().create("BasicProperty","Type", String.class);
         BasicParameter instance = new BasicParameter();
         instance.setParameterClass(String.class);
-        instance.setType("Type");
+        instance.setType("Default");
         boolean expResult = true;
         boolean result = instance.check(property);
         assertEquals(expResult, result);
@@ -258,7 +258,7 @@ public class BasicParameterTest extends TestCase {
      */
     public void testBadTypeCheck_Default_Property() {
         System.out.println("checkDefaultDefault");
-        Property property = PropertyFactory.newInstance().create("Bad ID", String.class);
+        Property property = PropertyFactory.newInstance().create("BasicProperty","Bad ID", String.class);
         BasicParameter instance = new BasicParameter();
         instance.setType("Type");
         instance.setParameterClass(String.class);
@@ -273,7 +273,7 @@ public class BasicParameterTest extends TestCase {
      */
     public void testBadClassCheck_Default_Property() {
         System.out.println("checkDefaultDefault");
-        Property property = PropertyFactory.newInstance().create("Type", Double.class);
+        Property property = PropertyFactory.newInstance().create("BasicProperty","Type", Double.class);
         BasicParameter instance = new BasicParameter();
         instance.setType("Type");
         instance.setParameterClass(String.class);
@@ -287,10 +287,10 @@ public class BasicParameterTest extends TestCase {
      */
     public void testCheck_Property() throws InvalidObjectTypeException {
         System.out.println("check");
-        Property property = PropertyFactory.newInstance().create("Type", String.class);
+        Property property = PropertyFactory.newInstance().create("BasicProperty","Type", String.class);
         property.add("Value 1");
         BasicParameter instance = new BasicParameter();
-        instance.setType("Type");
+        instance.setType("Default");
         instance.setParameterClass(String.class);
         instance.add("Original Value");
         boolean expResult = true;
@@ -309,7 +309,7 @@ public class BasicParameterTest extends TestCase {
         instance.setType("Type");
         instance.setParameterClass(String.class);
         instance.add("Old Value");
-        instance.getRestrictions().setMaxCount(1);
+        instance.getRestrictions().setMaxCount(2);
         boolean expResult = true;
         boolean result = instance.check(type, value);
         assertEquals(expResult, result);
@@ -387,7 +387,7 @@ public class BasicParameterTest extends TestCase {
         instance.setType("Type");
         instance.add("Value");
         instance.getRestrictions().setMaxCount(1);
-        boolean expResult = false;
+        boolean expResult = true;
         boolean result = instance.check(type, value);
         assertEquals(expResult, result);
     }
@@ -434,7 +434,7 @@ public class BasicParameterTest extends TestCase {
         instance.add("Value2");
         instance.set(value);
         assertEquals(1,instance.getValue().size());
-        assertEquals("Value2",instance.get());
+        assertEquals("Value",instance.get());
     }
 
     /**

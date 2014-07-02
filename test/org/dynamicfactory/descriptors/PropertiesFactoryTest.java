@@ -73,6 +73,7 @@ public class PropertiesFactoryTest extends TestCase {
     public void testCreate_Properties() {
         System.out.println("create");
         Properties props = PropertiesFactory.newInstance().create();
+        props.set("PropertiesClass","PropertiesImplementation");
         PropertiesFactory instance = PropertiesFactory.newInstance();
         PropertiesInternal result = instance.create(props);
         assertNotNull(result);
@@ -102,7 +103,7 @@ public class PropertiesFactoryTest extends TestCase {
         Parameter result = instance.getClassParameter();
         assertNotNull(result);
         assertEquals("PropertiesClass",result.getType());
-        assertEquals(0,result.getValue().size());
+        assertEquals(1,result.getValue().size());
     }
 
 }

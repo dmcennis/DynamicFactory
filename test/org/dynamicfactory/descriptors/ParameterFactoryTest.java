@@ -88,7 +88,7 @@ public class ParameterFactoryTest extends TestCase {
         assertTrue(result instanceof BasicParameter);
         assertEquals("Type",result.getType());
         assertEquals(Double.class,result.getParameterClass());
-        assertEquals("",result.getDescription());
+        assertEquals("No Description Provided",result.getDescription());
         assertEquals(0,result.getValue().size());
     }
 
@@ -180,7 +180,7 @@ public class ParameterFactoryTest extends TestCase {
      */
     public void testGetClassParameter() {
         System.out.println("getClassParameter");
-        ParameterFactory instance = null;
+        ParameterFactory instance = ParameterFactory.newInstance();
         Parameter result = instance.getClassParameter();
         assertNotNull(result);
         assertEquals("ParameterClass",result.getType());

@@ -66,14 +66,17 @@ public class PropertiesFactory extends AbstractFactory<PropertiesInternal>{
     }
     
     public PropertiesInternal create(Properties props){
-        String type = (String) props.get("PropertiesClass").getValue().iterator().next();
-        PropertiesInternal ret = map.get(type);
-        if(ret != null){
-            return ret.duplicate();
+        if((props != null)&&(map.containsKey("PropertiesClass"))&&(map.containsKey(props.get("PropertiesClass").getValue().iterator().next()))){
+            String type = (String) props.get("PropertiesClass").getValue().iterator().next();
+            return map.get(type).duplicate();
+        }else if(props == null){
+            Logger.getLogger(this.getClass().getName()).log(Level.SEVERE,"Null properties detected -  assuming PropertiesImplementation");
+        } else if(props.get("PropertiesClass")==null){
+            Logger.getLogger(this.getClass().getName()).log(Level.SEVERE,"PropertiesClass property does not exist -  assuming PropertiesImplementation");
         }else{
-            Logger.getLogger(this.getClass().getName()).log(Level.SEVERE,"Properties type '"+type+"' does not exist -  assuming PropertiesImplementation");
-            return new PropertiesImplementation();
+            Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "Properties type '" + props.get("PropertiesClass").getValue().iterator().next() + "' does not exist -  assuming PropertiesImplementation");
         }
+        return new PropertiesImplementation();
     }
 
     public Parameter getClassParameter(){

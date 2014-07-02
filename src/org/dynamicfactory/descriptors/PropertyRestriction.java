@@ -75,7 +75,7 @@ public class PropertyRestriction implements SyntaxObject {
                 Logger.getLogger(this.getClass().getName()).log(Level.WARNING, "Min count is " + minCount + " but total count with addition is " + Integer.toString(type.getValue().size()));
                 return false;
             } else if ((type.getValue().size()) > maxCount) {
-                Logger.getLogger(this.getClass().getName()).log(Level.WARNING, "Min count is " + maxCount + " but total count with addition is " + Integer.toString(type.getValue().size()));
+                Logger.getLogger(this.getClass().getName()).log(Level.WARNING, "Max count is " + maxCount + " but total count with addition is " + Integer.toString(type.getValue().size()));
                 return false;
             } else if ((type.getValue().size()==0)&&(!classType.isAssignableFrom(type.getPropertyClass()))) {
                 return false;
@@ -226,6 +226,7 @@ public class PropertyRestriction implements SyntaxObject {
                 return check(props);
             }
         }
-        return check(type, null);
+        Property props = new BasicProperty(type, classType);
+        return check(props);
     }
 }

@@ -79,7 +79,7 @@ public class PropertiesImplementationTest extends TestCase {
      */
     public void testSet_Property() {
         System.out.println("set");
-        Property value = PropertyFactory.newInstance().create("Type", String.class);
+        Property value = PropertyFactory.newInstance().create("BasicProperty","Type", String.class);
         PropertiesImplementation instance = new PropertiesImplementation();
         instance.set(value);
         ParameterInternal result = instance.get("Type");

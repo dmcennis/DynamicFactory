@@ -103,7 +103,7 @@ public class PropertyFactory extends AbstractFactory<Property>{
 
         name = new BasicParameter();
         name.setType("PropertyID");
-        name.setParameterClass(Class.class);
+        name.setParameterClass(String.class);
         restrictionPart = new PropertyRestriction();
         restrictionPart.setMinCount(1);
         restrictionPart.setMaxCount(1);
@@ -117,39 +117,46 @@ public class PropertyFactory extends AbstractFactory<Property>{
         map.put("BasicProperty", new BasicProperty("Default", String.class));
     }
 
-    public Property create(String id, Class objectType) {
-        return create(id, objectType, properties);
+    public Property create(String propertyClass, String id, Class objectType) {
+        return create(propertyClass, id, objectType, properties);
     }
     
     public Property create(Properties props){
-        return create(null,null,props);
+        return create(null,null,null,props);
     }
     
 
-    public Property create(String id, Class objectType, Properties props) {
+    public Property create(String propertyClass, String id, Class objectType, Properties props) {
+        if (props == null){
+            props = properties;
+        }
         if (id == null) {
-            if ((props.get("Name") != null) && (props.get("Name").getParameterClass().getName().contentEquals("java.lang.String"))) {
-                id = (String) props.get("Name").getValue().iterator().next();
+            if ((props != null)&&(props.get("PropertyID") != null) && (props.get("PropertyID").getParameterClass().getName().contentEquals("java.lang.String"))) {
+                id = (String) props.get("PropertyID").getValue().iterator().next();
             } else {
-                id = (String) properties.get("Name").getValue().iterator().next();
+                id = (String) properties.get("PropertyID").getValue().iterator().next();
             }
         }
         if (objectType == null) {
-            objectType = (Class) properties.get("Class").getValue().iterator().next();
-            if ((props.get("Class") != null) && (props.get("Class").getParameterClass().getName().contentEquals("java.lang.Class"))) {
-                objectType = (Class) props.get("Class").getValue().iterator().next();
+            objectType = (Class) properties.get("PropertyValueClass").getValue().iterator().next();
+            if ((props != null)&&(props.get("PropertyValueClass") != null) && (props.get("PropertyValueClass").getParameterClass().getName().contentEquals("java.lang.Class"))) {
+                objectType = (Class) props.get("PropertyValueClass").getValue().iterator().next();
             }
         }
         Property ret = null;
-        String parameterType = (String) properties.get("PropertyClass").getValue().iterator().next();
-        if ((props.get("PropertyClass") != null) && (props.get("PropertyClass").getParameterClass().getName().contentEquals("java.lang.String"))) {
-            parameterType = (String) props.get("PropertyClass").getValue().iterator().next();
+        if (propertyClass == null){
+            propertyClass = (String) properties.get("PropertyClass").getValue().iterator().next();
+            if ((props != null)&&(props.get("PropertyClass") != null) && (props.get("PropertyClass").getParameterClass().getName().contentEquals("java.lang.String"))) {
+                propertyClass = (String) props.get("PropertyClass").getValue().iterator().next();
+            }
         }
-        if (map.containsKey(parameterType)) {
-            ret = map.get(parameterType).duplicate();
+        if (map.containsKey(propertyClass)) {
+            ret = map.get(propertyClass).duplicate();
+            ret.setType(id);
+            ret.setClass(objectType);
         } else {
             ret = new BasicProperty(id, objectType);
-            Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "Unknown org.dynamicfactory.property type '" + parameterType + "' requested: using BasicProperty as the default");
+            Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "Unknown property type '" + propertyClass + "' requested: using BasicProperty as the default");
         }
         return ret;
     }

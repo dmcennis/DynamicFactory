@@ -110,7 +110,7 @@ public class SyntaxCheckerFactoryTest extends TestCase {
         props.set("MinCount", 3);
         props.set("MaxCount", 4);
         props.set("Test", query);
-        props.set("TypeClass", Double.class);
+        props.set("ClassType", Double.class);
         SyntaxCheckerFactory instance = SyntaxCheckerFactory.newInstance();
         SyntaxObject result = instance.create(minCount, maxCount, null, classType,props);
         assertNotNull(result);
@@ -152,12 +152,10 @@ public class SyntaxCheckerFactoryTest extends TestCase {
     public void testCreate_Properties() {
         System.out.println("create");
         Properties props = null;
-        SyntaxCheckerFactory instance = null;
-        SyntaxObject expResult = null;
+        SyntaxCheckerFactory instance = SyntaxCheckerFactory.newInstance();
         SyntaxObject result = instance.create(props);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        assertNotNull(result);
+        assertNotNull(result.getTest());
     }
 
     /**
@@ -165,12 +163,9 @@ public class SyntaxCheckerFactoryTest extends TestCase {
      */
     public void testGetClassParameter() {
         System.out.println("getClassParameter");
-        SyntaxCheckerFactory instance = null;
-        Parameter expResult = null;
+        SyntaxCheckerFactory instance = SyntaxCheckerFactory.newInstance();
         Parameter result = instance.getClassParameter();
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        assertNotNull(result);
     }
 
 }

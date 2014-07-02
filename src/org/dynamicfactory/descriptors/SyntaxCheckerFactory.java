@@ -115,6 +115,9 @@ public class SyntaxCheckerFactory extends AbstractFactory<SyntaxObject> {
 
     public SyntaxObject create(int minCount, int maxCount, PropertyQuery query, Class classType, Properties props) {
         String type = (String) properties.get("SyntaxCheckerClass").getValue().iterator().next();
+        if(props == null){
+            props = properties;
+        }
         if ((props.get("SyntaxCheckerClass") != null) && (props.get("SyntaxCheckerClass").getParameterClass().getName().contentEquals("java.lang.String"))) {
             type = (String) props.get("SyntaxCheckerClass").getValue().iterator().next();
         }
@@ -150,12 +153,12 @@ public class SyntaxCheckerFactory extends AbstractFactory<SyntaxObject> {
     @Override
     public SyntaxObject create(Properties props) {
         int minCount = (Integer) properties.get("MinCount").getValue().iterator().next();
-        if ((props.get("MinCount") != null) && (props.get("MinCount").getParameterClass().getName().contentEquals("java.lang.Integer"))) {
+        if ((props != null)&&(props.get("MinCount") != null) && (props.get("MinCount").getParameterClass().getName().contentEquals("java.lang.Integer"))) {
             minCount = (Integer) props.get("MinCount").getValue().iterator().next();
         }
 
         int maxCount = (Integer) properties.get("MaxCount").getValue().iterator().next();
-        if ((props.get("MaxCount") != null) && (props.get("MaxCount").getParameterClass().getName().contentEquals("java.lang.Integer"))) {
+        if ((props != null)&&(props.get("MaxCount") != null) && (props.get("MaxCount").getParameterClass().getName().contentEquals("java.lang.Integer"))) {
             maxCount = (Integer) props.get("MaxCount").getValue().iterator().next();
         }
         return create(minCount, maxCount, null, null, props);

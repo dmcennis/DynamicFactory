@@ -141,6 +141,9 @@ public class BasicParameter implements ParameterInternal {
     }
 
     public boolean check(Property property) {
+        if(!property.getType().contentEquals(this.getType())){
+           return false;
+        }
         return restrictions.check(property);
     }
 
@@ -162,7 +165,7 @@ public class BasicParameter implements ParameterInternal {
     public void clear() {
         String type = value.getType();
         Class classType = value.getPropertyClass();
-        value = PropertyFactory.newInstance().create(type, classType);
+        value = PropertyFactory.newInstance().create(value.getClass().getSimpleName(),type, classType);
     }
 
     public void add(List value) {
@@ -179,12 +182,16 @@ public class BasicParameter implements ParameterInternal {
     }
 
     public boolean check(String type, List value) {
+        if(type != this.value.getType()){
+            return false;
+        }
         return restrictions.check(type,value);
     }
     
     public ParameterInternal duplicate(){
         BasicParameter ret = new BasicParameter();
-        ret.value = PropertyFactory.newInstance().create(this.value.getType(),this.value.getPropertyClass());
+        ret.value = PropertyFactory.newInstance().create(this.value.getClass().getSimpleName(),this.value.getType(),this.value.getPropertyClass());
+        ret.setType(getType());
         Iterator it  = this.value.getValue().iterator();
         while(it.hasNext()){
             try {

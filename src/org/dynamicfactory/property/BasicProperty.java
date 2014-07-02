@@ -156,7 +156,7 @@ public class BasicProperty implements Property { //extends ModelShell implements
                 while(leftIt.hasNext()){
                     Comparable l = (Comparable)leftIt.next();
                     Comparable r = (Comparable)rightIt.next(); 
-                    if(!(l.compareTo(r)!=0)){
+                    if((l.compareTo(r)!=0)){
                         return l.compareTo(r);
                     }
                 }

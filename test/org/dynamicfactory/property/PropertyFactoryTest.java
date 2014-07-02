@@ -66,7 +66,7 @@ public class PropertyFactoryTest extends TestCase {
         String id = "Type";
         Class objectType = Double.class;
         PropertyFactory instance = new PropertyFactory();
-        Property result = instance.create(id, objectType);
+        Property result = instance.create("BasicProperty",id, objectType);
         assertNotNull(result);
         assertEquals("Type",result.getType());
         assertEquals(Double.class,result.getPropertyClass());
@@ -82,8 +82,8 @@ public class PropertyFactoryTest extends TestCase {
         Property expResult = null;
         Property result = instance.create(props);
         assertNotNull(result);
-        assertEquals("Type",result.getType());
-        assertEquals(Double.class,result.getPropertyClass());
+        assertEquals("Default",result.getType());
+        assertEquals(String.class,result.getPropertyClass());
     }
 
     /**
@@ -95,7 +95,7 @@ public class PropertyFactoryTest extends TestCase {
         Class objectType = Double.class;
         Properties props = null;
         PropertyFactory instance = new PropertyFactory();
-        Property result = instance.create(id, objectType, props);
+        Property result = instance.create("BasicProperty",id, objectType, props);
         assertNotNull(result);
         assertEquals("Type",result.getType());
         assertEquals(Double.class,result.getPropertyClass());
@@ -109,10 +109,10 @@ public class PropertyFactoryTest extends TestCase {
         String id = null;
         Class objectType = null;
         Properties props = PropertiesFactory.newInstance().create();
-        props.add("PropertyType", "Type");
+        props.add("PropertyID", "Type");
         props.add("PropertyValueClass", Double.class);
         PropertyFactory instance = new PropertyFactory();
-        Property result = instance.create(id, objectType, props);
+        Property result = instance.create("BasicProperty",id, objectType, props);
         assertNotNull(result);
         assertEquals("Type",result.getType());
         assertEquals(Double.class,result.getPropertyClass());
@@ -129,7 +129,7 @@ public class PropertyFactoryTest extends TestCase {
         props.add("PropertyType", "BadType");
         props.add("PropertyValueClass", Long.class);
         PropertyFactory instance = new PropertyFactory();
-        Property result = instance.create(id, objectType, props);
+        Property result = instance.create("BasicProperty",id, objectType, props);
         assertNotNull(result);
         assertEquals("Type",result.getType());
         assertEquals(Double.class,result.getPropertyClass());

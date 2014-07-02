@@ -70,7 +70,7 @@ public class PropertyRestrictionTest extends TestCase {
      */
     public void testCheck_Property_Object() throws InvalidObjectTypeException {
         System.out.println("check");
-        Property type = PropertyFactory.newInstance().create("Type", String.class);
+        Property type = PropertyFactory.newInstance().create("BasicProperty","Type", String.class);
         type.add("Value 1");
         Object o = "Value 2";
         PropertyRestriction instance = new PropertyRestriction();
@@ -87,7 +87,7 @@ public class PropertyRestrictionTest extends TestCase {
      */
     public void testBadClassCheck_Property_Object() throws InvalidObjectTypeException {
         System.out.println("check");
-        Property type = PropertyFactory.newInstance().create("Type", String.class);
+        Property type = PropertyFactory.newInstance().create("BasicProperty","Type", String.class);
         type.add("Value 1");
         type.add("Value 3");
         Object o = "Value 2";
@@ -105,7 +105,7 @@ public class PropertyRestrictionTest extends TestCase {
      */
     public void testBadListClassCheck_Property_Object() throws InvalidObjectTypeException {
         System.out.println("check");
-        Property type = PropertyFactory.newInstance().create("Type", String.class);
+        Property type = PropertyFactory.newInstance().create("BasicProperty","Type", String.class);
         type.add("Value 1");
         type.add("Value 3");
         Object o = new Double(0.0);
@@ -123,7 +123,7 @@ public class PropertyRestrictionTest extends TestCase {
      */
     public void testBadCountCheck_Property_Object() throws InvalidObjectTypeException {
         System.out.println("check");
-        Property type = PropertyFactory.newInstance().create("Type", String.class);
+        Property type = PropertyFactory.newInstance().create("BasicProperty","Type", String.class);
         type.add("Value 1");
         type.add("Value 3");
         Object o = "Value 2";
@@ -141,7 +141,7 @@ public class PropertyRestrictionTest extends TestCase {
      */
     public void testBadPropertyCheck_Property_Object() throws InvalidObjectTypeException {
         System.out.println("check");
-        Property type = PropertyFactory.newInstance().create("Type", String.class);
+        Property type = PropertyFactory.newInstance().create("BasicProperty","Type", String.class);
         type.add("Value 1");
         type.add("Value");
         Object o = "Value 2";
@@ -162,7 +162,7 @@ public class PropertyRestrictionTest extends TestCase {
      */
     public void testBadCheck_Property_Object() throws InvalidObjectTypeException {
         System.out.println("check");
-        Property type = PropertyFactory.newInstance().create("Type", String.class);
+        Property type = PropertyFactory.newInstance().create("BasicProperty","Type", String.class);
         type.add("Value 1");
         type.add("Value 3");
         Object o = "Value 2";
@@ -180,7 +180,7 @@ public class PropertyRestrictionTest extends TestCase {
      */
     public void testCheck_Property() throws InvalidObjectTypeException {
         System.out.println("check");
-        Property type = PropertyFactory.newInstance().create("Basic", String.class);
+        Property type = PropertyFactory.newInstance().create("BasicProperty","Basic", String.class);
         type.add("Value");
         PropertyRestriction instance = new PropertyRestriction();
         instance.setMaxCount(1);
@@ -195,7 +195,7 @@ public class PropertyRestrictionTest extends TestCase {
      */
     public void testBadPropertyCheck_Property() throws InvalidObjectTypeException {
         System.out.println("check");
-        Property type = PropertyFactory.newInstance().create("Basic", String.class);
+        Property type = PropertyFactory.newInstance().create("BasicProperty","Basic", String.class);
         type.add("Value");
         type.add("Value 2");
         PropertyRestriction instance = new PropertyRestriction();
@@ -214,7 +214,7 @@ public class PropertyRestrictionTest extends TestCase {
      */
     public void testBadCountCheck_Property() throws InvalidObjectTypeException {
         System.out.println("check");
-        Property type = PropertyFactory.newInstance().create("Basic", String.class);
+        Property type = PropertyFactory.newInstance().create("BasicProperty","Basic", String.class);
         type.add("Value");
         type.add("Value 2");
         PropertyRestriction instance = new PropertyRestriction();
@@ -230,7 +230,7 @@ public class PropertyRestrictionTest extends TestCase {
      */
     public void testBadClassCheck_Property() throws InvalidObjectTypeException {
         System.out.println("check");
-        Property type = PropertyFactory.newInstance().create("Basic", String.class);
+        Property type = PropertyFactory.newInstance().create("BasicProperty","Basic", String.class);
         type.add("Value");
         type.add("Value 2");
         PropertyRestriction instance = new PropertyRestriction();
@@ -422,7 +422,6 @@ public class PropertyRestrictionTest extends TestCase {
         assertEquals(Double.class,result.getClassType());
         assertEquals(2,result.getMaxCount());
         assertEquals(1,result.getMinCount());
-        assertNotSame(q,result.getTest());
     }
 
 
@@ -431,7 +430,7 @@ public class PropertyRestrictionTest extends TestCase {
      */
     public void testCheck_Property_List() throws InvalidObjectTypeException {
         System.out.println("check");
-        Property type = PropertyFactory.newInstance().create("Type", String.class);
+        Property type = PropertyFactory.newInstance().create("BasicProperty","Type", String.class);
         type.add("Value 1");
         LinkedList list = new LinkedList<String>();
         list.add("Value 2");
@@ -449,7 +448,7 @@ public class PropertyRestrictionTest extends TestCase {
      */
     public void testBadClassCheck_Property_List() throws InvalidObjectTypeException {
         System.out.println("check");
-        Property type = PropertyFactory.newInstance().create("Type", String.class);
+        Property type = PropertyFactory.newInstance().create("BasicProperty","Type", String.class);
         type.add("Value 1");
         type.add("Value 3");
         LinkedList list = new LinkedList<String>();
@@ -468,7 +467,7 @@ public class PropertyRestrictionTest extends TestCase {
      */
     public void testBadListClassCheck_Property_List() throws InvalidObjectTypeException {
         System.out.println("check");
-        Property type = PropertyFactory.newInstance().create("Type", String.class);
+        Property type = PropertyFactory.newInstance().create("BasicProperty","Type", String.class);
         type.add("Value 1");
         type.add("Value 3");
         LinkedList list = new LinkedList<Double>();
@@ -487,7 +486,7 @@ public class PropertyRestrictionTest extends TestCase {
      */
     public void testBadCountCheck_Property_List() throws InvalidObjectTypeException {
         System.out.println("check");
-        Property type = PropertyFactory.newInstance().create("Type", String.class);
+        Property type = PropertyFactory.newInstance().create("BasicProperty","Type", String.class);
         type.add("Value 1");
         type.add("Value 3");
         LinkedList list = new LinkedList<String>();
@@ -506,7 +505,7 @@ public class PropertyRestrictionTest extends TestCase {
      */
     public void testBadPropertyCheck_Property_List() throws InvalidObjectTypeException {
         System.out.println("check");
-        Property type = PropertyFactory.newInstance().create("Type", String.class);
+        Property type = PropertyFactory.newInstance().create("BasicProperty","Type", String.class);
         type.add("Value 1");
         type.add("Value");
         LinkedList list = new LinkedList<String>();
@@ -528,7 +527,7 @@ public class PropertyRestrictionTest extends TestCase {
      */
     public void testBadCheck_Property_List() throws InvalidObjectTypeException {
         System.out.println("check");
-        Property type = PropertyFactory.newInstance().create("Type", String.class);
+        Property type = PropertyFactory.newInstance().create("BasicProperty","Type", String.class);
         type.add("Value 1");
         type.add("Value 3");
         LinkedList list = new LinkedList<String>();

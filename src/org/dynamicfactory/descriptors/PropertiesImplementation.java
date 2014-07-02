@@ -60,7 +60,7 @@ public class PropertiesImplementation implements PropertiesInternal {
         if(value == null){
             Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "Null properties not permitted in a Properties object");
         }else if(propertyMap.containsKey(value.getType())){
-            ParameterInternal p = propertyMap.get(value.getType());
+            ParameterInternal p = propertyMap.get(value.getType()).duplicate();
             if(p.check(value)){
                 p.set(value);
             }else{
@@ -69,7 +69,7 @@ public class PropertiesImplementation implements PropertiesInternal {
         }else if(restriction.check(value)){
             ParameterInternal p = new BasicParameter();
             p.setType(value.getType());
-            p.setParameterClass(value.getClass());
+            p.setParameterClass(value.getPropertyClass());
             p.set(value);
             p.setRestrictions(restriction);
             propertyMap.put(value.getType(), p);
@@ -96,6 +96,7 @@ public class PropertiesImplementation implements PropertiesInternal {
                 p.setParameterClass(value.getClass());
                 p.set(prop);
                 p.setRestrictions(restriction);
+                propertyMap.put(type,p);
             }else{
                 Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "No parameters of type '"+type+"' exist and the new parameter is vetoed by parameter restrictions");
             }
@@ -151,6 +152,9 @@ public class PropertiesImplementation implements PropertiesInternal {
     
     public boolean check(Properties props){
         boolean good = true;
+        if(props == null){
+            return good;
+        }
         Iterator<Parameter> it = props.get().iterator();
         while(it.hasNext()){
             if(!this.check(it.next())){
@@ -161,7 +165,9 @@ public class PropertiesImplementation implements PropertiesInternal {
     }
     
     public void replace(Parameter type){
-        propertyMap.put(type.getType(),(ParameterInternal) type);
+        if(type != null) {
+            propertyMap.put(type.getType(), (ParameterInternal) type);
+        }
     }
 
     public PropertiesInternal merge(Properties right){

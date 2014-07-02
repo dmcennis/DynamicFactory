@@ -87,7 +87,7 @@ public class ParameterFactory extends AbstractFactory<ParameterInternal> {
         restriction.setMaxCount(1);
         restriction.setClassType(String.class);
         name.setRestrictions(restriction);
-        name.add("");
+        name.add("No Description Provided");
         properties.add(name);
 
         properties.setDefaultRestriction(new PropertyRestriction());
@@ -126,13 +126,13 @@ public class ParameterFactory extends AbstractFactory<ParameterInternal> {
         }
 
         String parameterType = (String) properties.get("ParameterClass").getValue().iterator().next();
-        if ((props.get("ParameterClass") != null) && (props.get("ParameterClass").getParameterClass().getName().contentEquals("java.lang.String"))) {
+        if ((props != null)&&(props.get("ParameterClass") != null) && (props.get("ParameterClass").getParameterClass().getName().contentEquals("java.lang.String"))) {
             parameterType = (String) props.get("ParameterClass").getValue().iterator().next();
         }
 
         ParameterInternal ret = null;
         if (map.containsKey(parameterType)) {
-            ret = map.get(parameterType);
+            ret = map.get(parameterType).duplicate();
         } else {
             ret = new BasicParameter();
             Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "Requested Parameter type '" + parameterType + "' does not exist");
@@ -140,10 +140,10 @@ public class ParameterFactory extends AbstractFactory<ParameterInternal> {
         ret.setType(type);
         ret.setParameterClass(classType);
         if (description == null) {
-            if ((props.get("Name") != null) && (props.get("Name").getParameterClass().getName().contentEquals("java.lang.String"))) {
-                description = (String) props.get("Name").getValue().iterator().next();
+            if ((props.get("Description") != null) && (props.get("Description").getParameterClass().getName().contentEquals("java.lang.String"))) {
+                description = (String) props.get("Description").getValue().iterator().next();
             } else {
-                description = (String) properties.get("Name").getValue().iterator().next();
+                description = type;
             }
         }
         ret.setDescription(description);
