@@ -26,6 +26,10 @@
 package org.dynamicfactory.propertyQuery;
 
 import org.dynamicfactory.property.Property;
+import org.dynamicfactory.propertyQuery.Query.State;
+
+import java.io.Reader;
+import java.io.Writer;
 
 /**
  *
@@ -34,15 +38,32 @@ import org.dynamicfactory.property.Property;
 public class NullPropertyQuery implements PropertyQuery{
 
     boolean ret = false;
-    
+
+    State state = State.UNINITIALIZED;
 
     public boolean execute(Property property) {
         return ret;
     }
 
 
+    public State buildingStatus() {
+        return state;
+    }
+
+
     public void buildQuery(boolean ret) {
+
+        state = State.LOADING;
         this.ret = ret;
+        state = State.READY;
+    }
+
+    public void exportQuery(Writer writer) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    public void importQuery(Reader reader) {
+        throw new UnsupportedOperationException("Not supported yet.");
     }
 
     public int compareTo(Object o) {

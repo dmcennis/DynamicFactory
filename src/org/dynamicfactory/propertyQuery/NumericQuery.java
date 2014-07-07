@@ -27,10 +27,13 @@
 
 package org.dynamicfactory.propertyQuery;
 
+import java.io.Reader;
+import java.io.Writer;
 import java.util.Collection;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.dynamicfactory.property.Property;
+import org.dynamicfactory.propertyQuery.Query.State;
 
 /**
  *
@@ -41,12 +44,25 @@ public class NumericQuery implements PropertyQuery{
 
     boolean not = false;
 
-    enum Operation {GT,EQ,LT,GTE,LTE,NE};
+    public enum Operation {GT,EQ,LT,GTE,LTE,NE};
     
     Operation operation = Operation.GT;
     
     double comparisonValue = 0.0;
-    
+
+    State state = State.UNINITIALIZED;
+
+    public void exportQuery(Writer writer) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    public void importQuery(Reader reader) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    public State buildingStatus() {
+        return state;
+    }
 
     public boolean execute(Property property) {
         String name = property.getPropertyClass().getName();
@@ -70,7 +86,7 @@ public class NumericQuery implements PropertyQuery{
     
     }
     
-    boolean execute(double left){
+    public boolean execute(double left){
                         boolean result = false;
                 switch (operation){
                     case EQ:
@@ -102,6 +118,7 @@ public class NumericQuery implements PropertyQuery{
 
 
     public void buildQuery(double comparisonValue, boolean not, Operation operation) {
+        state = State.LOADING;
         this.comparisonValue = comparisonValue;
         this.not = not;
         if(operation==null){
@@ -110,6 +127,7 @@ public class NumericQuery implements PropertyQuery{
         }else{
             this.operation = operation;
         }
+        state = State.READY;
     }
 
     public int compareTo(Object o) {

@@ -36,5 +36,9 @@ public interface PropertyQuery extends Comparable{
     public boolean execute(Property property);
 
     public PropertyQuery prototype();
-    
+
+    public void exportQuery(java.io.Writer writer);
+
+    public void importQuery(java.io.Reader reader);
+
 }

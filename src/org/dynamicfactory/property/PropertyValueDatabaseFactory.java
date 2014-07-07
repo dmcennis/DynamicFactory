@@ -1,6 +1,26 @@
 /*
  * PropertyValueDatabaseFactory - created 14/03/2009 - 6:27:22 PM
- * Copyright Daniel McEnnis, see license.txt
+ */
+/*
+ * Copyright (c) 2009 Daniel McEnnis.
+ *     All rights reserved.
+ *
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *  Unless required by applicable law or agreed to in writing,
+ *  software distributed under the License is distributed on an "AS
+ *  IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+ *  express or implied.  See the License for the specific language
+ *  governing permissions and limitations under the License.
+ *
+ * For more about this software visit:
+ *
+ *      https://github.com/dmcennis/DynamicFactory
+ *
  */
 
 package org.dynamicfactory.property;
@@ -11,15 +31,12 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.dynamicfactory.AbstractFactory;
 import org.dynamicfactory.descriptors.*;
-import org.dynamicfactory.property.Property;
-import org.dynamicfactory.property.PropertyFactory;
-import org.dynamicfactory.property.InvalidObjectTypeException;
-import org.dynamicfactory.property.database.AssociativeMiningItemsDB;
-import org.dynamicfactory.property.database.AttributeDB;
+//import org.dynamicfactory.property.database.AssociativeMiningItemsDB;
+//import org.dynamicfactory.property.database.AttributeDB;
 import org.dynamicfactory.property.database.DoubleDB;
 import org.dynamicfactory.property.database.FileDB;
-import org.dynamicfactory.property.database.InstanceDB;
-import org.dynamicfactory.property.database.InstancesDB;
+//import org.dynamicfactory.property.database.InstanceDB;
+//import org.dynamicfactory.property.database.InstancesDB;
 import org.dynamicfactory.property.database.IntegerDB;
 import org.dynamicfactory.property.database.LongDB;
 import org.dynamicfactory.property.database.PropertyValueDB;
@@ -49,12 +66,12 @@ public class PropertyValueDatabaseFactory extends AbstractFactory<PropertyValueD
         name.add("String");
         properties.add(name);
 
-        map.put("AssociativeMiningItems",new AssociativeMiningItemsDB());
-        map.put("Attribute",new AttributeDB());
+//        map.put("AssociativeMiningItems",new AssociativeMiningItemsDB());
+//        map.put("Attribute",new AttributeDB());
         map.put("Double",new DoubleDB());
         map.put("File",new FileDB());
-        map.put("Instance",new InstanceDB());
-        map.put("Instances",new InstancesDB());
+//        map.put("Instance",new InstanceDB());
+//        map.put("Instances",new InstancesDB());
         map.put("Integer",new IntegerDB());
         map.put("Long",new LongDB());
         map.put("String",new StringDB());

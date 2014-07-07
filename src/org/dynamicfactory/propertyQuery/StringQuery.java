@@ -33,6 +33,7 @@ import java.util.logging.Logger;
 import org.dynamicfactory.property.Property;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
+import org.dynamicfactory.propertyQuery.Query.State;
 
 /**
  *
@@ -43,6 +44,8 @@ public class StringQuery implements PropertyQuery{
     public enum Operation {EQUALS, EQUALS_IGNORE_CASE, CONTAINS, ENDS_WITH, MATCHES, STARTS_WITH
 
     };
+
+    State state = State.UNINITIALIZED;
     
     Operation operation = Operation.EQUALS;
     
@@ -97,6 +100,7 @@ public class StringQuery implements PropertyQuery{
     }
 
     public void buildQuery(String comparison, boolean not, Operation operation) {
+        state = State.LOADING;
         if(comparison==null){
             this.comparison="";
         }else{
@@ -109,6 +113,7 @@ public class StringQuery implements PropertyQuery{
         }else{
             this.operation = operation;
         }
+        state = State.READY;
     }
 
     public int compareTo(Object o) {
@@ -131,6 +136,22 @@ public class StringQuery implements PropertyQuery{
             return this.getClass().getName().compareTo(o.getClass().getName());
         }
     }
+    public void startElement(String uri, String localName, String qName, Attributes attributes) throws SAXException {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    public void characters(char[] ch, int start, int length) throws SAXException {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    public void endElement(String uri, String localName, String qName) throws SAXException {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    public State buildingStatus() {
+        return state;
+    }
+
 
     public StringQuery prototype() {
         return new StringQuery();

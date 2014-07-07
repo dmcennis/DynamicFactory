@@ -5,12 +5,12 @@
 
 package org.dynamicfactory.propertyQuery;
 
-import nz.ac.waikato.mcennis.rat.parser.ParsedObject;import java.lang.Comparable;
+import java.lang.Comparable;
 
 /**
  *
  * @author Daniel McEnnis
  */
-public interface Query extends Comparable, ParsedObject{
-
+public interface Query extends Comparable{
+ enum State {UNINITIALIZED,READY,LOADING};
 }

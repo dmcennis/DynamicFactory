@@ -39,6 +39,8 @@ package org.dynamicfactory.property;
 
 //import nz.ac.waikato.mcennis.rat.graph.model.ModelShell;
 
+import org.dynamicfactory.model.ModelShell;
+
 import java.util.Iterator;
 import java.util.List;
 
@@ -51,7 +53,7 @@ import java.util.List;
  * @author Daniel McEnnis
  */
 
-public class BasicProperty implements Property { //extends ModelShell implements Property{
+public class BasicProperty extends ModelShell implements Property{
 
     static final long serialVersionUID = 2;
 

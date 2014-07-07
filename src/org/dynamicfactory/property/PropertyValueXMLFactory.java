@@ -1,7 +1,27 @@
 /**
  * PropertyValueXMLFactory
  * Created Jan 26, 2009 - 9:22:39 PM
- * Copyright Daniel McEnnis, see license.txt
+ */
+/*
+ * Copyright (c) 2009 Daniel McEnnis.
+ *     All rights reserved.
+ *
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *  Unless required by applicable law or agreed to in writing,
+ *  software distributed under the License is distributed on an "AS
+ *  IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+ *  express or implied.  See the License for the specific language
+ *  governing permissions and limitations under the License.
+ *
+ * For more about this software visit:
+ *
+ *      https://github.com/dmcennis/DynamicFactory
+ *
  */
 package org.dynamicfactory.property;
 
@@ -9,15 +29,12 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.dynamicfactory.AbstractFactory;
 import org.dynamicfactory.descriptors.*;
-import org.dynamicfactory.property.Property;
-import org.dynamicfactory.property.PropertyFactory;
-import org.dynamicfactory.property.InvalidObjectTypeException;
-import org.dynamicfactory.property.xml.AssociativeMiningItemsXML;
-import org.dynamicfactory.property.xml.AttributeXML;
+//import org.dynamicfactory.property.xml.AssociativeMiningItemsXML;
+//import org.dynamicfactory.property.xml.AttributeXML;
 import org.dynamicfactory.property.xml.DoubleXML;
 import org.dynamicfactory.property.xml.FileXML;
-import org.dynamicfactory.property.xml.InstanceXML;
-import org.dynamicfactory.property.xml.InstancesXML;
+//import org.dynamicfactory.property.xml.InstanceXML;
+//import org.dynamicfactory.property.xml.InstancesXML;
 import org.dynamicfactory.property.xml.IntegerXML;
 import org.dynamicfactory.property.xml.LongXML;
 import org.dynamicfactory.property.xml.PropertyValueXML;
@@ -45,12 +62,12 @@ public class PropertyValueXMLFactory extends AbstractFactory<PropertyValueXML>{
         name.add("String");
         properties.add(name);
         
-        map.put("AssociativeMiningItems",new AssociativeMiningItemsXML());
-        map.put("Attribute",new AttributeXML());
+//        map.put("AssociativeMiningItems",new AssociativeMiningItemsXML());
+//        map.put("Attribute",new AttributeXML());
         map.put("Double",new DoubleXML());
         map.put("File",new FileXML());
-        map.put("Instance",new InstanceXML());
-        map.put("Instances",new InstancesXML());
+//        map.put("Instance",new InstanceXML());
+//        map.put("Instances",new InstancesXML());
         map.put("Integer",new IntegerXML());
         map.put("Long",new LongXML());
         map.put("String",new StringXML());
