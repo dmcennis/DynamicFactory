@@ -55,7 +55,7 @@ import org.dynamicfactory.descriptors.SyntaxChecker;
  * @author Daniel McEnnis
  */
 
-public interface Parameter {
+public interface Parameter extends Comparable<Parameter>{
 
     /**
 

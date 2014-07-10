@@ -25,10 +25,7 @@
  */
 package org.dynamicfactory.descriptors;
 
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.TreeMap;
+import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.dynamicfactory.descriptors.BasicParameter;
@@ -45,6 +42,37 @@ import org.dynamicfactory.property.PropertyFactory;
  * @author Daniel McEnnis
  */
 public class PropertiesImplementation implements PropertiesInternal {
+
+    @Override
+    public int compareTo(Properties o) {
+        LinkedList<String> leftTypes = new LinkedList<String>();
+        leftTypes.addAll(this.propertyMap.keySet());
+        LinkedList<String> rightTypes = new LinkedList<String>();
+        for(Parameter p : o.get()){
+            rightTypes.add(p.getType());
+        }
+        if(leftTypes.size() != rightTypes.size()){
+            return leftTypes.size() - rightTypes.size();
+        }
+        Collections.sort(rightTypes);
+        Iterator<String> l = leftTypes.iterator();
+        Iterator<String> r = rightTypes.iterator();
+        while(l.hasNext()){
+            int ret = l.next().compareTo(r.next());
+            if(ret !=0){
+                return ret;
+            }
+        }
+        l = leftTypes.iterator();
+        while(l.hasNext()){
+            String string = l.next();
+            int ret = this.get(string).compareTo(o.get(string));
+            if(ret != 0) {
+                return ret;
+            }
+        }
+        return 0;
+    }
 
     TreeMap<String,ParameterInternal> propertyMap = new TreeMap<String,ParameterInternal>();
     

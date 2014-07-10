@@ -27,6 +27,8 @@
  */
 package org.dynamicfactory.descriptors;
 
+import java.util.Collections;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Iterator;
 import java.util.logging.Level;
@@ -51,6 +53,35 @@ public class BasicParameter implements ParameterInternal {
     private boolean structural;
     private String description;
     private Property value;
+
+    @Override
+    public int compareTo(Parameter o) {
+        if(!this.value.getType().contentEquals(o.getType())){
+            return this.value.getType().compareTo(o.getType());
+        }
+        List<Object> left = this.value.getValue();
+        List<Object> right = o.getValue();
+        if(this.getParameterClass()!=o.getParameterClass()){
+            return this.getParameterClass().getName().compareTo(o.getParameterClass().getName());
+        }
+        if(left.size() != right.size()){
+            return left.size()-right.size();
+        }
+        if((left.size()==0)||(!this.getParameterClass().isAssignableFrom(Comparable.class))){
+            return 0;
+        }
+//        Collections.sort(left);
+//        Collections.sort(right);
+        Iterator l = left.iterator();
+        Iterator r = right.iterator();
+        while(l.hasNext()){
+            int ret = ((Comparable)l.next()).compareTo((Comparable)r.next());
+            if(ret != 0){
+                return ret;
+            }
+        }
+        return 0;
+    }
 
     /** Creates a new instance of BasicParameter */
     public BasicParameter() {

@@ -33,7 +33,7 @@ import org.dynamicfactory.descriptors.Parameter;
  *
  * @author Daniel McEnnis
  */
-public interface Properties {
+public interface Properties extends Comparable<Properties>{
 
     void add(String type, Object value);
 
