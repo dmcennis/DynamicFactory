@@ -45,7 +45,7 @@ public interface PropertiesInternal extends Properties{
 
     SyntaxObject getDefaultRestriction();
     
-    PropertiesInternal duplicate();
+    PropertiesInternal prototype();
 
     ParameterInternal get(String string);
 

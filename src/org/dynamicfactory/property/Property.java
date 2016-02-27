@@ -114,7 +114,7 @@ public interface Property extends java.io.Serializable, Comparable{//}, Model {
 
      */
 
-    public Property duplicate();
+    public Property prototype();
 
     
 

@@ -46,7 +46,7 @@ public abstract class AbstractFactory<Type> {
     public abstract Type create(Properties props);
 
     public Type create(String name){
-        Properties props = properties.duplicate();
+        Properties props = properties.prototype();
         return create(name,props);
     }
 

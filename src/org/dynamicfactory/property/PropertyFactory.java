@@ -151,7 +151,7 @@ public class PropertyFactory extends AbstractFactory<Property>{
             }
         }
         if (map.containsKey(propertyClass)) {
-            ret = map.get(propertyClass).duplicate();
+            ret = map.get(propertyClass).prototype();
             ret.setType(id);
             ret.setClass(objectType);
         } else {

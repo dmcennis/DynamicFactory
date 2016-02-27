@@ -137,7 +137,7 @@ public interface Parameter {
     
     public void clear();
     
-    public Parameter duplicate();
+    public Parameter prototype();
     
     public Object get();
 

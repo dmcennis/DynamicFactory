@@ -94,7 +94,7 @@ public interface ParameterInternal extends Parameter{
     
     public SyntaxObject getRestrictions();
     
-    public ParameterInternal duplicate();
+    public ParameterInternal prototype();
 
 }
 

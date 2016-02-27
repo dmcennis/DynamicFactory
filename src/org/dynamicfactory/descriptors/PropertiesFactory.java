@@ -68,7 +68,7 @@ public class PropertiesFactory extends AbstractFactory<PropertiesInternal>{
     public PropertiesInternal create(Properties props){
         if((props != null)&&(map.containsKey("PropertiesClass"))&&(map.containsKey(props.get("PropertiesClass").getValue().iterator().next()))){
             String type = (String) props.get("PropertiesClass").getValue().iterator().next();
-            return map.get(type).duplicate();
+            return map.get(type).prototype();
         }else if(props == null){
             Logger.getLogger(this.getClass().getName()).log(Level.SEVERE,"Null properties detected -  assuming PropertiesImplementation");
         } else if(props.get("PropertiesClass")==null){

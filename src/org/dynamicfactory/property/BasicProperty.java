@@ -196,7 +196,7 @@ public class BasicProperty implements Property { //extends ModelShell implements
 
     @Override
 
-    public Property duplicate(){
+    public Property prototype(){
 
         BasicProperty props = new BasicProperty(type,objectType);
 

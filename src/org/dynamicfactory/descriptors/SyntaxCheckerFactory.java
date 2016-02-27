@@ -122,7 +122,7 @@ public class SyntaxCheckerFactory extends AbstractFactory<SyntaxObject> {
             type = (String) props.get("SyntaxCheckerClass").getValue().iterator().next();
         }
 
-        SyntaxObject prototype = map.get(type).duplicate();
+        SyntaxObject prototype = map.get(type).prototype();
         if(prototype == null){
             prototype = new PropertyRestriction();
             Logger.getLogger(this.getClass().getName()).log(Level.SEVERE,"Unknown SyntaxObject '"+type+"' requested - assuming PropertyRestriction");

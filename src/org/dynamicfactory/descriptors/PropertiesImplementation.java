@@ -60,7 +60,7 @@ public class PropertiesImplementation implements PropertiesInternal {
         if(value == null){
             Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "Null properties not permitted in a Properties object");
         }else if(propertyMap.containsKey(value.getType())){
-            ParameterInternal p = propertyMap.get(value.getType()).duplicate();
+            ParameterInternal p = propertyMap.get(value.getType()).prototype();
             if(p.check(value)){
                 p.set(value);
             }else{
@@ -125,14 +125,14 @@ public class PropertiesImplementation implements PropertiesInternal {
         this.restriction = restriction;
     }
     
-    public PropertiesImplementation duplicate(){
+    public PropertiesImplementation prototype(){
         PropertiesImplementation ret = new PropertiesImplementation();
         Iterator<String> mapIt =propertyMap.keySet().iterator();
         while(mapIt.hasNext()){
             String key = mapIt.next();
-            ret.propertyMap.put(key, propertyMap.get(key).duplicate());
+            ret.propertyMap.put(key, propertyMap.get(key).prototype());
         }
-        ret.restriction = this.restriction.duplicate();
+        ret.restriction = this.restriction.prototype();
         return ret;
     }
     
@@ -191,7 +191,7 @@ public class PropertiesImplementation implements PropertiesInternal {
     }
 
     public PropertiesInternal merge(Properties right){
-        PropertiesInternal ret = this.duplicate();
+        PropertiesInternal ret = this.prototype();
         Iterator<Parameter> names = right.get().iterator();
         while(names.hasNext()){
             Parameter param = names.next();
@@ -202,7 +202,7 @@ public class PropertiesImplementation implements PropertiesInternal {
                     continue;
                 }
             }
-            ret.add(((ParameterInternal)param).duplicate());
+            ret.add(((ParameterInternal)param).prototype());
         }
         return ret;
     }

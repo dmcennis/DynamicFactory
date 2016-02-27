@@ -132,7 +132,7 @@ public class ParameterFactory extends AbstractFactory<ParameterInternal> {
 
         ParameterInternal ret = null;
         if (map.containsKey(parameterType)) {
-            ret = map.get(parameterType).duplicate();
+            ret = map.get(parameterType).prototype();
         } else {
             ret = new BasicParameter();
             Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "Requested Parameter type '" + parameterType + "' does not exist");

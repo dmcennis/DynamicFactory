@@ -47,5 +47,5 @@ public interface SyntaxObject extends SyntaxChecker{
     
     public void setClassType(Class classType);    
     
-    public SyntaxObject duplicate();
+    public SyntaxObject prototype();
 }

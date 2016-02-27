@@ -43,7 +43,7 @@ public interface Properties {
 
     void set(String type, List value);
 
-    Properties duplicate();
+    Properties prototype();
     
     List<Parameter> get();
 
