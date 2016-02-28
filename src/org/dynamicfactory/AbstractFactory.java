@@ -97,12 +97,15 @@ public abstract class AbstractFactory<Type> {
     public boolean check(Parameter parameter){
         return properties.check(parameter);
     }
-    
-    public abstract Parameter getClassParameter();
-    
+
     public Collection<String> getKnownTypes(){
         LinkedList<String> ret = new LinkedList<String>();
         ret.addAll(map.keySet());
         return ret;
     }
+
+    public Parameter getClassParameter() {
+        return properties.get("ClassName");
+    }
+
 }

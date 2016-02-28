@@ -244,6 +244,28 @@ public class PropertiesImplementation implements PropertiesInternal {
             add(type,value);
         }
     }
+
+    @Override
+    public Object quickGet(String s) {
+        return get(s).getValue().get(0);
+    }
+
+    @Override
+    public boolean quickCheck(String s, Class type) {
+        if((s==null)||(type==null)){
+            return false;
+        }
+        if(!propertyMap.containsKey(s)){
+            return false;
+        }
+        if(propertyMap.get(s).getType().compareTo(type.getName())!=0){
+            return false;
+        }
+        if(propertyMap.get(s).getValue().size()==0){
+            return false;
+        }
+        return true;
+    }
 }
 
 

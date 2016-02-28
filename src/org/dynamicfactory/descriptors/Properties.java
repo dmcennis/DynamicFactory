@@ -56,5 +56,16 @@ public interface Properties {
     boolean check(Parameter type);
     
     boolean check(Properties props);
-    
+
+    /**
+     * Given a source set of properties, merge in any non-conflicting properties from the right side
+     *
+     * @param props set of defaults to merge in
+     * @return new Properties object combining the two types
+     */
+    Properties merge(Properties props);
+
+    boolean quickCheck(String s,Class type);
+
+    Object quickGet(String s);
 }
