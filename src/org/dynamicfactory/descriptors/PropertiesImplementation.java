@@ -25,10 +25,7 @@
  */
 package org.dynamicfactory.descriptors;
 
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.TreeMap;
+import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.dynamicfactory.descriptors.BasicParameter;
@@ -46,6 +43,37 @@ import org.dynamicfactory.property.PropertyFactory;
  */
 public class PropertiesImplementation implements PropertiesInternal {
 
+    @Override
+    public int compareTo(Properties o) {
+        LinkedList<String> leftTypes = new LinkedList<String>();
+        leftTypes.addAll(this.propertyMap.keySet());
+        LinkedList<String> rightTypes = new LinkedList<String>();
+        for(Parameter p : o.get()){
+            rightTypes.add(p.getType());
+        }
+        if(leftTypes.size() != rightTypes.size()){
+            return leftTypes.size() - rightTypes.size();
+        }
+        Collections.sort(rightTypes);
+        Iterator<String> l = leftTypes.iterator();
+        Iterator<String> r = rightTypes.iterator();
+        while(l.hasNext()){
+            int ret = l.next().compareTo(r.next());
+            if(ret !=0){
+                return ret;
+            }
+        }
+        l = leftTypes.iterator();
+        while(l.hasNext()){
+            String string = l.next();
+            int ret = this.get(string).compareTo(o.get(string));
+            if(ret != 0) {
+                return ret;
+            }
+        }
+        return 0;
+    }
+
     TreeMap<String,ParameterInternal> propertyMap = new TreeMap<String,ParameterInternal>();
     
     SyntaxObject restriction = new PropertyRestriction();
@@ -55,7 +83,16 @@ public class PropertiesImplementation implements PropertiesInternal {
     public ParameterInternal get(String string){
         return propertyMap.get(string);
     }
-    
+
+    @Override
+    public void add(String name, Class type, Object value) {
+        ParameterInternal internal = ParameterFactory.newInstance().create((Properties)null);
+        internal.setParameterClass(type);
+        internal.set(value);
+        internal.setType(name);
+        propertyMap.put(name,internal);
+    }
+
     public void set(Property value){
         if(value == null){
             Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "Null properties not permitted in a Properties object");
@@ -227,6 +264,27 @@ public class PropertiesImplementation implements PropertiesInternal {
         }
     }
 
+    @Override
+    public void add(String type, Class c, List value) {
+        if(propertyMap.containsKey(type)){
+            propertyMap.get(type).add(value);
+        }else{
+            if(value != null){
+                ParameterInternal prop = null;
+                if(value.size()>0){
+                    prop = new BasicParameter(type,c );
+                }else{
+                    prop = new BasicParameter(type,Object.class);
+                }
+                if(this.check(prop)){
+                    propertyMap.put(type, prop);
+                }
+            }else{
+                Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "Null value list provided, aborting change");
+            }
+        }
+    }
+
     public void set(String type, Object value) {
         if(propertyMap.containsKey(type)){
             propertyMap.get(type).clear();
@@ -242,6 +300,23 @@ public class PropertiesImplementation implements PropertiesInternal {
             propertyMap.get(type).add(value);
         }else{
             add(type,value);
+        }
+    }
+    public void set(String type, Class c, Object value) {
+        if(propertyMap.containsKey(type)){
+            propertyMap.get(type).clear();
+            propertyMap.get(type).add(value);
+        }else{
+            add(type,c,value);
+        }
+    }
+
+    public void set(String type, Class c, List value) {
+        if(propertyMap.containsKey(type)){
+            propertyMap.get(type).clear();
+            propertyMap.get(type).add(value);
+        }else{
+            add(type,c,value);
         }
     }
 

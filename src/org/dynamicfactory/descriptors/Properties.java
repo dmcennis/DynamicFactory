@@ -33,15 +33,23 @@ import org.dynamicfactory.descriptors.Parameter;
  *
  * @author Daniel McEnnis
  */
-public interface Properties {
+public interface Properties extends Comparable<Properties>{
 
     void add(String type, Object value);
 
     void add(String type, List value);
 
+    void add(String type, Class c, Object value);
+
+    void add(String type, Class c, List value);
+
     void set(String type, Object value);
 
     void set(String type, List value);
+
+    void set(String type, Class c, Object value);
+
+    void set(String type, Class c, List value);
 
     Properties prototype();
     

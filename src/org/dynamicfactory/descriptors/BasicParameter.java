@@ -66,6 +66,11 @@ public class BasicParameter implements ParameterInternal {
     }
 
     @Override
+    public int compareTo(Parameter o) {
+        return 0;
+    }
+
+    @Override
     public void setStructural(boolean b) {
 
         structural = b;
