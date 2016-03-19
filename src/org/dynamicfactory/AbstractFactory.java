@@ -38,12 +38,24 @@ import org.dynamicfactory.property.InvalidObjectTypeException;
  *
  * @author Daniel McEnnis
  */
-public abstract class AbstractFactory<Type> {
+public abstract class AbstractFactory<Type extends Creatable<Type>> implements Creatable<AbstractFactory>{
     
     protected HashMap<String,Type> map = new HashMap<String,Type>();
     protected PropertiesInternal properties = new PropertiesImplementation();
     
-    public abstract Type create(Properties props);
+    public Type create(Properties props){
+        if((props != null)&&(props.quickCheck("ClassName",String.class))){
+            if(map.containsKey(props.quickGet("ClassName"))) {
+                return map.get(props.quickGet("ClassName")).prototype(props);
+            }else{
+                Logger.getLogger(this.getClass().getName()).log(Level.WARNING,String.format("Class %s is unknown. Using the default instead", props.quickGet("ClassName")));
+                return map.get("Default").prototype(props);
+            }
+        }else{
+            Logger.getLogger(this.getClass().getName()).log(Level.WARNING,"Class parameter is missing. Using the default instead");
+            return map.get("Default").prototype(props);
+        }
+    }
 
     public Type create(){
         return create(properties);
@@ -57,6 +69,14 @@ public abstract class AbstractFactory<Type> {
     public Type create(String name, Properties props){
         props.add("FactoryName",name);
         return create(props);
+    }
+
+    @Override
+    public abstract AbstractFactory prototype();
+
+    @Override
+    public AbstractFactory prototype(Properties props) {
+        return prototype();
     }
 
     public void setDefaultProperty(ParameterInternal value) {
