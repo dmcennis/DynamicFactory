@@ -67,7 +67,16 @@ public class BasicParameter implements ParameterInternal {
 
     @Override
     public int compareTo(Parameter o) {
-        return 0;
+        int answer = this.getType().compareTo(o.getType());
+        if(answer != 0){
+            return answer;
+        }
+        answer = this.getParameterClass().getName().compareTo(o.getParameterClass().getName());
+        if(answer !=0){
+            return answer;
+        }
+        answer = this.getValue().size() - o.getValue().size();
+        return answer;
     }
 
     @Override

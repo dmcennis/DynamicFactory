@@ -50,7 +50,7 @@ import org.dynamicfactory.descriptors.SyntaxChecker;
 
  * Base interface for parameter.  It allows reading of parameter values.  Will 
 
- * eventaully bne replaced by JavaBeans.
+ * eventually be replaced by JavaBeans.
 
  * @author Daniel McEnnis
  */
@@ -99,7 +99,7 @@ public interface Parameter extends Comparable<Parameter>{
 
      */
 
-    public List<Object> getValue();
+    public List getValue();
 
     
 
