@@ -50,6 +50,7 @@ public class BasicParameter implements ParameterInternal {
     private SyntaxObject restrictions;
     private boolean structural;
     private String description;
+    private String longDescription;
     private Property value;
 
     /** Creates a new instance of BasicParameter */
@@ -63,6 +64,16 @@ public class BasicParameter implements ParameterInternal {
         value = new BasicProperty(s,c);
         structural = false;
         restrictions = new PropertyRestriction();
+    }
+
+    @Override
+    public void setLongDescription(String d) {
+        longDescription = d;
+    }
+
+    @Override
+    public String getLongDescription() {
+        return longDescription;
     }
 
     @Override

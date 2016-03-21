@@ -148,5 +148,6 @@ public interface Parameter extends Comparable<Parameter>{
 
     public void set(List value);
 
+    public String getLongDescription();
 }
 

@@ -84,6 +84,19 @@ public class PropertiesImplementation implements PropertiesInternal {
         return propertyMap.get(string);
     }
 
+
+    @Override
+    public void set(String type, List value, String description) {
+        set(type,value);
+        get(type).setDescription(description);
+    }
+
+    @Override
+    public void set(String type, Class c, Object value, String description) {
+        set(type,c,value);
+
+    }
+
     @Override
     public void add(String name, Class type, Object value) {
         ParameterInternal internal = ParameterFactory.newInstance().create((Properties)null);
@@ -318,6 +331,35 @@ public class PropertiesImplementation implements PropertiesInternal {
         }else{
             add(type,c,value);
         }
+    }
+
+    @Override
+    public void set(String type, Class c, List value, String description) {
+        set(type,c,value);
+        get(type).set(description);
+    }
+
+    @Override
+    public void set(String type, List value, String description, String longDescription) {
+        set(type,value,description);
+        get(type).setDescription(description);
+        get(type).setLongDescription(longDescription);
+
+    }
+
+    @Override
+    public void set(String type, Class c, Object value, String description, String longDescription) {
+        set(type,c,value);
+        get(type).setDescription(description);
+        get(type).setLongDescription(longDescription);
+
+    }
+
+    @Override
+    public void set(String type, Class c, List value, String description, String longDescription) {
+        set(type,c,value);
+        get(type).setDescription(description);
+        get(type).setLongDescription(longDescription);
     }
 
     @Override

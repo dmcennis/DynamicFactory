@@ -90,6 +90,8 @@ public interface ParameterInternal extends Parameter{
     
     public void setDescription(String b);
 
+    public void setLongDescription(String d);
+
     public void setRestrictions(SyntaxObject syntax);
     
     public SyntaxObject getRestrictions();

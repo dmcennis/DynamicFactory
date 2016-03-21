@@ -51,6 +51,18 @@ public interface Properties extends Comparable<Properties>{
 
     void set(String type, Class c, List value);
 
+    void set(String type, List value, String description);
+
+    void set(String type, Class c, Object value, String description);
+
+    void set(String type, Class c, List value, String description);
+
+    void set(String type, List value, String description, String longDescription);
+
+    void set(String type, Class c, Object value, String description, String longDescription);
+
+    void set(String type, Class c, List value, String description, String longDescription);
+
     Properties prototype();
     
     List<Parameter> get();
