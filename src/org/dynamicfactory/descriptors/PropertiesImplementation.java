@@ -267,6 +267,18 @@ public class PropertiesImplementation implements PropertiesInternal {
         return ret;
     }
 
+    public PropertiesInternal mergeDefaults(Properties right){
+        PropertiesInternal ret = this.prototype();
+        Iterator<Parameter> names = right.get().iterator();
+        while(names.hasNext()){
+            Parameter param = names.next();
+            if(ret.get(param.getType())==null){
+                ret.add(((ParameterInternal) param).prototype());
+            }
+        }
+        return ret;
+    }
+
     public void add(String type, List value) {
         if(propertyMap.containsKey(type)){
             propertyMap.get(type).add(value);

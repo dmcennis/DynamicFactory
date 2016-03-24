@@ -54,5 +54,7 @@ public interface PropertiesInternal extends Properties, Creatable<PropertiesInte
 
     PropertiesInternal merge(Properties right);
 
+    PropertiesInternal mergeDefaults(Properties right);
+
     void clear();
 }
