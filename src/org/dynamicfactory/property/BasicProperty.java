@@ -135,29 +135,34 @@ public class BasicProperty implements Property { //extends ModelShell implements
 
             if(this.objectType.getName().compareTo(o.getPropertyClass().getName())!=0){
                 return this.objectType.getName().compareTo(o.getPropertyClass().getName());
-            }            
+            }
             List leftValue = this.getValue();
             List rightValue = o.getValue();
 
             if(leftValue.size() != rightValue.size()){
                 return leftValue.size() - rightValue.size();
             }else{
+                boolean comparable = true;
                 if(leftValue.size() == 0){
                     return 0;
                 }else if(!(leftValue.iterator().next() instanceof Comparable)){
-                    return 0;
-                }else if(!(rightValue.iterator().next() instanceof Comparable)){
-                    return 0;
+                    comparable = false;
                 }
                 java.util.Collections.sort(leftValue);
                 java.util.Collections.sort(rightValue);
                 Iterator leftIt = leftValue.iterator();               
                 Iterator rightIt = rightValue.iterator();
                 while(leftIt.hasNext()){
-                    Comparable l = (Comparable)leftIt.next();
-                    Comparable r = (Comparable)rightIt.next(); 
-                    if((l.compareTo(r)!=0)){
-                        return l.compareTo(r);
+                    if(comparable) {
+                        Comparable l = (Comparable) leftIt.next();
+                        Comparable r = (Comparable) rightIt.next();
+                        if ((l.compareTo(r) != 0)) {
+                            return l.compareTo(r);
+                        }
+                    }else{
+                        if(leftIt.next()!=rightIt.next()){
+                            return -1;
+                        }
                     }
                 }
                 return 0;

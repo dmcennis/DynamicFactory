@@ -31,6 +31,7 @@ import java.util.List;
 import java.util.Iterator;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 import org.dynamicfactory.property.InvalidObjectTypeException;
 import org.dynamicfactory.property.Property;
 import org.dynamicfactory.property.PropertyFactory;
@@ -40,9 +41,8 @@ import org.dynamicfactory.descriptors.SyntaxObject;
 import org.dynamicfactory.propertyQuery.NullPropertyQuery;
 
 /**
- *
- * 
  * Base implementation of all the parameter interfaces.
+ *
  * @author Daniel McEnnis
  */
 public class BasicParameter implements ParameterInternal {
@@ -53,15 +53,17 @@ public class BasicParameter implements ParameterInternal {
     private String longDescription;
     private Property value;
 
-    /** Creates a new instance of BasicParameter */
+    /**
+     * Creates a new instance of BasicParameter
+     */
     public BasicParameter() {
         value = new BasicProperty("Default", Object.class);
         restrictions = new PropertyRestriction();
         structural = false;
     }
 
-    public BasicParameter(String s,Class c){
-        value = new BasicProperty(s,c);
+    public BasicParameter(String s, Class c) {
+        value = new BasicProperty(s, c);
         structural = false;
         restrictions = new PropertyRestriction();
     }
@@ -78,16 +80,55 @@ public class BasicParameter implements ParameterInternal {
 
     @Override
     public int compareTo(Parameter o) {
-        int answer = this.getType().compareTo(o.getType());
-        if(answer != 0){
+        int answer=0;
+        if ((answer = this.getType().compareTo(o.getType())) != 0) {
             return answer;
         }
-        answer = this.getParameterClass().getName().compareTo(o.getParameterClass().getName());
-        if(answer !=0){
+
+        if ((answer = this.getParameterClass().getName().compareTo(o.getParameterClass().getName())) != 0) {
             return answer;
         }
-        answer = this.getValue().size() - o.getValue().size();
-        return answer;
+        ;
+        if ((answer = this.getValue().size() - o.getValue().size()) != 0) {
+            return answer;
+        }
+
+        if ((answer = this.getParameterClass().getName().compareTo(o.getParameterClass().getName())) != 0) {
+            return answer;
+        }
+
+        List leftValue = this.getValue();
+        List rightValue = o.getValue();
+
+        if ((answer = leftValue.size() - rightValue.size())!=0) {
+            return leftValue.size() - rightValue.size();
+        } else {
+            boolean comparable = true;
+            if (leftValue.size() == 0) {
+                return 0;
+            } else if (!(leftValue.iterator().next() instanceof Comparable)) {
+                comparable = false;
+            }
+            java.util.Collections.sort(leftValue);
+            java.util.Collections.sort(rightValue);
+            Iterator leftIt = leftValue.iterator();
+            Iterator rightIt = rightValue.iterator();
+            while (leftIt.hasNext()) {
+                if (comparable) {
+                    Comparable l = (Comparable) leftIt.next();
+                    Comparable r = (Comparable) rightIt.next();
+                    if ((answer = (l.compareTo(r))) != 0) {
+                        return l.compareTo(r);
+                    }
+                } else {
+                    if (leftIt.next() != rightIt.next()) {
+                        return -1;
+                    }
+                }
+            }
+        }
+
+        return 0;
     }
 
     @Override
@@ -166,10 +207,10 @@ public class BasicParameter implements ParameterInternal {
     }
 
     public boolean check(Property property) {
-        if(!property.getType().contentEquals(this.getType())){
-           return false;
+        if (!property.getType().contentEquals(this.getType())) {
+            return false;
         }
-        if(!property.getPropertyClass().equals(this.getParameterClass())){
+        if (!property.getPropertyClass().equals(this.getParameterClass())) {
             return false;
         }
         return restrictions.check(property);
@@ -193,7 +234,7 @@ public class BasicParameter implements ParameterInternal {
     public void clear() {
         String type = value.getType();
         Class classType = value.getPropertyClass();
-        value = PropertyFactory.newInstance().create(value.getClass().getSimpleName(),type, classType);
+        value = PropertyFactory.newInstance().create(value.getClass().getSimpleName(), type, classType);
     }
 
     public void add(List value) {
@@ -210,10 +251,10 @@ public class BasicParameter implements ParameterInternal {
     }
 
     public boolean check(String type, List value) {
-        if(type != this.value.getType()){
+        if (type != this.value.getType()) {
             return false;
         }
-        return restrictions.check(type,value);
+        return restrictions.check(type, value);
     }
 
     @Override
@@ -221,12 +262,12 @@ public class BasicParameter implements ParameterInternal {
         return prototype();
     }
 
-    public ParameterInternal prototype(){
+    public ParameterInternal prototype() {
         BasicParameter ret = new BasicParameter();
-        ret.value = PropertyFactory.newInstance().create(this.value.getClass().getSimpleName(),this.value.getType(),this.value.getPropertyClass());
+        ret.value = PropertyFactory.newInstance().create(this.value.getClass().getSimpleName(), this.value.getType(), this.value.getPropertyClass());
         ret.setType(getType());
-        Iterator it  = this.value.getValue().iterator();
-        while(it.hasNext()){
+        Iterator it = this.value.getValue().iterator();
+        while (it.hasNext()) {
             try {
                 ret.value.add(it.next());
             } catch (InvalidObjectTypeException ex) {
@@ -238,9 +279,9 @@ public class BasicParameter implements ParameterInternal {
         ret.restrictions = this.restrictions.prototype();
         return ret;
     }
-    
-    public Object get(){
-        if(this.value.getValue().size()>0){
+
+    public Object get() {
+        if (this.value.getValue().size() > 0) {
             return this.value.getValue().get(0);
         }
         return null;
