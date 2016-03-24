@@ -39,6 +39,8 @@ package org.dynamicfactory.property;
 
 //import nz.ac.waikato.mcennis.rat.graph.model.ModelShell;
 
+import org.dynamicfactory.descriptors.Properties;
+
 import java.util.Iterator;
 import java.util.List;
 
@@ -127,17 +129,15 @@ public class BasicProperty implements Property { //extends ModelShell implements
 
     @Override
 
-    public int compareTo(Object o) throws ClassCastException{
+    public int compareTo(Property o) {
 
-        Property right = (Property)o;
+        if(this.getType().contentEquals(o.getType())){
 
-        if(this.getType().contentEquals(right.getType())){
-
-            if(this.objectType.getName().compareTo(right.getPropertyClass().getName())!=0){
-                return this.objectType.getName().compareTo(right.getPropertyClass().getName());
+            if(this.objectType.getName().compareTo(o.getPropertyClass().getName())!=0){
+                return this.objectType.getName().compareTo(o.getPropertyClass().getName());
             }            
             List leftValue = this.getValue();
-            List rightValue = right.getValue();
+            List rightValue = o.getValue();
 
             if(leftValue.size() != rightValue.size()){
                 return leftValue.size() - rightValue.size();
@@ -163,7 +163,7 @@ public class BasicProperty implements Property { //extends ModelShell implements
                 return 0;
             }
         }else{
-            return this.getType().compareTo(right.getType());
+            return this.getType().compareTo(o.getType());
         }
 
     }    
@@ -173,8 +173,8 @@ public class BasicProperty implements Property { //extends ModelShell implements
     public boolean equals(Object obj) {
 
         if(obj instanceof Property){
-
-            if(this.compareTo(obj)==0){
+            Property o = (Property)obj;
+            if(this.compareTo(o)==0){
 
                 return true;
 
@@ -192,7 +192,12 @@ public class BasicProperty implements Property { //extends ModelShell implements
 
     }
 
-    
+
+
+    @Override
+    public Property prototype(Properties props) {
+        return prototype();
+    }
 
     @Override
 

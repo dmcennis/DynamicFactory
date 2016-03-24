@@ -113,6 +113,11 @@ public class SyntaxCheckerFactory extends AbstractFactory<SyntaxObject> {
         return create(minCount, maxCount, query, classType, properties);
     }
 
+    @Override
+    public AbstractFactory prototype() {
+        return newInstance();
+    }
+
     public SyntaxObject create(int minCount, int maxCount, PropertyQuery query, Class classType, Properties props) {
         String type = (String) properties.get("SyntaxCheckerClass").getValue().iterator().next();
         if(props == null){

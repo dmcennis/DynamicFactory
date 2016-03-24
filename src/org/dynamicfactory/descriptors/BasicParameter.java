@@ -215,7 +215,12 @@ public class BasicParameter implements ParameterInternal {
         }
         return restrictions.check(type,value);
     }
-    
+
+    @Override
+    public ParameterInternal prototype(Properties props) {
+        return prototype();
+    }
+
     public ParameterInternal prototype(){
         BasicParameter ret = new BasicParameter();
         ret.value = PropertyFactory.newInstance().create(this.value.getClass().getSimpleName(),this.value.getType(),this.value.getPropertyClass());

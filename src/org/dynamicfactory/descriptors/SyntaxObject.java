@@ -25,13 +25,14 @@
  */
 package org.dynamicfactory.descriptors;
 
+import org.dynamicfactory.Creatable;
 import org.dynamicfactory.propertyQuery.PropertyQuery;
 
 /**
  *
  * @author Daniel McEnnis
  */
-public interface SyntaxObject extends SyntaxChecker{
+public interface SyntaxObject extends SyntaxChecker, Creatable<SyntaxObject>{
 
     public void setRestriction(String type, PropertyRestriction restriction);
     

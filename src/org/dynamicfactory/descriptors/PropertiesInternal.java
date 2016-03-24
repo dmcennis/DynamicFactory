@@ -25,13 +25,14 @@
  */
 package org.dynamicfactory.descriptors;
 
+import org.dynamicfactory.Creatable;
 import org.dynamicfactory.descriptors.ParameterInternal;
 
 /**
  *
  * @author Daniel McEnnis
  */
-public interface PropertiesInternal extends Properties{
+public interface PropertiesInternal extends Properties, Creatable<PropertiesInternal>{
 
     void add(ParameterInternal parameter);
 
@@ -52,4 +53,6 @@ public interface PropertiesInternal extends Properties{
     ParameterInternal get(String string);
 
     PropertiesInternal merge(Properties right);
+
+    void clear();
 }

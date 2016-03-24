@@ -74,6 +74,12 @@ public class PropertiesImplementation implements PropertiesInternal {
         return 0;
     }
 
+    @Override
+    public void clear() {
+        propertyMap.clear();
+        restriction = new PropertyRestriction();
+    }
+
     TreeMap<String,ParameterInternal> propertyMap = new TreeMap<String,ParameterInternal>();
     
     SyntaxObject restriction = new PropertyRestriction();
@@ -174,7 +180,11 @@ public class PropertiesImplementation implements PropertiesInternal {
     public void setDefaultRestriction(SyntaxObject restriction){
         this.restriction = restriction;
     }
-    
+
+    public PropertiesInternal prototype(Properties props) {
+        return prototype();
+    }
+
     public PropertiesImplementation prototype(){
         PropertiesImplementation ret = new PropertiesImplementation();
         Iterator<String> mapIt =propertyMap.keySet().iterator();

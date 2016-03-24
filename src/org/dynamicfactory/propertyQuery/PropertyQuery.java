@@ -25,13 +25,14 @@
  */
 package org.dynamicfactory.propertyQuery;
 
+import org.dynamicfactory.Creatable;
 import org.dynamicfactory.property.Property;
 
 /**
  *
  * @author Daniel McEnnis
  */
-public interface PropertyQuery extends Comparable{
+public interface PropertyQuery extends Comparable, Creatable<PropertyQuery>{
 
     public boolean execute(Property property);
 

@@ -40,6 +40,8 @@ package org.dynamicfactory.property;
 //import nz.ac.waikato.mcennis.rat.graph.model.Model;
 
 
+import org.dynamicfactory.Creatable;
+
 /**
 
  *
@@ -52,7 +54,7 @@ package org.dynamicfactory.property;
  * 
  */
 
-public interface Property extends java.io.Serializable, Comparable{//}, Model {
+public interface Property extends java.io.Serializable, Comparable<Property>, Creatable<Property>{//}, Model {
 
     
 

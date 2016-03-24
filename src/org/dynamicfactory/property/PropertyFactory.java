@@ -77,6 +77,11 @@ public class PropertyFactory extends AbstractFactory<Property>{
 
     }
 
+    @Override
+    public AbstractFactory prototype() {
+        return newInstance();
+    }
+
     /** Creates a new instance of PropertyFactory */
     public PropertyFactory() {
         ParameterInternal name = new BasicParameter();

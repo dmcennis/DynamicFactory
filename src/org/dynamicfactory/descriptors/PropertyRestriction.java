@@ -160,6 +160,11 @@ public class PropertyRestriction implements SyntaxObject {
         this.classType = classType;
     }
 
+    @Override
+    public SyntaxObject prototype(Properties props) {
+        return prototype();
+    }
+
     public PropertyRestriction prototype() {
         PropertyRestriction ret = new PropertyRestriction();
         ret.minCount = this.minCount;

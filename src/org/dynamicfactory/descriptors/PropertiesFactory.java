@@ -28,6 +28,7 @@ package org.dynamicfactory.descriptors;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.dynamicfactory.AbstractFactory;
+import org.dynamicfactory.Creatable;
 
 /**
  *
@@ -81,5 +82,10 @@ public class PropertiesFactory extends AbstractFactory<PropertiesInternal>{
 
     public Parameter getClassParameter(){
         return properties.get("PropertiesClass");
+    }
+
+    @Override
+    public AbstractFactory prototype() {
+        return newInstance();
     }
 }

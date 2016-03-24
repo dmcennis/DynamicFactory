@@ -25,6 +25,7 @@
  */
 package org.dynamicfactory.propertyQuery;
 
+import org.dynamicfactory.descriptors.Properties;
 import org.dynamicfactory.property.Property;
 
 /**
@@ -51,5 +52,10 @@ public class NullPropertyQuery implements PropertyQuery{
 
     public NullPropertyQuery prototype() {
         return new NullPropertyQuery();
+    }
+
+    @Override
+    public PropertyQuery prototype(Properties props) {
+        return prototype();
     }
 }

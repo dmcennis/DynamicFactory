@@ -30,6 +30,8 @@ package org.dynamicfactory.propertyQuery;
 import java.util.Collection;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import org.dynamicfactory.descriptors.Properties;
 import org.dynamicfactory.property.Property;
 
 /**
@@ -132,6 +134,11 @@ public class NumericQuery implements PropertyQuery{
             return this.getClass().getName().compareTo(o.getClass().getName());
         }
        
+    }
+
+    @Override
+    public PropertyQuery prototype(Properties props) {
+        return prototype();
     }
 
     public NumericQuery prototype() {

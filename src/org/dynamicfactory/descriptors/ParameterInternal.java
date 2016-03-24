@@ -35,6 +35,7 @@
 
 package org.dynamicfactory.descriptors;
 
+import org.dynamicfactory.Creatable;
 import org.dynamicfactory.descriptors.SyntaxObject;
 
 
@@ -55,7 +56,7 @@ import org.dynamicfactory.descriptors.SyntaxObject;
  * @author Daniel McEnnis
  */
 
-public interface ParameterInternal extends Parameter{
+public interface ParameterInternal extends Parameter, Creatable<ParameterInternal>{
 
     /**
      * Sets the name that this parameter will be accessed by

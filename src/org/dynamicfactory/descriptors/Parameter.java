@@ -36,6 +36,8 @@
 package org.dynamicfactory.descriptors;
 
 import java.util.List;
+
+import org.dynamicfactory.Creatable;
 import org.dynamicfactory.property.Property;
 import org.dynamicfactory.descriptors.SyntaxChecker;
 
@@ -55,7 +57,7 @@ import org.dynamicfactory.descriptors.SyntaxChecker;
  * @author Daniel McEnnis
  */
 
-public interface Parameter extends Comparable<Parameter>{
+public interface Parameter extends Comparable<Parameter> {
 
     @Override
     int compareTo(Parameter o);

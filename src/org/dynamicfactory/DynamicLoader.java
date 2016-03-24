@@ -11,6 +11,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.lang.reflect.InvocationTargetException;
 import java.security.ProtectionDomain;
 import java.util.Enumeration;
 import java.util.LinkedList;
@@ -183,7 +184,18 @@ public class DynamicLoader extends ClassLoader {
         Logger.getLogger(this.getClass().getName()).log(Level.INFO,"Loading "+name.getName());
         for(String type : FactoryFactory.newInstance().getKnownTypes()) {
             if(FactoryFactory.newInstance().getType(type).isAssignableFrom(name)) {
-                FactoryFactory.newInstance().create(type).addType(name.getSimpleName(), name);
+                try {
+                    Creatable item = (Creatable)name.getConstructor().newInstance();
+                    FactoryFactory.newInstance().create(type).getContent().addType(type,item);
+                } catch (InstantiationException e) {
+                    e.printStackTrace();
+                } catch (IllegalAccessException e) {
+                    e.printStackTrace();
+                } catch (InvocationTargetException e) {
+                    e.printStackTrace();
+                } catch (NoSuchMethodException e) {
+                    e.printStackTrace();
+                }
             }
         }
     }

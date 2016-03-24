@@ -71,13 +71,12 @@ public abstract class AbstractFactory<Type extends Creatable<Type>> implements C
         return create(props);
     }
 
-    @Override
-    public abstract AbstractFactory prototype();
+    public abstract AbstractFactory<Type> prototype();
 
-    @Override
-    public AbstractFactory prototype(Properties props) {
+    public AbstractFactory<Type> prototype(Properties props) {
         return prototype();
     }
+
 
     public void setDefaultProperty(ParameterInternal value) {
         properties.add(value);

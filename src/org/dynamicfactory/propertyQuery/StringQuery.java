@@ -30,6 +30,8 @@ import java.io.Writer;
 import java.util.Collection;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import org.dynamicfactory.descriptors.Properties;
 import org.dynamicfactory.property.Property;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
@@ -130,6 +132,11 @@ public class StringQuery implements PropertyQuery{
         }else{
             return this.getClass().getName().compareTo(o.getClass().getName());
         }
+    }
+
+    @Override
+    public PropertyQuery prototype(Properties props) {
+        return prototype();
     }
 
     public StringQuery prototype() {

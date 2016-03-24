@@ -44,6 +44,11 @@ public class ParameterFactory extends AbstractFactory<ParameterInternal> {
         return instance;
     }
 
+    @Override
+    public AbstractFactory prototype() {
+        return newInstance();
+    }
+
     private ParameterFactory() {
         super();
         ParameterInternal name = new BasicParameter();

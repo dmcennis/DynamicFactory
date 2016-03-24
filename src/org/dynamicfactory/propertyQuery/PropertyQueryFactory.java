@@ -56,7 +56,12 @@ public class PropertyQueryFactory extends AbstractFactory<PropertyQuery> {
         }
         return instance;
     }
-    
+
+    @Override
+    public AbstractFactory prototype() {
+        return newInstance();
+    }
+
     private PropertyQueryFactory(){
         ParameterInternal name = ParameterFactory.newInstance().create("QueryClass", String.class);
         SyntaxObject check = SyntaxCheckerFactory.newInstance().create(1,1,null,String.class);
