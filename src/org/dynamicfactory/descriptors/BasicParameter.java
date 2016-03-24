@@ -206,6 +206,16 @@ public class BasicParameter implements ParameterInternal {
         value.setClass(type);
     }
 
+    @Override
+    public void set(String type, Class parameterClass, boolean structural, List value, String description, String longDescription) {
+        setType(type);
+        setParameterClass(parameterClass);
+        setStructural(structural);
+        set(value);
+        setDescription(description);
+        setLongDescription(longDescription);
+    }
+
     public boolean check(Property property) {
         if (!property.getType().contentEquals(this.getType())) {
             return false;

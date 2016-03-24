@@ -38,6 +38,7 @@ package org.dynamicfactory.descriptors;
 import org.dynamicfactory.Creatable;
 import org.dynamicfactory.descriptors.SyntaxObject;
 
+import java.util.List;
 
 
 /**
@@ -98,6 +99,8 @@ public interface ParameterInternal extends Parameter, Creatable<ParameterInterna
     public SyntaxObject getRestrictions();
     
     public ParameterInternal prototype();
+
+    public void set(String type,Class parameterClass, boolean structural, List value, String description, String longDecscription);
 
 }
 

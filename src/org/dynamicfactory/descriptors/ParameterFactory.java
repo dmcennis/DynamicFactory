@@ -25,6 +25,7 @@
  */
 package org.dynamicfactory.descriptors;
 
+import java.util.LinkedList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.dynamicfactory.AbstractFactory;
@@ -154,6 +155,26 @@ public class ParameterFactory extends AbstractFactory<ParameterInternal> {
         ret.setDescription(description);
 
         return ret;
+    }
+
+    public ParameterInternal create(Parameter p,Properties props){
+        PropertiesInternal merge = new PropertiesImplementation();
+        if(props != null){
+            merge.merge(props);
+        }
+        merge.mergeDefaults(properties);
+        if(p == null){
+            return create(merge);
+        }
+        ParameterInternal ret = create(p.getType(),p.getParameterClass(),p.getDescription(),merge);
+        LinkedList l = new LinkedList();
+        l.addAll(p.getValue());
+        ret.set(p.getType(),p.getParameterClass(),false, l,p.getDescription(),p.getLongDescription());
+        return ret;
+    }
+
+    public ParameterInternal create(Parameter p){
+        return create(p,null);
     }
 
     public Parameter getClassParameter(){
