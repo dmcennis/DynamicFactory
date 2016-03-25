@@ -26,6 +26,7 @@
 package org.dynamicfactory.propertyQuery;
 
 import org.dynamicfactory.Creatable;
+import org.dynamicfactory.descriptors.Properties;
 import org.dynamicfactory.property.Property;
 
 /**
@@ -37,5 +38,7 @@ public interface PropertyQuery extends Comparable, Creatable<PropertyQuery>{
     public boolean execute(Property property);
 
     public PropertyQuery prototype();
+
+    public PropertyQuery build(Properties props);
     
 }

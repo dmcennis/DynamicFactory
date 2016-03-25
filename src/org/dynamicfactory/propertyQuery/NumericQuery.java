@@ -43,7 +43,7 @@ public class NumericQuery implements PropertyQuery{
 
     boolean not = false;
 
-    enum Operation {GT,EQ,LT,GTE,LTE,NE};
+    public enum Operation {GT,EQ,LT,GTE,LTE,NE};
     
     Operation operation = Operation.GT;
     
@@ -102,8 +102,15 @@ public class NumericQuery implements PropertyQuery{
 
     }
 
+    @Override
+    public PropertyQuery build(Properties props) {
+        if(props.quickCheck("ComparisonValue",Double.class)&&props.quickCheck("Not",Boolean.class)&&props.quickCheck("Operation",Operation.class)){
+            return buildQuery((Double)props.quickGet("ComparisonValue"),(Boolean)props.quickGet("Not"),(Operation)props.quickGet("Operation"));
+        }
+        return this;
+    }
 
-    public void buildQuery(double comparisonValue, boolean not, Operation operation) {
+    public NumericQuery buildQuery(double comparisonValue, boolean not, Operation operation) {
         this.comparisonValue = comparisonValue;
         this.not = not;
         if(operation==null){
@@ -112,6 +119,7 @@ public class NumericQuery implements PropertyQuery{
         }else{
             this.operation = operation;
         }
+        return this;
     }
 
     public int compareTo(Object o) {

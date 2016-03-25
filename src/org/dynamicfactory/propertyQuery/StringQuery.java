@@ -98,7 +98,7 @@ public class StringQuery implements PropertyQuery{
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
-    public void buildQuery(String comparison, boolean not, Operation operation) {
+    public StringQuery buildQuery(String comparison, boolean not, Operation operation) {
         if(comparison==null){
             this.comparison="";
         }else{
@@ -111,6 +111,15 @@ public class StringQuery implements PropertyQuery{
         }else{
             this.operation = operation;
         }
+        return this;
+    }
+
+    @Override
+    public PropertyQuery build(Properties props) {
+        if(props.quickCheck("Comparison",String.class)&& props.quickCheck("Not",Boolean.class)&& props.quickCheck("Operation",StringQuery.Operation.class)){
+            return buildQuery((String)props.quickGet("Comparison"),(Boolean)props.quickGet("Not"), (StringQuery.Operation)props.quickGet("Operation"));
+        }
+        return this;
     }
 
     public int compareTo(Object o) {
