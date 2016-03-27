@@ -166,7 +166,12 @@ public class PropertiesImplementation implements PropertiesInternal {
     public void add(ParameterInternal parameter){
         propertyMap.put(parameter.getType(),parameter);
     }
-    
+
+    @Override
+    public void set(ParameterInternal parameter) {
+        add(parameter);
+    }
+
     public void remove(String type){
         if(type != null){
             propertyMap.remove(type);
@@ -385,8 +390,18 @@ public class PropertiesImplementation implements PropertiesInternal {
     }
 
     @Override
+    public Object getQuick(String s) {
+        return quickGet(s);
+    }
+
+    @Override
     public Object quickGet(String s) {
         return get(s).getValue().get(0);
+    }
+
+    @Override
+    public boolean checkQuick(String s, Class type) {
+        return quickCheck(s,type);
     }
 
     @Override

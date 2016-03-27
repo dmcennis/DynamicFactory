@@ -36,6 +36,8 @@ public interface PropertiesInternal extends Properties, Creatable<PropertiesInte
 
     void add(ParameterInternal parameter);
 
+    void set(ParameterInternal parameter);
+
     void add(String type, Object value);
 
     void add(String name, Class type, Object value);

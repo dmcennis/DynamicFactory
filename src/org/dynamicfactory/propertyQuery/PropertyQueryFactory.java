@@ -72,6 +72,8 @@ public class PropertyQueryFactory extends AbstractFactory<PropertyQuery> {
         map.put("NullPropertyQuery",new NullPropertyQuery());
         map.put("NumericQuery",new NumericQuery());
         map.put("StringQuery",new StringQuery());
+        map.put("OrQuery", new OrQuery());
+        map.put("AndQuery", new AndQuery());
     }
     
     @Override

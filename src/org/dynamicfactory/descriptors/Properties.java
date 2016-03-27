@@ -87,5 +87,21 @@ public interface Properties extends Comparable<Properties>{
 
     boolean quickCheck(String s,Class type);
 
+    /**
+     * Because so many expect this the other way around
+     * @param s
+     * @param type
+     * @return
+     */
+    boolean checkQuick(String s,Class type);
+
     Object quickGet(String s);
+
+    /**
+     * Because so many expect this the other way around
+     * @param s
+     * @return
+     */
+    Object getQuick(String s);
+
 }
