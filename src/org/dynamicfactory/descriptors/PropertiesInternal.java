@@ -27,6 +27,9 @@ package org.dynamicfactory.descriptors;
 
 import org.dynamicfactory.Creatable;
 import org.dynamicfactory.descriptors.ParameterInternal;
+import org.dynamicfactory.property.InvalidObjectTypeException;
+
+import java.util.List;
 
 /**
  *
@@ -34,13 +37,37 @@ import org.dynamicfactory.descriptors.ParameterInternal;
  */
 public interface PropertiesInternal extends Properties, Creatable<PropertiesInternal>{
 
-    void add(ParameterInternal parameter);
+    void add(String type, List value)throws InvalidObjectTypeException;
 
-    void set(ParameterInternal parameter);
+    void add(String type, Class c, List value)throws InvalidObjectTypeException;
 
-    void add(String type, Object value);
+    void set(String type, Object value)throws InvalidObjectTypeException;
 
-    void add(String name, Class type, Object value);
+    void set(String type, List value)throws InvalidObjectTypeException;
+
+    void set(String type, Class c, Object value)throws InvalidObjectTypeException;
+
+    void set(String type, Class c, List value)throws InvalidObjectTypeException;
+
+    void set(String type, List value, String description)throws InvalidObjectTypeException;
+
+    void set(String type, Class c, Object value, String description)throws InvalidObjectTypeException;
+
+    void set(String type, Class c, List value, String description)throws InvalidObjectTypeException;
+
+    void set(String type, List value, String description, String longDescription)throws InvalidObjectTypeException;
+
+    void set(String type, Class c, Object value, String description, String longDescription)throws InvalidObjectTypeException;
+
+    void set(String type, Class c, List value, String description, String longDescription)throws InvalidObjectTypeException;
+
+    void add(ParameterInternal parameter) throws InvalidObjectTypeException;
+
+    void set(ParameterInternal parameter)throws InvalidObjectTypeException;
+
+    void add(String type, Object value)throws InvalidObjectTypeException;
+
+    void add(String name, Class type, Object value)throws InvalidObjectTypeException;
         
     void remove(String type);
     
@@ -53,10 +80,6 @@ public interface PropertiesInternal extends Properties, Creatable<PropertiesInte
     PropertiesInternal prototype();
 
     ParameterInternal get(String string);
-
-    PropertiesInternal merge(Properties right);
-
-    PropertiesInternal mergeDefaults(Properties right);
 
     void clear();
 }

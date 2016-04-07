@@ -1,6 +1,7 @@
 package org.dynamicfactory.swing;
 
 import org.dynamicfactory.descriptors.*;
+import org.dynamicfactory.property.InvalidObjectTypeException;
 import org.dynamicfactory.property.Property;
 
 import javax.swing.table.DefaultTableModel;
@@ -34,7 +35,16 @@ public class PropertyEditorTableModel extends DefaultTableModel{
 
     @Override
     public void addRow(Vector rowData) {
-        super.addRow(rowData);
+        try {
+            if ((rowData != null) && (rowData.size() == 2) && (rowData.get(0) instanceof String)) {
+                if ((model.quickCheck((String) rowData.get(0), rowData.get(1).getClass()))) {
+                    model.add((String) rowData.get(0), rowData.get(1));
+                }
+                model.set((String) rowData.get(0), rowData.get(1).getClass(), rowData.get(1));
+            }
+        }catch (InvalidObjectTypeException e){
+            // showErrorDialog
+        }
     }
 
     @Override
@@ -93,7 +103,11 @@ public class PropertyEditorTableModel extends DefaultTableModel{
     }
 
     public void add(ParameterInternal parameter) {
-        model.add(parameter);
+        try{
+            model.add(parameter);
+        }catch(InvalidObjectTypeException e){
+            // show error dialog
+        }
     }
 
     public PropertiesInternal prototype(Properties props) {
@@ -109,7 +123,11 @@ public class PropertyEditorTableModel extends DefaultTableModel{
     }
 
     public void set(String type, Class c, List value, String description, String longDescription) {
-        model.set(type, c, value, description, longDescription);
+        try {
+            model.set(type, c, value, description, longDescription);
+        } catch (InvalidObjectTypeException e) {
+            //show error dialog
+        }
     }
 
     public boolean quickCheck(String s, Class type) {
@@ -121,11 +139,19 @@ public class PropertyEditorTableModel extends DefaultTableModel{
     }
 
     public void set(String type, Class c, List value, String description) {
-        model.set(type, c, value, description);
+        try {
+            model.set(type, c, value, description);
+        } catch (InvalidObjectTypeException e) {
+            // showerrordialog
+        }
     }
 
     public void add(String name, Class type, Object value) {
-        model.add(name, type, value);
+        try {
+            model.add(name, type, value);
+        } catch (InvalidObjectTypeException e) {
+            //showerrordialog
+        }
     }
 
     public SyntaxObject getDefaultRestriction() {
@@ -141,11 +167,19 @@ public class PropertyEditorTableModel extends DefaultTableModel{
     }
 
     public void set(Property value) {
-        model.set(value);
+        try {
+            model.set(value);
+        } catch (InvalidObjectTypeException e) {
+            // showErrorDialog
+        }
     }
 
     public void add(String type, Object value) {
-        model.add(type, value);
+        try {
+            model.add(type, value);
+        } catch (InvalidObjectTypeException e) {
+            // showErrorDialog
+        }
     }
 
     public Object quickGet(String s) {
@@ -153,27 +187,51 @@ public class PropertyEditorTableModel extends DefaultTableModel{
     }
 
     public void set(ParameterInternal parameter) {
-        model.set(parameter);
+        try {
+            model.set(parameter);
+        } catch (InvalidObjectTypeException e) {
+            // showErrorDialog
+        }
     }
 
     public void set(String type, Class c, Object value) {
-        model.set(type, c, value);
+        try {
+            model.set(type, c, value);
+        } catch (InvalidObjectTypeException e) {
+            // showErrorDialog
+        }
     }
 
     public void set(String type, Class c, Object value, String description) {
-        model.set(type, c, value, description);
+        try {
+            model.set(type, c, value, description);
+        } catch (InvalidObjectTypeException e) {
+            // showErrorDialog
+        }
     }
 
     public void set(String type, Class c, List value) {
-        model.set(type, c, value);
+        try {
+            model.set(type, c, value);
+        } catch (InvalidObjectTypeException e) {
+            // showErrorDialog
+        }
     }
 
     public void set(String type, Object value) {
-        model.set(type, value);
+        try {
+            model.set(type, value);
+        } catch (InvalidObjectTypeException e) {
+            // showErrorDialog
+        }
     }
 
     public void set(String type, List value) {
-        model.set(type, value);
+        try {
+            model.set(type, value);
+        } catch (InvalidObjectTypeException e) {
+            // showErrorDialog
+        }
     }
 
     public ParameterInternal get(String string) {
@@ -185,7 +243,11 @@ public class PropertyEditorTableModel extends DefaultTableModel{
     }
 
     public void set(String type, List value, String description) {
-        model.set(type, value, description);
+        try {
+            model.set(type, value, description);
+        } catch (InvalidObjectTypeException e) {
+            // showErrorDialog
+        }
     }
 
     public void replace(Parameter type) {
@@ -193,7 +255,11 @@ public class PropertyEditorTableModel extends DefaultTableModel{
     }
 
     public void set(String type, List value, String description, String longDescription) {
-        model.set(type, value, description, longDescription);
+        try {
+            model.set(type, value, description, longDescription);
+        } catch (InvalidObjectTypeException e) {
+            // showErrorDialog
+        }
     }
 
     public boolean checkQuick(String s, Class type) {
@@ -201,15 +267,28 @@ public class PropertyEditorTableModel extends DefaultTableModel{
     }
 
     public void add(String type, Class c, List value) {
-        model.add(type, c, value);
+        try {
+            model.add(type, c, value);
+        } catch (InvalidObjectTypeException e) {
+            // showErrorDialog
+        }
     }
 
     public void set(String type, Class c, Object value, String description, String longDescription) {
-        model.set(type, c, value, description, longDescription);
+        try {
+            model.set(type, c, value, description, longDescription);
+        } catch (InvalidObjectTypeException e) {
+            // showErrorDialog
+        }
     }
 
     public PropertiesInternal mergeDefaults(Properties right) {
-        return model.mergeDefaults(right);
+        try {
+            return model.mergeDefaults(right);
+        } catch (InvalidObjectTypeException e) {
+            // showErrorDialog
+            return model;
+        }
     }
 
     public Object getQuick(String s) {
@@ -225,7 +304,11 @@ public class PropertyEditorTableModel extends DefaultTableModel{
     }
 
     public void add(String type, List value) {
-        model.add(type, value);
+        try {
+            model.add(type, value);
+        } catch (InvalidObjectTypeException e) {
+            // showErrorDialog
+        }
     }
 
     public boolean check(Parameter type) {

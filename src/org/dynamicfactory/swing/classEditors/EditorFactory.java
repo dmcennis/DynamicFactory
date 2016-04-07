@@ -3,9 +3,9 @@ package org.dynamicfactory.swing.classEditors;
 import org.dynamicfactory.AbstractFactory;
 
 /**
- * Created by dmcennis on 4/4/2016.
+ * Created by dmcennis on 4/7/2016.
  */
-public class EditorFactory extends AbstractFactory<Editor>{
+public class EditorFactory extends AbstractFactory<Editor> {
     private static EditorFactory ourInstance = new EditorFactory();
 
     public static EditorFactory getInstance() {
@@ -13,11 +13,11 @@ public class EditorFactory extends AbstractFactory<Editor>{
     }
 
     private EditorFactory() {
-        map.put("Numeric",new NumericEditor());
-        map.put("String",new StringEditor());
+        map.put("NumericEditor",new NumericEditor());
     }
 
-    public EditorFactory prototype(){
+    @Override
+    public AbstractFactory<Editor> prototype() {
         return getInstance();
     }
 }
