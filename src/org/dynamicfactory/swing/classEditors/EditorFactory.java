@@ -14,6 +14,7 @@ public class EditorFactory extends AbstractFactory<Editor> {
 
     private EditorFactory() {
         map.put("NumericEditor",new NumericEditor());
+        map.put("StringEditor",new StringEditor());
     }
 
     @Override

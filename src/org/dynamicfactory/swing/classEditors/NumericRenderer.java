@@ -7,13 +7,15 @@ import org.dynamicfactory.descriptors.Properties;
 import javax.swing.*;
 import javax.swing.event.CellEditorListener;
 import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.TableColumn;
+import javax.swing.text.JTextComponent;
 import java.awt.*;
 import java.util.EventObject;
 
 /**
  * Created by dmcennis on 4/4/2016.
  */
-public class NumericRenderer extends DefaultTableCellRenderer implements Renderer{
+public class NumericRenderer extends AbstractRenderer{
 
     ParameterInternal model;
 
@@ -24,6 +26,7 @@ public class NumericRenderer extends DefaultTableCellRenderer implements Rendere
     public NumericRenderer(ParameterInternal m){
         model = m;
     }
+
     @Override
     public Renderer prototype() {
         return null;
@@ -34,4 +37,13 @@ public class NumericRenderer extends DefaultTableCellRenderer implements Rendere
         return null;
     }
 
- }
+    public Component displayComponent(int index){
+        Object o = model.getValue().get(index);
+        return new JTextField(o.toString());
+    }
+
+    @Override
+    protected Component getRenderer(int index) {
+        return null;
+    }
+}

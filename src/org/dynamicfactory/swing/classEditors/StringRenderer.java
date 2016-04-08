@@ -14,25 +14,23 @@ import java.util.EventObject;
 /**
  * Created by dmcennis on 4/4/2016.
  */
-public class StringRenderer extends DefaultTableCellRenderer implements Renderer{
+public class StringRenderer extends AbstractRenderer{
 
     ParameterInternal param;
 
-    boolean editable = true;
     public StringRenderer(){
         param = ParameterFactory.newInstance().create("None",String.class);
+    }
+
+    public StringRenderer(Parameter p){
+        param = ParameterFactory.newInstance().create(p);
     }
 
     public StringRenderer(ParameterInternal p){
         param = p;
     }
 
-    public StringRenderer(Parameter p){
-        param = (ParameterInternal)p;
-        editable = false;
-    }
-
-    @Override
+   @Override
     public StringRenderer prototype() {
         return new StringRenderer();
     }
@@ -40,9 +38,13 @@ public class StringRenderer extends DefaultTableCellRenderer implements Renderer
     @Override
     public StringRenderer prototype(Properties props) {
         if((props!=null)&&(props.get().size()>0)){
-            return new StringRenderer(props.get().get(0));
+            return new StringRenderer(props.get(param.getType()));
         }
         return new StringRenderer(props.get().get(0));
     }
 
+    @Override
+    protected Component getRenderer(int index) {
+        return new JTextField((String)param.getValue().get(index));
+    }
 }
