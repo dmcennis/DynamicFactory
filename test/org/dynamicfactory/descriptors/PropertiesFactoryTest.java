@@ -23,6 +23,7 @@
 package org.dynamicfactory.descriptors;
 
 import junit.framework.TestCase;
+import org.dynamicfactory.property.InvalidObjectTypeException;
 
 /**
  *
@@ -72,8 +73,13 @@ public class PropertiesFactoryTest extends TestCase {
      */
     public void testCreate_Properties() {
         System.out.println("create");
-        Properties props = PropertiesFactory.newInstance().create();
-        props.set("PropertiesClass","PropertiesImplementation");
+        PropertiesInternal props = PropertiesFactory.newInstance().create();
+        try {
+            props.set("PropertiesClass","PropertiesImplementation");
+        } catch (InvalidObjectTypeException e) {
+            fail("New properties had existing non-string types for PropertiesClass");
+
+        }
         PropertiesFactory instance = PropertiesFactory.newInstance();
         PropertiesInternal result = instance.create(props);
         assertNotNull(result);

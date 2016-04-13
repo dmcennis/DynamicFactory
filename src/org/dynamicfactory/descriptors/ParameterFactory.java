@@ -29,6 +29,7 @@ import java.util.LinkedList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.dynamicfactory.AbstractFactory;
+import org.dynamicfactory.property.InvalidObjectTypeException;
 
 /**
  *
@@ -162,7 +163,11 @@ public class ParameterFactory extends AbstractFactory<ParameterInternal> {
         if(props != null){
             merge.merge(props);
         }
-        merge.mergeDefaults(properties);
+        try {
+            merge.mergeDefaults(properties);
+        } catch (InvalidObjectTypeException e) {
+            Logger.getLogger(this.getClass().getName()).log(Level.WARNING,"Defaults were not merged in as the new parameters contained properties incompatible with the types of the defaults");
+        }
         if(p == null){
             return create(merge);
         }

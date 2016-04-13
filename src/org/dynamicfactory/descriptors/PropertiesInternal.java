@@ -61,9 +61,9 @@ public interface PropertiesInternal extends Properties, Creatable<PropertiesInte
 
     void set(String type, Class c, List value, String description, String longDescription)throws InvalidObjectTypeException;
 
-    void add(ParameterInternal parameter) throws InvalidObjectTypeException;
+    void add(ParameterInternal parameter);
 
-    void set(ParameterInternal parameter)throws InvalidObjectTypeException;
+    void set(ParameterInternal parameter);
 
     void add(String type, Object value)throws InvalidObjectTypeException;
 

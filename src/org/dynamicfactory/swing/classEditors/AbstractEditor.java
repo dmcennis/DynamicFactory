@@ -5,6 +5,7 @@ import org.dynamicfactory.descriptors.Parameter;
 import org.dynamicfactory.descriptors.ParameterFactory;
 import org.dynamicfactory.descriptors.ParameterInternal;
 import org.dynamicfactory.descriptors.Properties;
+import org.dynamicfactory.swing.PropertyEditorTableModel;
 
 import javax.swing.*;
 import javax.swing.event.CellEditorListener;
@@ -17,14 +18,36 @@ import java.util.logging.Logger;
 /**
  * Created by dmcennis on 4/7/2016.
  */
-public abstract class AbstractEditor implements Editor {
+public abstract class AbstractEditor<Type> implements Editor {
 
-    ParameterInternal param;
+    protected ParameterInternal param;
 
-    LinkedList<CellEditorListener> listeners = new LinkedList<CellEditorListener>();
+    private PropertyEditorTableModel ref;
+
+    private LinkedList<CellEditorListener> listeners = new LinkedList<CellEditorListener>();
+
+    protected int index;
+
+    protected boolean editable=true;
+
+    protected JTable container=null;
+
 
     public AbstractEditor(){
         param = ParameterFactory.newInstance().create();
+        ref = null;
+    }
+
+    public AbstractEditor(PropertyEditorTableModel m, Parameter p, int index){
+        setModel(m,p,index);
+    }
+
+    public AbstractEditor(PropertyEditorTableModel m, Properties p, int index){
+        setModel(m,p,index);
+    }
+
+    public AbstractEditor(PropertyEditorTableModel m, ParameterInternal p, int index){
+        setModel(m,p,index);
     }
 
     @Override
@@ -32,41 +55,50 @@ public abstract class AbstractEditor implements Editor {
         return this;
     }
 
-    protected void setModel(Properties props){
-        if(props == null){
-            Logger.getLogger(this.getClass().getName()).log(Level.WARNING,"Setting an editor model with a null Properties object");
+    protected void setModel(PropertyEditorTableModel model, Properties props, int i){
+        if(model==null){
+            Logger.getLogger(this.getClass().getName()).log(Level.SEVERE,"DEVELOPER: The model to edit to and from is null");
+        }else if(props == null){
+            Logger.getLogger(this.getClass().getName()).log(Level.WARNING,"DEVELOPER: Setting an editor model with a null Properties object");
         }else if(props.quickCheck("Parameter",ParameterInternal.class)){
-            setModel((ParameterInternal)props.quickGet("Parameter"));
+            setModel(model,(ParameterInternal)props.quickGet("Parameter"),i);
         }else if(props.quickCheck("Paramater", Parameter.class)){
-            setModel(ParameterFactory.newInstance().create((Parameter)props.quickGet("Parameter"),props));
+            editable=false;
+            setModel(model,ParameterFactory.newInstance().create((Parameter)props.quickGet("Parameter"),props),i);
         }else{
             Logger.getLogger(this.getClass().getName()).log(Level.WARNING,"DEVELOPER: Setting an editor model without providing a model");
         }
     }
 
-    protected void setModel(Parameter param){
-        if(param == null){
+    protected void setModel(PropertyEditorTableModel model, Parameter param, int i){
+        if(model==null){
+            Logger.getLogger(this.getClass().getName()).log(Level.SEVERE,"DEVELOPER: The model to edit to and from is null");
+        }else if(param == null){
             Logger.getLogger(this.getClass().getName()).log(Level.WARNING,"DEVELOPER: Setting an editor model with a null ParameterInteral object");
         }
-        setModel(ParameterFactory.newInstance().create(param));
+        editable = false;
+        setModel(model,ParameterFactory.newInstance().create(param),i);
     }
 
 
-    protected void setModel(ParameterInternal param){
-        if(param == null){
+    protected void setModel(PropertyEditorTableModel model, ParameterInternal param, int i){
+        if(model==null){
+            Logger.getLogger(this.getClass().getName()).log(Level.SEVERE,"DEVELOPER: The model to edit to and from is null");
+        }else if(param == null){
             Logger.getLogger(this.getClass().getName()).log(Level.WARNING,"DEVELOPER: Setting an editor model with a null ParameterInteral object");
         }
         this.param = param;
+        this.index=i;
     }
 
     @Override
     public Object getCellEditorValue() {
-        return param.getValue();
+        return param.getValue().get(index);
     }
 
     @Override
     public boolean isCellEditable(EventObject anEvent) {
-        return false;
+        return editable;
     }
 
     @Override
@@ -76,12 +108,12 @@ public abstract class AbstractEditor implements Editor {
 
     @Override
     public boolean stopCellEditing() {
-        return false;
+        return (editable = false);
     }
 
     @Override
     public void cancelCellEditing() {
-
+        param.set(ref.get(param.getType()).getValue());
     }
 
     @Override
@@ -94,13 +126,18 @@ public abstract class AbstractEditor implements Editor {
         listeners.remove(l);
     }
 
-    public AbstractEditor(Parameter p){
-        setModel(p);
+    @Override
+    public abstract Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected, int row, int column);
+
+
+    protected boolean check(Type value){
+        if(editable && param.getRestrictions().check(param.getType(),value)){
+            return true;
+        }
+        return false;
     }
-    public AbstractEditor(ParameterInternal p){
-        setModel(p);
-    }
-    public AbstractEditor(Properties p){
-        setModel(p);
+
+    protected PropertyEditorTableModel getModel(){
+        return ref;
     }
 }

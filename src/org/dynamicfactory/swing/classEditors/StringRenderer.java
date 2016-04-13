@@ -1,9 +1,7 @@
 package org.dynamicfactory.swing.classEditors;
 
-import org.dynamicfactory.descriptors.Parameter;
-import org.dynamicfactory.descriptors.ParameterFactory;
-import org.dynamicfactory.descriptors.ParameterInternal;
-import org.dynamicfactory.descriptors.Properties;
+import org.dynamicfactory.descriptors.*;
+import org.dynamicfactory.swing.PropertyEditorTableModel;
 
 import javax.swing.*;
 import javax.swing.event.CellEditorListener;
@@ -14,37 +12,39 @@ import java.util.EventObject;
 /**
  * Created by dmcennis on 4/4/2016.
  */
-public class StringRenderer extends AbstractRenderer{
-
-    ParameterInternal param;
+public class StringRenderer extends TextFieldRendererObject<String>{
 
     public StringRenderer(){
-        param = ParameterFactory.newInstance().create("None",String.class);
+        super(new PropertyEditorTableModel(PropertiesFactory.newInstance().create()), PropertiesFactory.newInstance().create());
     }
 
-    public StringRenderer(Parameter p){
-        param = ParameterFactory.newInstance().create(p);
+    public StringRenderer(PropertyEditorTableModel m, Properties p) {
+        super(m, p);
     }
 
-    public StringRenderer(ParameterInternal p){
-        param = p;
+    public StringRenderer(PropertyEditorTableModel m, Parameter p) {
+        super(m, p);
     }
 
-   @Override
+    public StringRenderer(PropertyEditorTableModel m, ParameterInternal p) {
+        super(m, p);
+    }
+
+    @Override
+    protected TextFieldEditorObject getEditor(PropertyEditorTableModel ref, ParameterInternal param, int index) {
+        return new StringEditor(ref,param, index);
+    }
+
+    @Override
     public StringRenderer prototype() {
-        return new StringRenderer();
+        return new StringRenderer(getModel(),param);
     }
 
     @Override
     public StringRenderer prototype(Properties props) {
         if((props!=null)&&(props.get().size()>0)){
-            return new StringRenderer(props.get(param.getType()));
+            return new StringRenderer(getModel(),props.get(param.getType()));
         }
-        return new StringRenderer(props.get().get(0));
-    }
-
-    @Override
-    protected Component getRenderer(int index) {
-        return new JTextField((String)param.getValue().get(index));
+        return new StringRenderer(getModel(),props.get().get(0));
     }
 }

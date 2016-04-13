@@ -1,29 +1,91 @@
 package org.dynamicfactory.swing.classEditors;
 
+import org.dynamicfactory.Creatable;
+import org.dynamicfactory.FactoryFactory;
 import org.dynamicfactory.descriptors.Parameter;
 import org.dynamicfactory.descriptors.ParameterFactory;
 import org.dynamicfactory.descriptors.ParameterInternal;
 import org.dynamicfactory.descriptors.Properties;
+import org.dynamicfactory.swing.PropertyEditorTableModel;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableCellRenderer;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Vector;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Created by dmcennis on 4/4/2016.
  */
-public abstract class AbstractRenderer extends DefaultTableCellRenderer implements Renderer {
+public abstract class AbstractRenderer<Type> extends DefaultTableCellRenderer implements Renderer {
     protected ParameterInternal param;
 
-    JTable container=null;
+    private PropertyEditorTableModel ref;
 
-    boolean editable;
+    protected JTable container=null;
 
-    protected void install(Properties p){
-        if((p!=null)&&(p.get().size()>0)){
+    HashMap<Integer,AbstractEditor<Type>> editing = new HashMap<Integer,AbstractEditor<Type>>();
 
+    protected boolean editable;
+
+    protected JPopupMenu menu = new JPopupMenu();
+
+    AbstractEditor<Type> editor;
+
+    public AbstractRenderer(PropertyEditorTableModel m, Properties p){
+        setModel(m,p);
+    }
+
+    public AbstractRenderer(PropertyEditorTableModel m, Parameter p){
+        setModel(m,p);
+    }
+
+    public AbstractRenderer(PropertyEditorTableModel m, ParameterInternal p){
+        setModel(m,p);
+    }
+
+    protected PropertyEditorTableModel getModel(){
+        return ref;
+    }
+
+    protected void setModel(PropertyEditorTableModel model, Properties props){
+        if(model==null){
+            Logger.getLogger(this.getClass().getName()).log(Level.SEVERE,"DEVELOPER: The model to edit to and from is null");
+        }else if(props == null){
+            Logger.getLogger(this.getClass().getName()).log(Level.WARNING,"DEVELOPER: Setting an editor model with a null Properties object");
+        }else if(props.quickCheck("Parameter",ParameterInternal.class)){
+            setModel(model,(ParameterInternal)props.quickGet("Parameter"));
+        }else if(props.quickCheck("Paramater", Parameter.class)){
+            editable=false;
+            setModel(model,ParameterFactory.newInstance().create((Parameter)props.quickGet("Parameter"),props));
+        }else{
+            Logger.getLogger(this.getClass().getName()).log(Level.WARNING,"DEVELOPER: Setting an editor model without providing a model");
         }
+    }
+
+    protected void setModel(PropertyEditorTableModel model, Parameter param){
+        if(model==null){
+            Logger.getLogger(this.getClass().getName()).log(Level.SEVERE,"DEVELOPER: The model to edit to and from is null");
+        }else if(param == null){
+            Logger.getLogger(this.getClass().getName()).log(Level.WARNING,"DEVELOPER: Setting an editor model with a null ParameterInteral object");
+        }
+        editable = false;
+        setModel(model,ParameterFactory.newInstance().create(param));
+    }
+
+
+    protected void setModel(PropertyEditorTableModel model, ParameterInternal param){
+        if(model==null){
+            Logger.getLogger(this.getClass().getName()).log(Level.SEVERE,"DEVELOPER: The model to edit to and from is null");
+        }else if(param == null){
+            Logger.getLogger(this.getClass().getName()).log(Level.WARNING,"DEVELOPER: Setting an editor model with a null ParameterInteral object");
+        }
+        this.param = param;
     }
 
     @Override
@@ -32,7 +94,11 @@ public abstract class AbstractRenderer extends DefaultTableCellRenderer implemen
             if ((container == null) || (container.getRowCount() != param.getValue().size())) {
                 container = new JTable();
                 for (int i = 0; i < param.getValue().size(); ++i) {
-                    container.add(getRenderer(i));
+                    if(editing.containsKey(i)){
+                        container.add(editing.get(i).getTableCellEditorComponent(table,value,isSelected,row,column));
+                    }else {
+                        container.add(getRenderer(i));
+                    }
                 }
                 return container;
             } else {
@@ -51,13 +117,103 @@ public abstract class AbstractRenderer extends DefaultTableCellRenderer implemen
 
     @Override
     public JToolTip createToolTip() {
-        return super.createToolTip();
+        JToolTip tip = new JToolTip();
+        tip.setTipText(param.getDescription());
+        return tip;
     }
 
     @Override
     public JPopupMenu getComponentPopupMenu() {
-        return super.getComponentPopupMenu();
+        if(editable){
+            menu = new JPopupMenu();
+            menu.add(new AddValue());
+            menu.add(new RemoveValue());
+            return menu;
+        }else{
+            return super.getComponentPopupMenu();
+        }
+    }
+
+    protected class AddValue<Type> extends AbstractAction {
+        public AddValue() {
+            setEnabled(editable);
+        }
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            if (editable) {
+                ParameterInternal old = ParameterFactory.newInstance().create(param);
+                param.add(defaultItem());
+                editing.put(param.getValue().size() - 1, getEditor(ref, param,param.getValue().size()-1));
+                firePropertyChange("Param",old,param );
+                invalidate();
+            } else {
+                Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "INTERNAL: Attempting to add values to an uneditable parameter.");
+            }
+        }
+    }
+
+        protected class RemoveValue extends AbstractAction{
+            public RemoveValue(){
+                setEnabled(editable);
+            }
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (editable){
+                    int index = container.getSelectedRow();
+                    if((index<0)){
+                        Logger.getLogger(this.getClass().getName()).log(Level.SEVERE,"INTERNAL: The selected row is negative or does not exist");
+                    }else if(index >= param.getValue().size()){
+                        Logger.getLogger(this.getClass().getName()).log(Level.SEVERE,"INTERNAL: The selected row is beyond the end of the table");
+                    }else {
+                        ParameterInternal old = ParameterFactory.newInstance().create(param);
+                        param.getValue().remove(index);
+                        HashMap<Integer, AbstractEditor<Type>> rep = new HashMap<Integer, AbstractEditor<Type>>();
+                        for (Integer i : editing.keySet()) {
+                            if (i < index) {
+                                rep.put(i, editing.get(i));
+                            } else if (i > index) {
+                                rep.put(i - 1, editing.get(i));
+                            }
+                        }
+                        editing = rep;
+                        firePropertyChange("Param",old,param );
+                        invalidate();
+                    }
+                } else {
+                    Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "INTERNAL: Attempting to add values to an uneditable parameter.");
+                }
+            }
+        }
+
+    protected class EditValue<Type> extends AbstractAction {
+        public EditValue() {
+            setEnabled(editable);
+        }
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            if (editable) {
+                ParameterInternal old = ParameterFactory.newInstance().create(param);
+                int index = container.getSelectedRow();
+                if((index<0)){
+                    Logger.getLogger(this.getClass().getName()).log(Level.SEVERE,"INTERNAL: The selected row is negative or does not exist");
+                }else if(index >= param.getValue().size()){
+                    Logger.getLogger(this.getClass().getName()).log(Level.SEVERE,"INTERNAL: The selected row is beyond the end of the table");
+                }
+                firePropertyChange("Param",old,param );
+                invalidate();
+            } else {
+                Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "INTERNAL: Attempting to add values to an uneditable parameter.");
+            }
+        }
     }
 
 
+    protected Type defaultItem(){
+        return (Type)FactoryFactory.newInstance().create(param.getParameterClass().getInterfaces()[0].getSimpleName()).getContent().create(param.getParameterClass().getSimpleName());
+    }
+
+
+    protected abstract AbstractEditor<Type> getEditor(PropertyEditorTableModel ref, ParameterInternal param, int index);
 }

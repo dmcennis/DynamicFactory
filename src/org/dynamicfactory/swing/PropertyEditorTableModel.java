@@ -103,12 +103,8 @@ public class PropertyEditorTableModel extends DefaultTableModel{
     }
 
     public void add(ParameterInternal parameter) {
-        try{
             model.add(parameter);
-        }catch(InvalidObjectTypeException e){
-            // show error dialog
-        }
-    }
+     }
 
     public PropertiesInternal prototype(Properties props) {
         return model.prototype(props);
@@ -187,11 +183,7 @@ public class PropertyEditorTableModel extends DefaultTableModel{
     }
 
     public void set(ParameterInternal parameter) {
-        try {
-            model.set(parameter);
-        } catch (InvalidObjectTypeException e) {
-            // showErrorDialog
-        }
+             model.set(parameter);
     }
 
     public void set(String type, Class c, Object value) {

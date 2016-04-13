@@ -62,12 +62,16 @@ public abstract class AbstractFactory<Type extends Creatable<Type>> implements C
     }
 
     public Type create(String name){
-        Properties props = properties.prototype();
+        PropertiesInternal props = properties.prototype();
         return create(name,props);
     }
 
-    public Type create(String name, Properties props){
-        props.add("FactoryName",name);
+    public Type create(String name, PropertiesInternal props){
+        try {
+            props.add("FactoryName",name);
+        } catch (InvalidObjectTypeException e) {
+            Logger.getLogger(this.getClass().getName()).log(Level.SEVERE,"DEVELOPER(this.getClass().getName()): FactoryName property passed to this Factory should not have a property 'FactoryName' of type other than string");
+        }
         return create(props);
     }
 

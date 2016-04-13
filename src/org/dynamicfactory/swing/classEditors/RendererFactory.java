@@ -13,7 +13,7 @@ public class RendererFactory extends AbstractFactory<Renderer>{
     }
 
     private RendererFactory() {
-        map.put("NumericRenderer",new NumericRenderer());
+//        map.put("NumericRenderer",new IntegerRenderer());
         map.put("StringRenderer",new StringRenderer());
     }
 

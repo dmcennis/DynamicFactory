@@ -3,6 +3,7 @@ package org.dynamicfactory.swing.classEditors;
 import org.dynamicfactory.descriptors.Parameter;
 import org.dynamicfactory.descriptors.ParameterInternal;
 import org.dynamicfactory.descriptors.Properties;
+import org.dynamicfactory.swing.PropertyEditorTableModel;
 
 import javax.swing.*;
 import java.awt.*;
@@ -13,7 +14,7 @@ import java.beans.VetoableChangeListener;
 /**
  * Created by dmcennis on 4/7/2016.
  */
-public class StringEditor extends AbstractEditor{
+public class StringEditor extends TextFieldEditorObject<String>{
 
     JTextField member;
 
@@ -23,38 +24,26 @@ public class StringEditor extends AbstractEditor{
         super();
     }
 
-    public StringEditor(Parameter p) {
-        super(p);
+    public StringEditor(PropertyEditorTableModel m, ParameterInternal p, int i) {
+        super(m,p,i);
     }
 
-    public StringEditor(ParameterInternal p) {
-        super(p);
-    }
-
-    public StringEditor(Properties p) {
-        super(p);
+    public StringEditor(PropertyEditorTableModel m, Properties p, int i) {
+        super(m,p,i);
     }
 
     @Override
-    public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected, int row, int column) {
-        member = new JTextField((String)value);
-        bg = member.getBackground();
-        member.addVetoableChangeListener(new VetoableChangeListener() {
-            @Override
-            public void vetoableChange(PropertyChangeEvent evt) throws PropertyVetoException {
-                if(!param.getRestrictions().check(param.getType(),evt.getNewValue())){
-                    member.setBackground(Color.RED);
-                }else{
-                    member.setBackground(bg);
-                }
-            }
-        });
-        return member;
+    protected boolean parsingCheck(String object) {
+        return check(object);
+    }
+
+    protected String parse(String object){
+        return object;
     }
 
     @Override
-    public Editor prototype(Properties props) {
-        return new StringEditor(props);
+    public StringEditor prototype(Properties props) {
+        return new StringEditor(getModel(),props,index);
     }
 
 
