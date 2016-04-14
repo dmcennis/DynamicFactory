@@ -43,7 +43,10 @@ public abstract class TextFieldEditorObject<Type> extends AbstractEditor<Type> {
         member.addVetoableChangeListener(new VetoableChangeListener() {
             @Override
             public void vetoableChange(PropertyChangeEvent evt) throws PropertyVetoException {
-                if(!check((Type)(evt.getNewValue()))){
+                if(!parsingCheck((String)evt.getNewValue())){
+                    member.setBackground(Color.YELLOW);
+                }
+                else if(!check((Type)(evt.getNewValue()))){
                     member.setBackground(Color.RED);
                 }else{
                     member.setBackground(bg);

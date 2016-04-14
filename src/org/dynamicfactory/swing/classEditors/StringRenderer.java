@@ -3,12 +3,6 @@ package org.dynamicfactory.swing.classEditors;
 import org.dynamicfactory.descriptors.*;
 import org.dynamicfactory.swing.PropertyEditorTableModel;
 
-import javax.swing.*;
-import javax.swing.event.CellEditorListener;
-import javax.swing.table.DefaultTableCellRenderer;
-import java.awt.*;
-import java.util.EventObject;
-
 /**
  * Created by dmcennis on 4/4/2016.
  */
@@ -35,9 +29,8 @@ public class StringRenderer extends TextFieldRendererObject<String>{
         return new StringEditor(ref,param, index);
     }
 
-    @Override
-    public StringRenderer prototype() {
-        return new StringRenderer(getModel(),param);
+    protected Renderer prototype(PropertyEditorTableModel ref, ParameterInternal param, Properties props){
+        return new StringRenderer(ref,param);
     }
 
     @Override

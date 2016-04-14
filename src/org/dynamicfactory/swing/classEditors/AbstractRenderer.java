@@ -2,10 +2,7 @@ package org.dynamicfactory.swing.classEditors;
 
 import org.dynamicfactory.Creatable;
 import org.dynamicfactory.FactoryFactory;
-import org.dynamicfactory.descriptors.Parameter;
-import org.dynamicfactory.descriptors.ParameterFactory;
-import org.dynamicfactory.descriptors.ParameterInternal;
-import org.dynamicfactory.descriptors.Properties;
+import org.dynamicfactory.descriptors.*;
 import org.dynamicfactory.swing.PropertyEditorTableModel;
 
 import javax.swing.*;
@@ -36,6 +33,10 @@ public abstract class AbstractRenderer<Type> extends DefaultTableCellRenderer im
     protected JPopupMenu menu = new JPopupMenu();
 
     AbstractEditor<Type> editor;
+
+    public AbstractRenderer(){
+        setModel(new PropertyEditorTableModel(PropertiesFactory.newInstance().create()),ParameterFactory.newInstance().create());
+    };
 
     public AbstractRenderer(PropertyEditorTableModel m, Properties p){
         setModel(m,p);
@@ -214,6 +215,50 @@ public abstract class AbstractRenderer<Type> extends DefaultTableCellRenderer im
         return (Type)FactoryFactory.newInstance().create(param.getParameterClass().getInterfaces()[0].getSimpleName()).getContent().create(param.getParameterClass().getSimpleName());
     }
 
+    @Override
+    public Renderer prototype(Properties props) {
+        if(props == null){
+            return prototype();
+        }
+        boolean skip = false;
+        if(!props.quickCheck("Model",PropertyEditorTableModel.class)){
+            skip = true;
+            Logger.getLogger(this.getClass().getName()).log(Level.WARNING,"\"Model\" is required to have a PropertyEditorTableModel object for this prototype function");
+        }
+        if(!props.quickCheck("Parameter",ParameterInternal.class)){
+            skip = true;
+            Logger.getLogger(this.getClass().getName()).log(Level.WARNING,"\"Parameter\" is required to have a ParameterInternal object for this prototype function");
+        }
+        if(skip){
+            return prototype();
+        }
+        Renderer r = null;
+        if((r = prototype((PropertyEditorTableModel)props.quickGet("Model"),(ParameterInternal)props.quickGet("ParameterInternal"),props))==null){
+            try {
+                r = this.getClass().getConstructor(PropertyEditorTableModel.class,ParameterInternal.class,Properties.class).newInstance((PropertyEditorTableModel)props.quickGet("Model"),(ParameterInternal)props.quickGet("ParameterInternal"),props);
+            } catch (Exception e) {
+                try {
+                    r = this.getClass().getConstructor(PropertyEditorTableModel.class,ParameterInternal.class).newInstance((PropertyEditorTableModel)props.quickGet("Model"),(ParameterInternal)props.quickGet("ParameterInternal"));
+                } catch (Exception e1) {
+                    Logger.getLogger(this.getClass().getName()).log(Level.SEVERE,"DEVELOPER: At least one of 'prototype(Properties)' and 'prototype(PropertyEditorTableModel,ParameterInternal,Properties)' must be overridden in this class: returning null");
+                    return null;
+                }
+            }
+            Logger.getLogger(this.getClass().getName()).log(Level.WARNING,"DEVELOPER: At least one of 'prototype(Properties)' and 'prototype(PropertyEditorTableModel,ParameterInternal,Properties)' must be overridden in this class. Performance problems from the reflection used are likely.");
+            return prototype();
+        }else{
+            return r;
+        }
+    }
+
+    protected Renderer prototype(PropertyEditorTableModel ref, ParameterInternal param, Properties props){
+        return null;
+    }
+
+    @Override
+    public Renderer prototype() {
+        return RendererFactory.getInstance().create(this.getClass().getSimpleName());
+    }
 
     protected abstract AbstractEditor<Type> getEditor(PropertyEditorTableModel ref, ParameterInternal param, int index);
 }

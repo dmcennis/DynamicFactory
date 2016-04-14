@@ -10,7 +10,7 @@ import java.util.logging.Logger;
  * Created by dmcennis on 4/13/2016.
  */
 public class IntegerEditor extends TextFieldEditorObject<Integer> {
-    static final SyntaxObject isInteger = SyntaxCheckerFactory.newInstance().create(1,1,(new StringQuery()).buildQuery("[0-9]+",false, StringQuery.Operation.MATCHES),String.class);
+    static final SyntaxObject isInteger = SyntaxCheckerFactory.newInstance().create(1,1,(new StringQuery()).buildQuery("\\-?[0-9]+",false, StringQuery.Operation.MATCHES),String.class);
 
     public IntegerEditor(PropertyEditorTableModel m, Parameter p, int i) {
         super(m, p, i);
@@ -36,9 +36,6 @@ public class IntegerEditor extends TextFieldEditorObject<Integer> {
     @Override
     protected boolean parsingCheck(String object) {
         if(!isInteger.check(param.getType(),object)){
-            return false;
-        }
-        if(param.getRestrictions().check(param.getType(),object)){
             return false;
         }
         return true;

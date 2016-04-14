@@ -13,6 +13,8 @@ import java.awt.*;
  */
 public abstract class TextFieldRendererObject<Type> extends AbstractRenderer<Type> {
 
+    public TextFieldRendererObject(){super();}
+
     public TextFieldRendererObject(PropertyEditorTableModel m, Properties p) {
         super(m, p);
     }

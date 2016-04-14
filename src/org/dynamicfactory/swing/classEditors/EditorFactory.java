@@ -13,7 +13,8 @@ public class EditorFactory extends AbstractFactory<Editor> {
     }
 
     private EditorFactory() {
-        map.put("NumericEditor",new IntegerEditor());
+        map.put("IntegerEditor",new IntegerEditor());
+        map.put("FloatingEditor", new FloatingEditor());
         map.put("StringEditor",new StringEditor());
     }
 

@@ -15,6 +15,8 @@ public class RendererFactory extends AbstractFactory<Renderer>{
     private RendererFactory() {
 //        map.put("NumericRenderer",new IntegerRenderer());
         map.put("StringRenderer",new StringRenderer());
+        map.put("IntegerRenderer", new IntegerRenderer());
+        map.put("FloatingRenderer",new FloatingRenderer());
     }
 
     public RendererFactory prototype(){

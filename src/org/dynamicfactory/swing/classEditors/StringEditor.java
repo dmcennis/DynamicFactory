@@ -16,10 +16,6 @@ import java.beans.VetoableChangeListener;
  */
 public class StringEditor extends TextFieldEditorObject<String>{
 
-    JTextField member;
-
-    Color bg;
-
     public StringEditor() {
         super();
     }
@@ -34,11 +30,15 @@ public class StringEditor extends TextFieldEditorObject<String>{
 
     @Override
     protected boolean parsingCheck(String object) {
-        return check(object);
+        return true;
     }
 
     protected String parse(String object){
         return object;
+    }
+
+    protected Editor prototype(PropertyEditorTableModel ref, ParameterInternal param, int index, Properties props){
+        return new StringEditor(ref,param,index);
     }
 
     @Override

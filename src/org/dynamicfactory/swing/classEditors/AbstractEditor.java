@@ -10,6 +10,7 @@ import org.dynamicfactory.swing.PropertyEditorTableModel;
 import javax.swing.*;
 import javax.swing.event.CellEditorListener;
 import java.awt.*;
+import java.lang.reflect.InvocationTargetException;
 import java.util.EventObject;
 import java.util.LinkedList;
 import java.util.logging.Level;
@@ -48,11 +49,6 @@ public abstract class AbstractEditor<Type> implements Editor {
 
     public AbstractEditor(PropertyEditorTableModel m, ParameterInternal p, int index){
         setModel(m,p,index);
-    }
-
-    @Override
-    public Editor prototype() {
-        return this;
     }
 
     protected void setModel(PropertyEditorTableModel model, Properties props, int i){
@@ -140,4 +136,54 @@ public abstract class AbstractEditor<Type> implements Editor {
     protected PropertyEditorTableModel getModel(){
         return ref;
     }
+
+    @Override
+    public Editor prototype(Properties props) {
+        if(props == null){
+            return prototype();
+        }
+        boolean skip = false;
+        if(!props.quickCheck("Model",PropertyEditorTableModel.class)){
+            skip = true;
+            Logger.getLogger(this.getClass().getName()).log(Level.WARNING,"\"Model\" is required to have a PropertyEditorTableModel object for this prototype function");
+        }
+        if(!props.quickCheck("Parameter",ParameterInternal.class)){
+            skip = true;
+            Logger.getLogger(this.getClass().getName()).log(Level.WARNING,"\"Parameter\" is required to have a ParameterInternal object for this prototype function");
+        }
+        int index=0;
+        if(!props.quickCheck("Index",Integer.class)){
+            index = (int)props.quickGet("Index");
+        }
+        if(skip){
+            return prototype();
+        }
+        Editor r = null;
+        if((r = prototype((PropertyEditorTableModel)props.quickGet("Model"),(ParameterInternal)props.quickGet("ParameterInternal"),index,props))==null){
+            try {
+                r = this.getClass().getConstructor(PropertyEditorTableModel.class,ParameterInternal.class,Integer.class,Properties.class).newInstance((PropertyEditorTableModel)props.quickGet("Model"),(ParameterInternal)props.quickGet("ParameterInternal"),index,props);
+            } catch (Exception e) {
+                try {
+                    r = this.getClass().getConstructor(PropertyEditorTableModel.class,ParameterInternal.class,Integer.class,Properties.class).newInstance((PropertyEditorTableModel)props.quickGet("Model"),(ParameterInternal)props.quickGet("ParameterInternal"),index);
+                } catch (Exception e1) {
+                    Logger.getLogger(this.getClass().getName()).log(Level.SEVERE,"DEVELOPER: At least one of 'prototype(Properties)' and 'prototype(PropertyEditorTableModel,ParameterInternal,Properties)' must be overridden in this class: returning null");
+                    return null;
+                }
+            }
+            Logger.getLogger(this.getClass().getName()).log(Level.WARNING,"DEVELOPER: At least one of 'prototype(Properties)' and 'prototype(PropertyEditorTableModel,ParameterInternal,Properties)' must be overridden in this class. Performance problems from the reflection used are likely.");
+            return r;
+        }else{
+            return r;
+        }
+    }
+
+    protected Editor prototype(PropertyEditorTableModel ref, ParameterInternal param, int index, Properties props){
+        return null;
+    }
+
+    @Override
+    public Editor prototype() {
+        return EditorFactory.getInstance().create(this.getClass().getSimpleName());
+    }
+
 }
