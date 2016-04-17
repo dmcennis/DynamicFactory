@@ -37,7 +37,7 @@ public class StringEditor extends TextFieldEditorObject<String>{
         return object;
     }
 
-    protected Editor prototype(PropertyEditorTableModel ref, ParameterInternal param, int index, Properties props){
+    public Editor prototype(PropertyEditorTableModel ref, ParameterInternal param, int index, Properties props){
         return new StringEditor(ref,param,index);
     }
 

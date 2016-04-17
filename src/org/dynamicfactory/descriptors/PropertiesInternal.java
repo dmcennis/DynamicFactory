@@ -81,5 +81,7 @@ public interface PropertiesInternal extends Properties, Creatable<PropertiesInte
 
     ParameterInternal get(String string);
 
+    List<ParameterInternal> iterate();
+
     void clear();
 }

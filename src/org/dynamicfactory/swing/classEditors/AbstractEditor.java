@@ -177,10 +177,6 @@ public abstract class AbstractEditor<Type> implements Editor {
         }
     }
 
-    protected Editor prototype(PropertyEditorTableModel ref, ParameterInternal param, int index, Properties props){
-        return null;
-    }
-
     @Override
     public Editor prototype() {
         return EditorFactory.getInstance().create(this.getClass().getSimpleName());

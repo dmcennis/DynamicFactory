@@ -45,4 +45,9 @@ public class IntegerEditor extends TextFieldEditorObject<Integer> {
     public Editor prototype(Properties props) {
         return new IntegerEditor(getModel(),param,index);
     }
+
+    @Override
+    public Editor prototype(PropertyEditorTableModel model, ParameterInternal parameter, int index, Properties propertiesStringEditor) {
+        return new IntegerEditor(model,parameter,index);
+    }
 }

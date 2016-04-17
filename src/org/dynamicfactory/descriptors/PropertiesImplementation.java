@@ -200,10 +200,24 @@ public class PropertiesImplementation implements PropertiesInternal {
         ret.restriction = this.restriction.prototype();
         return ret;
     }
-    
+
+    /**
+     * Looking for List-ParameterInternal- return results? Use iterate() instead.
+     * @return
+     */
     public List<Parameter> get(){
         LinkedList<Parameter> ret = new LinkedList<Parameter>();
         ret.addAll(propertyMap.values());
+        return ret;
+    }
+
+    /**
+     * Looking for List-Parameter- return results? Use get() instead.
+     * @return
+     */
+    public List<ParameterInternal> iterate(){
+        List ret = new LinkedList<ParameterInternal>();
+        ret.addAll(get());
         return ret;
     }
     

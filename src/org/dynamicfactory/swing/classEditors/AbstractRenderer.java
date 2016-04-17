@@ -134,6 +134,57 @@ public abstract class AbstractRenderer<Type> extends DefaultTableCellRenderer im
             return super.getComponentPopupMenu();
         }
     }
+    protected class AddParameter extends AbstractAction {
+        public AddParameter() {
+            setEnabled(editable);
+        }
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            if (editable) {
+                ParameterInternal old = ParameterFactory.newInstance().create(param);
+                param.add(defaultItem());
+                editing.put(param.getValue().size() - 1, getEditor(ref, param,param.getValue().size()-1));
+                firePropertyChange("Param",old,param );
+                invalidate();
+            } else {
+                Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "INTERNAL: Attempting to add values to an uneditable parameter.");
+            }
+        }
+    }
+
+    protected class RemoveParameter extends AbstractAction{
+        public RemoveParameter(){
+            setEnabled(editable);
+        }
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            if (editable){
+                int index = container.getSelectedRow();
+                if((index<0)){
+                    Logger.getLogger(this.getClass().getName()).log(Level.SEVERE,"INTERNAL: The selected row is negative or does not exist");
+                }else if(index >= param.getValue().size()){
+                    Logger.getLogger(this.getClass().getName()).log(Level.SEVERE,"INTERNAL: The selected row is beyond the end of the table");
+                }else {
+                    ParameterInternal old = ParameterFactory.newInstance().create(param);
+                    param.getValue().remove(index);
+                    HashMap<Integer, AbstractEditor<Type>> rep = new HashMap<Integer, AbstractEditor<Type>>();
+                    for (Integer i : editing.keySet()) {
+                        if (i < index) {
+                            rep.put(i, editing.get(i));
+                        } else if (i > index) {
+                            rep.put(i - 1, editing.get(i));
+                        }
+                    }
+                    editing = rep;
+                    firePropertyChange("Param",old,param );
+                    invalidate();
+                }
+            } else {
+                Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "INTERNAL: Attempting to add values to an uneditable parameter.");
+            }
+        }
+    }
 
     protected class AddValue<Type> extends AbstractAction {
         public AddValue() {

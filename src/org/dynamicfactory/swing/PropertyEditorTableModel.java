@@ -158,8 +158,8 @@ public class PropertyEditorTableModel extends DefaultTableModel{
         model.setDefaultRestriction(restriction);
     }
 
-    public List<Parameter> get() {
-        return model.get();
+    public List<ParameterInternal> get() {
+        return model.iterate();
     }
 
     public void set(Property value) {

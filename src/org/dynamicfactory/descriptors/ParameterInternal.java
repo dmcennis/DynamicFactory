@@ -100,6 +100,12 @@ public interface ParameterInternal extends Parameter, Creatable<ParameterInterna
     
     public ParameterInternal prototype();
 
+    public List<ParameterInternal> getValue();
+
+    public ParameterInternal get();
+
+
+
     public void set(String type,Class parameterClass, boolean structural, List value, String description, String longDecscription);
 
 }

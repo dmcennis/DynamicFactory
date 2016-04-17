@@ -37,7 +37,7 @@ public class FloatingEditor extends TextFieldEditorObject<Double>{
     }
 
     @Override
-    protected Editor prototype(PropertyEditorTableModel ref, ParameterInternal param, int index, Properties props) {
+    public Editor prototype(PropertyEditorTableModel ref, ParameterInternal param, int index, Properties props) {
         return new FloatingEditor(ref,param,index);
     }
 }
