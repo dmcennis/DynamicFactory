@@ -57,7 +57,7 @@ import org.dynamicfactory.descriptors.SyntaxChecker;
  * @author Daniel McEnnis
  */
 
-public interface Parameter extends Comparable<Parameter> {
+public interface Parameter<Type> extends Comparable<Parameter> {
 
     @Override
     int compareTo(Parameter o);
@@ -101,7 +101,7 @@ public interface Parameter extends Comparable<Parameter> {
 
      */
 
-    public List getValue();
+    public List<Type> getValue();
 
     
 
@@ -134,21 +134,21 @@ public interface Parameter extends Comparable<Parameter> {
     
     public boolean check(Parameter type);
 
-    public void add(Object value);
+    public Parameter<Type> add(Type value);
     
-    public void add(List value);
+    public Parameter<Type> add(List value);
     
-    public void set(Property property);
+    public Parameter<Type> set(Property property);
     
     public void clear();
     
     public Parameter prototype();
     
-    public Object get();
+    public Type get();
 
-    public void set(Object value);
+    public Parameter<Type> set(Type value);
 
-    public void set(List value);
+    public Parameter<Type> set(List value);
 
     public String getLongDescription();
 }

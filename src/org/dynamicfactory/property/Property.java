@@ -54,7 +54,7 @@ import org.dynamicfactory.Creatable;
  * 
  */
 
-public interface Property extends java.io.Serializable, Comparable<Property>, Creatable<Property>{//}, Model {
+public interface Property<Type> extends java.io.Serializable, Comparable<Property>, Creatable<Property>{//}, Model {
 
     
 
@@ -70,7 +70,7 @@ public interface Property extends java.io.Serializable, Comparable<Property>, Cr
 
      */
 
-    public void add(Object value) throws InvalidObjectTypeException;
+    public void add(Type value) throws InvalidObjectTypeException;
 
     
 
@@ -98,12 +98,12 @@ public interface Property extends java.io.Serializable, Comparable<Property>, Cr
 
      */
 
-    public java.util.List getValue();
+    public java.util.List<Type> getValue();
     
     
     public void setType(String id);
 
-    public void setClass(Class classType);
+    public void setClass(Class classType) throws InvalidObjectTypeException;
     
 
     /**
