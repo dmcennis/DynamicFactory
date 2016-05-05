@@ -35,7 +35,7 @@ public abstract class AbstractRenderer<Type> extends DefaultTableCellRenderer im
     AbstractEditor<Type> editor;
 
     public AbstractRenderer(){
-        setModel(new PropertyEditorTableModel(PropertiesFactory.newInstance().create()),ParameterFactory.newInstance().create());
+        setModel(new PropertyEditorTableModel(PropertiesFactory.newInstance().create()),(new ParameterFactory<String>()).create("Default"));
     };
 
     public AbstractRenderer(PropertyEditorTableModel m, Properties p){

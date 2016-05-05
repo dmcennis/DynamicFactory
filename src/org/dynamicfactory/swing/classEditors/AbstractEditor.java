@@ -33,9 +33,8 @@ public abstract class AbstractEditor<Type> implements Editor {
 
     protected JTable container=null;
 
-
     public AbstractEditor(){
-        param = ParameterFactory.newInstance().create();
+        param = (new ParameterFactory<String>()).create();
         ref = null;
     }
 
