@@ -60,7 +60,7 @@ public class PropertyRestriction implements SyntaxObject {
     }
 
     public boolean check(Property type, Object o) {
-        Property temp = type.duplicate();
+        Property temp = type.prototype();
         try {
             temp.add(o);
             return check(temp);
@@ -160,7 +160,12 @@ public class PropertyRestriction implements SyntaxObject {
         this.classType = classType;
     }
 
-    public PropertyRestriction duplicate() {
+    @Override
+    public SyntaxObject prototype(Properties props) {
+        return prototype();
+    }
+
+    public PropertyRestriction prototype() {
         PropertyRestriction ret = new PropertyRestriction();
         ret.minCount = this.minCount;
         ret.maxCount = this.maxCount;
@@ -182,7 +187,7 @@ public class PropertyRestriction implements SyntaxObject {
     }
 
     public boolean check(Property property, List value) {
-        Property temp = property.duplicate();
+        Property temp = property.prototype();
         try {
             Iterator it = value.iterator();
             while (it.hasNext()) {

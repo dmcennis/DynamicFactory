@@ -25,6 +25,7 @@
  */
 package org.dynamicfactory.propertyQuery;
 
+import org.dynamicfactory.descriptors.Properties;
 import org.dynamicfactory.property.Property;
 
 /**
@@ -41,8 +42,14 @@ public class NullPropertyQuery implements PropertyQuery{
     }
 
 
-    public void buildQuery(boolean ret) {
+    public NullPropertyQuery buildQuery(boolean ret) {
         this.ret = ret;
+        return this;
+    }
+
+    @Override
+    public PropertyQuery build(Properties props) {
+        return this;
     }
 
     public int compareTo(Object o) {
@@ -51,5 +58,10 @@ public class NullPropertyQuery implements PropertyQuery{
 
     public NullPropertyQuery prototype() {
         return new NullPropertyQuery();
+    }
+
+    @Override
+    public PropertyQuery prototype(Properties props) {
+        return prototype();
     }
 }

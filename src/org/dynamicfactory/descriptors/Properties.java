@@ -26,6 +26,8 @@
 package org.dynamicfactory.descriptors;
 
 import java.util.List;
+
+import org.dynamicfactory.property.InvalidObjectTypeException;
 import org.dynamicfactory.property.Property;
 import org.dynamicfactory.descriptors.Parameter;
 
@@ -33,17 +35,10 @@ import org.dynamicfactory.descriptors.Parameter;
  *
  * @author Daniel McEnnis
  */
-public interface Properties {
+public interface Properties extends Comparable<Properties>{
 
-    void add(String type, Object value);
 
-    void add(String type, List value);
-
-    void set(String type, Object value);
-
-    void set(String type, List value);
-
-    Properties duplicate();
+    Properties prototype();
     
     List<Parameter> get();
 
@@ -51,10 +46,40 @@ public interface Properties {
 
     SyntaxChecker getDefaultRestriction();
 
-    void set(Property value);
+    void set(Property value)throws InvalidObjectTypeException;
 
     boolean check(Parameter type);
     
     boolean check(Properties props);
-    
+
+    /**
+     * Given a source set of properties, merge in any non-conflicting properties from the right side into a new Properties object
+     *
+     * @param props set of defaults to merge in
+     * @return new Properties object combining the two types
+     */
+    PropertiesInternal merge(Properties props);
+
+    PropertiesInternal mergeDefaults(Properties right)throws InvalidObjectTypeException;
+
+
+    boolean quickCheck(String s,Class type);
+
+    /**
+     * Because so many expect this the other way around
+     * @param s
+     * @param type
+     * @return
+     */
+    boolean checkQuick(String s,Class type);
+
+    Object quickGet(String s);
+
+    /**
+     * Because so many expect this the other way around
+     * @param s
+     * @return
+     */
+    Object getQuick(String s);
+
 }

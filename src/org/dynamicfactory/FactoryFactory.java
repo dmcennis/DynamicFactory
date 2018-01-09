@@ -30,7 +30,7 @@ import java.util.logging.Logger;
 /**
  * Created by dmcennis on 7/1/2014.
  */
-public class FactoryFactory extends AbstractFactory<AbstractFactory> {
+public class FactoryFactory extends AbstractFactory<GenericCreatable<AbstractFactory>> implements Creatable<AbstractFactory> {
 
     static private FactoryFactory instance = null;
 
@@ -59,6 +59,11 @@ public class FactoryFactory extends AbstractFactory<AbstractFactory> {
 
     }
 
+    @Override
+    public AbstractFactory prototype() {
+        return newInstance();
+    }
+
     public Class getType(String name){
         if(name == null){
             Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "Null factory output type requested");
@@ -78,7 +83,7 @@ public class FactoryFactory extends AbstractFactory<AbstractFactory> {
             Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "No output class object provided");
         }
         if((type != null)&&(prototype != null)&&(classType != null)){
-            map.put(type,prototype);
+            map.put(type,new GenericCreatable<AbstractFactory>(prototype));
             classObjects.put(type,classType);
         }
     }
@@ -98,7 +103,7 @@ public class FactoryFactory extends AbstractFactory<AbstractFactory> {
     }
 
     @Override
-    public AbstractFactory create(Properties props) {
+    public GenericCreatable<AbstractFactory> create(Properties props) {
         if((props != null)&&(props.get("FactoryName") != null)&&(props.get("FactoryName").getValue().size()>0)&&(map.containsKey(props.get("FactoryName").getValue().iterator().next()))&&(props.get("FactoryName").getParameterClass().getName().equals("java.lang.String"))){
             return map.get("FactoryName");
         }else{
@@ -109,7 +114,7 @@ public class FactoryFactory extends AbstractFactory<AbstractFactory> {
             }else{
                 Logger.getLogger(FactoryFactory.class.getName()).log(Level.SEVERE, "The factory name is missing");
             }
-            return PropertiesFactory.newInstance();
+            return new GenericCreatable<AbstractFactory>(PropertiesFactory.newInstance());
         }
     }
 }

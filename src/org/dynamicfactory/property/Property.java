@@ -40,6 +40,8 @@ package org.dynamicfactory.property;
 //import nz.ac.waikato.mcennis.rat.graph.model.Model;
 
 
+import org.dynamicfactory.Creatable;
+
 /**
 
  *
@@ -52,7 +54,7 @@ package org.dynamicfactory.property;
  * 
  */
 
-public interface Property extends java.io.Serializable, Comparable{//}, Model {
+public interface Property<Type> extends java.io.Serializable, Comparable<Property>, Creatable<Property>{//}, Model {
 
     
 
@@ -68,7 +70,7 @@ public interface Property extends java.io.Serializable, Comparable{//}, Model {
 
      */
 
-    public void add(Object value) throws InvalidObjectTypeException;
+    public void add(Type value) throws InvalidObjectTypeException;
 
     
 
@@ -96,12 +98,12 @@ public interface Property extends java.io.Serializable, Comparable{//}, Model {
 
      */
 
-    public java.util.List getValue();
+    public java.util.List<Type> getValue();
     
     
     public void setType(String id);
 
-    public void setClass(Class classType);
+    public void setClass(Class classType) throws InvalidObjectTypeException;
     
 
     /**
@@ -114,7 +116,7 @@ public interface Property extends java.io.Serializable, Comparable{//}, Model {
 
      */
 
-    public Property duplicate();
+    public Property prototype();
 
     
 

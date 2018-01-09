@@ -406,10 +406,10 @@ public class PropertyRestrictionTest extends TestCase {
     }
 
     /**
-     * Test of duplicate method, of class PropertyRestriction.
+     * Test of prototype method, of class PropertyRestriction.
      */
-    public void testDuplicate() {
-        System.out.println("duplicate");
+    public void testPrototype() {
+        System.out.println("prototype");
         PropertyRestriction instance = new PropertyRestriction();
         instance.setClassType(Double.class);
         instance.setMaxCount(2);
@@ -417,7 +417,7 @@ public class PropertyRestrictionTest extends TestCase {
         StringQuery q = new StringQuery();
         q.buildQuery("[0-9]*", true, Operation.MATCHES);
         instance.setPropertyQuery(q);
-        PropertyRestriction result = instance.duplicate();
+        PropertyRestriction result = instance.prototype();
         assertNotSame(instance, result);
         assertEquals(Double.class,result.getClassType());
         assertEquals(2,result.getMaxCount());

@@ -23,8 +23,12 @@
 package org.dynamicfactory.descriptors;
 
 import junit.framework.TestCase;
+import org.dynamicfactory.property.InvalidObjectTypeException;
 import org.dynamicfactory.propertyQuery.PropertyQuery;
 import org.dynamicfactory.propertyQuery.StringQuery;
+
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -106,11 +110,16 @@ public class SyntaxCheckerFactoryTest extends TestCase {
         StringQuery query = new StringQuery();
         query.buildQuery("Test", false, StringQuery.Operation.MATCHES);
         Class classType = null;
-        Properties props = PropertiesFactory.newInstance().create();
-        props.set("MinCount", 3);
-        props.set("MaxCount", 4);
-        props.set("Test", query);
-        props.set("ClassType", Double.class);
+        PropertiesInternal props = PropertiesFactory.newInstance().create();
+        try {
+            props.set("MinCount", 3);
+            props.set("MaxCount", 4);
+            props.set("Test", query);
+            props.set("ClassType", Double.class);
+        } catch (InvalidObjectTypeException e) {
+            Logger.getLogger(this.getClass().getName()).log(Level.SEVERE,"INTERNAL: New properties had existing incompatible types for MinCount, MaxCount, Test or ClassType");
+
+        }
         SyntaxCheckerFactory instance = SyntaxCheckerFactory.newInstance();
         SyntaxObject result = instance.create(minCount, maxCount, null, classType,props);
         assertNotNull(result);
@@ -130,13 +139,23 @@ public class SyntaxCheckerFactoryTest extends TestCase {
         StringQuery query = new StringQuery();
         query.buildQuery("Test", false, StringQuery.Operation.MATCHES);
         Class classType = Double.class;
-        Properties props = PropertiesFactory.newInstance().create();
-        props.set("MinCount", 3);
-        props.set("MaxCount", 4);
-        props.set("TypeClass", Long.class);
+        PropertiesInternal props = PropertiesFactory.newInstance().create();
+        try {
+            props.set("MinCount", 3);
+            props.set("MaxCount", 4);
+            props.set("TypeClass", Long.class);
+        } catch (InvalidObjectTypeException e) {
+            Logger.getLogger(this.getClass().getName()).log(Level.SEVERE,"INTERNAL: New properties had existing non-string types for MinCount, MaxCount, or TypeClass");
+
+        }
         StringQuery query2 = new StringQuery();
         query2.buildQuery("Test2", false, StringQuery.Operation.MATCHES);
-        props.set("Test", query2);
+        try {
+            props.set("Test", query2);
+        } catch (InvalidObjectTypeException e) {
+            Logger.getLogger(this.getClass().getName()).log(Level.SEVERE,"INTERNAL: New properties had existing non-string types for PropertyID and PropertyValueClass");
+
+        }
         SyntaxCheckerFactory instance = SyntaxCheckerFactory.newInstance();
         SyntaxObject result = instance.create(minCount, maxCount, query, classType,props);
         assertNotNull(result);

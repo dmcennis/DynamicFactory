@@ -38,22 +38,49 @@ import org.dynamicfactory.property.InvalidObjectTypeException;
  *
  * @author Daniel McEnnis
  */
-public abstract class AbstractFactory<Type> {
+public abstract class AbstractFactory<Type extends Creatable<Type>> implements Creatable<AbstractFactory>{
     
     protected HashMap<String,Type> map = new HashMap<String,Type>();
     protected PropertiesInternal properties = new PropertiesImplementation();
     
-    public abstract Type create(Properties props);
+    public Type create(Properties props){
+        if((props != null)&&(props.quickCheck("ClassName",String.class))){
+            if(map.containsKey(props.quickGet("ClassName"))) {
+                return map.get(props.quickGet("ClassName")).prototype(props);
+            }else{
+                Logger.getLogger(this.getClass().getName()).log(Level.WARNING,String.format("Class %s is unknown. Using the default instead", props.quickGet("ClassName")));
+                return map.get("Default").prototype(props);
+            }
+        }else{
+            Logger.getLogger(this.getClass().getName()).log(Level.WARNING,"Class parameter is missing. Using the default instead");
+            return map.get("Default").prototype(props);
+        }
+    }
+
+    public Type create(){
+        return create(properties);
+    }
 
     public Type create(String name){
-        Properties props = properties.duplicate();
+        PropertiesInternal props = properties.prototype();
         return create(name,props);
     }
 
-    public Type create(String name, Properties props){
-        props.add("FactoryName",name);
+    public Type create(String name, PropertiesInternal props){
+        try {
+            props.add("FactoryName",name);
+        } catch (InvalidObjectTypeException e) {
+            Logger.getLogger(this.getClass().getName()).log(Level.SEVERE,"DEVELOPER(this.getClass().getName()): FactoryName property passed to this Factory should not have a property 'FactoryName' of type other than string");
+        }
         return create(props);
     }
+
+    public abstract AbstractFactory<Type> prototype();
+
+    public AbstractFactory<Type> prototype(Properties props) {
+        return prototype();
+    }
+
 
     public void setDefaultProperty(ParameterInternal value) {
         properties.add(value);
@@ -97,12 +124,15 @@ public abstract class AbstractFactory<Type> {
     public boolean check(Parameter parameter){
         return properties.check(parameter);
     }
-    
-    public abstract Parameter getClassParameter();
-    
+
     public Collection<String> getKnownTypes(){
         LinkedList<String> ret = new LinkedList<String>();
         ret.addAll(map.keySet());
         return ret;
     }
+
+    public Parameter getClassParameter() {
+        return properties.get("ClassName");
+    }
+
 }

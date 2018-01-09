@@ -30,6 +30,8 @@ import java.io.Writer;
 import java.util.Collection;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import org.dynamicfactory.descriptors.Properties;
 import org.dynamicfactory.property.Property;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
@@ -96,7 +98,7 @@ public class StringQuery implements PropertyQuery{
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
-    public void buildQuery(String comparison, boolean not, Operation operation) {
+    public StringQuery buildQuery(String comparison, boolean not, Operation operation) {
         if(comparison==null){
             this.comparison="";
         }else{
@@ -109,6 +111,15 @@ public class StringQuery implements PropertyQuery{
         }else{
             this.operation = operation;
         }
+        return this;
+    }
+
+    @Override
+    public PropertyQuery build(Properties props) {
+        if(props.quickCheck("Comparison",String.class)&& props.quickCheck("Not",Boolean.class)&& props.quickCheck("Operation",StringQuery.Operation.class)){
+            return buildQuery((String)props.quickGet("Comparison"),(Boolean)props.quickGet("Not"), (StringQuery.Operation)props.quickGet("Operation"));
+        }
+        return this;
     }
 
     public int compareTo(Object o) {
@@ -130,6 +141,11 @@ public class StringQuery implements PropertyQuery{
         }else{
             return this.getClass().getName().compareTo(o.getClass().getName());
         }
+    }
+
+    @Override
+    public PropertyQuery prototype(Properties props) {
+        return prototype();
     }
 
     public StringQuery prototype() {

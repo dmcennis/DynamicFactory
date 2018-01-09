@@ -26,6 +26,10 @@ import junit.framework.TestCase;
 import org.dynamicfactory.descriptors.Parameter;
 import org.dynamicfactory.descriptors.Properties;
 import org.dynamicfactory.descriptors.PropertiesFactory;
+import org.dynamicfactory.descriptors.PropertiesInternal;
+
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -108,9 +112,13 @@ public class PropertyFactoryTest extends TestCase {
         System.out.println("create");
         String id = null;
         Class objectType = null;
-        Properties props = PropertiesFactory.newInstance().create();
-        props.add("PropertyID", "Type");
-        props.add("PropertyValueClass", Double.class);
+        PropertiesInternal props = PropertiesFactory.newInstance().create();
+        try {
+            props.add("PropertyID", "Type");
+            props.add("PropertyValueClass", Double.class);
+        } catch (InvalidObjectTypeException e) {
+            Logger.getLogger(this.getClass().getName()).log(Level.SEVERE,"INTERNAL: New properties had existing non-string types for PropertyID and PropertyValueClass");
+        }
         PropertyFactory instance = new PropertyFactory();
         Property result = instance.create("BasicProperty",id, objectType, props);
         assertNotNull(result);
@@ -125,9 +133,13 @@ public class PropertyFactoryTest extends TestCase {
         System.out.println("create");
         String id = "Type";
         Class objectType = Double.class;
-        Properties props = PropertiesFactory.newInstance().create();
-        props.add("PropertyType", "BadType");
-        props.add("PropertyValueClass", Long.class);
+        PropertiesInternal props = PropertiesFactory.newInstance().create();
+        try {
+            props.add("PropertyType", "BadType");
+            props.add("PropertyValueClass", Long.class);
+        } catch (InvalidObjectTypeException e) {
+            Logger.getLogger(this.getClass().getName()).log(Level.SEVERE,"INTERNAL: New properties had existing non-string types for PropertyType and PropertyValueClass");
+        }
         PropertyFactory instance = new PropertyFactory();
         Property result = instance.create("BasicProperty",id, objectType, props);
         assertNotNull(result);

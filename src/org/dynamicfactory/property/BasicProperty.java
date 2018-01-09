@@ -39,6 +39,8 @@ package org.dynamicfactory.property;
 
 //import nz.ac.waikato.mcennis.rat.graph.model.ModelShell;
 
+import org.dynamicfactory.descriptors.Properties;
+
 import java.util.Iterator;
 import java.util.List;
 
@@ -127,43 +129,46 @@ public class BasicProperty implements Property { //extends ModelShell implements
 
     @Override
 
-    public int compareTo(Object o) throws ClassCastException{
+    public int compareTo(Property o) {
 
-        Property right = (Property)o;
+        if(this.getType().contentEquals(o.getType())){
 
-        if(this.getType().contentEquals(right.getType())){
-
-            if(this.objectType.getName().compareTo(right.getPropertyClass().getName())!=0){
-                return this.objectType.getName().compareTo(right.getPropertyClass().getName());
-            }            
+            if(this.objectType.getName().compareTo(o.getPropertyClass().getName())!=0){
+                return this.objectType.getName().compareTo(o.getPropertyClass().getName());
+            }
             List leftValue = this.getValue();
-            List rightValue = right.getValue();
+            List rightValue = o.getValue();
 
             if(leftValue.size() != rightValue.size()){
                 return leftValue.size() - rightValue.size();
             }else{
+                boolean comparable = true;
                 if(leftValue.size() == 0){
                     return 0;
                 }else if(!(leftValue.iterator().next() instanceof Comparable)){
-                    return 0;
-                }else if(!(rightValue.iterator().next() instanceof Comparable)){
-                    return 0;
+                    comparable = false;
                 }
                 java.util.Collections.sort(leftValue);
                 java.util.Collections.sort(rightValue);
                 Iterator leftIt = leftValue.iterator();               
                 Iterator rightIt = rightValue.iterator();
                 while(leftIt.hasNext()){
-                    Comparable l = (Comparable)leftIt.next();
-                    Comparable r = (Comparable)rightIt.next(); 
-                    if((l.compareTo(r)!=0)){
-                        return l.compareTo(r);
+                    if(comparable) {
+                        Comparable l = (Comparable) leftIt.next();
+                        Comparable r = (Comparable) rightIt.next();
+                        if ((l.compareTo(r) != 0)) {
+                            return l.compareTo(r);
+                        }
+                    }else{
+                        if(leftIt.next()!=rightIt.next()){
+                            return -1;
+                        }
                     }
                 }
                 return 0;
             }
         }else{
-            return this.getType().compareTo(right.getType());
+            return this.getType().compareTo(o.getType());
         }
 
     }    
@@ -173,8 +178,8 @@ public class BasicProperty implements Property { //extends ModelShell implements
     public boolean equals(Object obj) {
 
         if(obj instanceof Property){
-
-            if(this.compareTo(obj)==0){
+            Property o = (Property)obj;
+            if(this.compareTo(o)==0){
 
                 return true;
 
@@ -192,11 +197,16 @@ public class BasicProperty implements Property { //extends ModelShell implements
 
     }
 
-    
+
+
+    @Override
+    public Property prototype(Properties props) {
+        return prototype();
+    }
 
     @Override
 
-    public Property duplicate(){
+    public Property prototype(){
 
         BasicProperty props = new BasicProperty(type,objectType);
 

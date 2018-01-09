@@ -28,6 +28,7 @@ package org.dynamicfactory.descriptors;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.dynamicfactory.AbstractFactory;
+import org.dynamicfactory.Creatable;
 
 /**
  *
@@ -68,7 +69,7 @@ public class PropertiesFactory extends AbstractFactory<PropertiesInternal>{
     public PropertiesInternal create(Properties props){
         if((props != null)&&(map.containsKey("PropertiesClass"))&&(map.containsKey(props.get("PropertiesClass").getValue().iterator().next()))){
             String type = (String) props.get("PropertiesClass").getValue().iterator().next();
-            return map.get(type).duplicate();
+            return map.get(type).prototype();
         }else if(props == null){
             Logger.getLogger(this.getClass().getName()).log(Level.SEVERE,"Null properties detected -  assuming PropertiesImplementation");
         } else if(props.get("PropertiesClass")==null){
@@ -81,5 +82,10 @@ public class PropertiesFactory extends AbstractFactory<PropertiesInternal>{
 
     public Parameter getClassParameter(){
         return properties.get("PropertiesClass");
+    }
+
+    @Override
+    public AbstractFactory prototype() {
+        return newInstance();
     }
 }

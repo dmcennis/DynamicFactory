@@ -213,17 +213,17 @@ public class PropertiesImplementationTest extends TestCase {
     }
 
     /**
-     * Test of duplicate method, of class PropertiesImplementation.
+     * Test of prototype method, of class PropertiesImplementation.
      */
-    public void testDuplicate() {
-        System.out.println("duplicate");
+    public void testprototype() {
+        System.out.println("prototype");
         ParameterInternal param = ParameterFactory.newInstance().create("Type", String.class);
         param.add("value");
         SyntaxObject restriction = SyntaxCheckerFactory.newInstance().create(0, 1, null, String.class);
         PropertiesImplementation instance = new PropertiesImplementation();
         instance.add(param);
         instance.setDefaultRestriction(restriction);
-        PropertiesImplementation result = instance.duplicate();
+        PropertiesImplementation result = instance.prototype();
         assertEquals(param.getType(), result.get("Type").getType());
         assertEquals(param.get(),result.get("Type").get());
         assertEquals(restriction.getMaxCount(),result.getDefaultRestriction().getMaxCount());

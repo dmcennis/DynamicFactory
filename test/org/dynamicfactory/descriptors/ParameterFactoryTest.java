@@ -23,6 +23,10 @@
 package org.dynamicfactory.descriptors;
 
 import junit.framework.TestCase;
+import org.dynamicfactory.property.InvalidObjectTypeException;
+
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -60,11 +64,31 @@ public class ParameterFactoryTest extends TestCase {
      */
     public void testCreate_Properties() {
         System.out.println("create");
-        Properties props = PropertiesFactory.newInstance().create();
-        props.set("ParameterClass", "BasicParameter");
-        props.set("Name","Type");
-        props.set("Class", Double.class);
-        props.set("Description","Description");
+        PropertiesInternal props = PropertiesFactory.newInstance().create();
+        try {
+            props.set("ParameterClass", "BasicParameter");
+        } catch (InvalidObjectTypeException e) {
+            fail("New properties had existing non-string types for ParameterClass");
+
+        }
+        try{
+            props.set("Name","Type");
+    } catch (InvalidObjectTypeException e) {
+        fail("New properties had existing non-string types for Name");
+
+    }
+        try{
+            props.set("Class", Double.class);
+} catch (InvalidObjectTypeException e) {
+        fail("New properties had existing non-string types for Class");
+
+        }
+        try{
+            props.set("Description","Description");
+        } catch (InvalidObjectTypeException e) {
+            fail("New properties had existing non-string types for Description");
+
+        }
         ParameterFactory instance = ParameterFactory.newInstance();
         ParameterInternal result = instance.create(props);
         assertNotNull(result);
@@ -137,11 +161,27 @@ public class ParameterFactoryTest extends TestCase {
         String type = null;
         Class classType = null;
         String description = null;
-        Properties props = PropertiesFactory.newInstance().create();
-        props.set("ParameterClass", "BasicParameter");
-        props.set("Name","Type");
-        props.set("Class", Double.class);
-        props.set("Description","Description");
+        PropertiesInternal props = PropertiesFactory.newInstance().create();
+        try {
+            props.set("ParameterClass", "BasicParameter");
+        } catch (InvalidObjectTypeException e) {
+            fail("New properties had existing non-string types for ParameterClass");
+        }
+        try {
+            props.set("Name","Type");
+        } catch (InvalidObjectTypeException e) {
+            fail("New properties had existing non-string types for Name");
+       }
+        try {
+            props.set("Class", Double.class);
+        } catch (InvalidObjectTypeException e) {
+            fail("New properties had existing non-string types for Class");
+        }
+        try {
+            props.set("Description","Description");
+        } catch (InvalidObjectTypeException e) {
+            fail("New properties had existing non-string types for Description");
+        }
         ParameterFactory instance = ParameterFactory.newInstance();
         ParameterInternal result = instance.create(type, classType, description, props);
         assertNotNull(result);
@@ -160,11 +200,31 @@ public class ParameterFactoryTest extends TestCase {
         String type = "Type";
         Class classType = Double.class;
         String description = "Description";
-        Properties props = PropertiesFactory.newInstance().create();
-        props.set("ParameterClass", "BasicParameter");
-        props.set("Name","T");
-        props.set("Class", Long.class);
-        props.set("Description","Bogus");
+        PropertiesInternal props = PropertiesFactory.newInstance().create();
+        try {
+            props.set("ParameterClass", "BasicParameter");
+        } catch (InvalidObjectTypeException e) {
+            fail("New properties had existing non-string types for ParameterClass");
+
+        }
+        try {
+            props.set("Name","T");
+        } catch (InvalidObjectTypeException e) {
+            fail("New properties had existing non-string types for Name");
+
+        }
+        try {
+            props.set("Class", Long.class);
+        } catch (InvalidObjectTypeException e) {
+            fail("New properties had existing non-string types for Class");
+
+        }
+        try {
+            props.set("Description","Bogus");
+        } catch (InvalidObjectTypeException e) {
+            fail("New properties had existing non-string types for Description");
+
+        }
         ParameterFactory instance = ParameterFactory.newInstance();
         ParameterInternal result = instance.create(type, classType, description, props);
         assertNotNull(result);

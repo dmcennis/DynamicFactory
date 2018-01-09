@@ -35,8 +35,11 @@
 
 package org.dynamicfactory.descriptors;
 
+import org.dynamicfactory.Creatable;
 import org.dynamicfactory.descriptors.SyntaxObject;
+import org.dynamicfactory.property.InvalidObjectTypeException;
 
+import java.util.List;
 
 
 /**
@@ -55,7 +58,7 @@ import org.dynamicfactory.descriptors.SyntaxObject;
  * @author Daniel McEnnis
  */
 
-public interface ParameterInternal extends Parameter{
+public interface ParameterInternal<Type> extends Parameter<Type>, Creatable<ParameterInternal<Type>>{
 
     /**
      * Sets the name that this parameter will be accessed by
@@ -63,7 +66,7 @@ public interface ParameterInternal extends Parameter{
      * @param name name of the parameter
      */
 
-    public void setType(String name);
+    public Parameter<Type> setType(String name);
 
     
 
@@ -74,7 +77,7 @@ public interface ParameterInternal extends Parameter{
      * @param c Class expected for the parameter's value
      */
 
-    public void setParameterClass(Class c);
+    public Parameter<Type> setParameterClass(Class c) throws InvalidObjectTypeException;
 
     
 
@@ -86,15 +89,25 @@ public interface ParameterInternal extends Parameter{
      * 
      * @param b is a structural parameter or not.
      */
-    public void setStructural(boolean b);
+    public Parameter<Type> setStructural(boolean b);
     
-    public void setDescription(String b);
+    public Parameter<Type> setDescription(String b);
 
-    public void setRestrictions(SyntaxObject syntax);
+    public Parameter<Type> setLongDescription(String d);
+
+    public Parameter<Type> setRestrictions(SyntaxObject syntax);
     
     public SyntaxObject getRestrictions();
-    
-    public ParameterInternal duplicate();
+
+    @Override
+    public ParameterInternal<Type> prototype();
+
+    public List<Type> getValue();
+
+    @Override
+    ParameterInternal<Type> prototype(Properties props);
+
+    public Parameter<Type> set(String type, Class parameterClass, boolean structural, List value, String description, String longDecscription);
 
 }
 

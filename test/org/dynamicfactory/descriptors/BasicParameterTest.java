@@ -393,16 +393,16 @@ public class BasicParameterTest extends TestCase {
     }
 
     /**
-     * Test of duplicate method, of class BasicParameter.
+     * Test of prototype method, of class BasicParameter.
      */
-    public void testDuplicate() {
-        System.out.println("duplicate");
+    public void testprototype() {
+        System.out.println("prototype");
         BasicParameter instance = new BasicParameter();
         instance.setType("Type");
         instance.setParameterClass((String.class));
         instance.getRestrictions().setMaxCount(13);
         instance.add("Value");
-        ParameterInternal result = instance.duplicate();
+        ParameterInternal result = instance.prototype();
         assertNotSame(instance, result);
         assertEquals(instance.getType(),result.getType());
         assertEquals(instance.getParameterClass(),result.getParameterClass());

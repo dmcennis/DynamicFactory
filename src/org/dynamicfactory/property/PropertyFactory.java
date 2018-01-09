@@ -77,6 +77,11 @@ public class PropertyFactory extends AbstractFactory<Property>{
 
     }
 
+    @Override
+    public AbstractFactory prototype() {
+        return newInstance();
+    }
+
     /** Creates a new instance of PropertyFactory */
     public PropertyFactory() {
         ParameterInternal name = new BasicParameter();
@@ -151,7 +156,7 @@ public class PropertyFactory extends AbstractFactory<Property>{
             }
         }
         if (map.containsKey(propertyClass)) {
-            ret = map.get(propertyClass).duplicate();
+            ret = map.get(propertyClass).prototype();
             ret.setType(id);
             ret.setClass(objectType);
         } else {

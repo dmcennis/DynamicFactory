@@ -36,6 +36,8 @@
 package org.dynamicfactory.descriptors;
 
 import java.util.List;
+
+import org.dynamicfactory.Creatable;
 import org.dynamicfactory.property.Property;
 import org.dynamicfactory.descriptors.SyntaxChecker;
 
@@ -50,12 +52,15 @@ import org.dynamicfactory.descriptors.SyntaxChecker;
 
  * Base interface for parameter.  It allows reading of parameter values.  Will 
 
- * eventaully bne replaced by JavaBeans.
+ * eventually be replaced by JavaBeans.
 
  * @author Daniel McEnnis
  */
 
-public interface Parameter {
+public interface Parameter<Type> extends Comparable<Parameter> {
+
+    @Override
+    int compareTo(Parameter o);
 
     /**
 
@@ -96,7 +101,7 @@ public interface Parameter {
 
      */
 
-    public List<Object> getValue();
+    public List<Type> getValue();
 
     
 
@@ -129,21 +134,22 @@ public interface Parameter {
     
     public boolean check(Parameter type);
 
-    public void add(Object value);
+    public Parameter<Type> add(Type value);
     
-    public void add(List value);
+    public Parameter<Type> add(List value);
     
-    public void set(Property property);
+    public Parameter<Type> set(Property property);
     
     public void clear();
     
-    public Parameter duplicate();
+    public Parameter prototype();
     
-    public Object get();
+    public Type get();
 
-    public void set(Object value);
+    public Parameter<Type> set(Type value);
 
-    public void set(List value);
+    public Parameter<Type> set(List value);
 
+    public String getLongDescription();
 }
 
