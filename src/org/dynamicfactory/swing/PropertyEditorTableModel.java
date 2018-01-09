@@ -13,9 +13,16 @@ import java.util.Vector;
  */
 public class PropertyEditorTableModel extends DefaultTableModel{
     private PropertiesInternal model;
+    private Parameter param;
+
+    public PropertyEditorTableModel(PropertiesInternal props,Parameter p){
+        model = props;
+        param = p;
+    }
 
     public PropertyEditorTableModel(PropertiesInternal props){
         model = props;
+        param = (Parameter)ParameterFactory.newInstance().create();
     }
 
     @Override

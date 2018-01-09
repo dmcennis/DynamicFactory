@@ -57,7 +57,7 @@ import org.dynamicfactory.descriptors.SyntaxChecker;
  * @author Daniel McEnnis
  */
 
-public interface Parameter<Type> extends Comparable<Parameter> {
+public interface Parameter<Type> extends Comparable<Parameter>, Creatable<Parameter<Type>> {
 
     @Override
     int compareTo(Parameter o);

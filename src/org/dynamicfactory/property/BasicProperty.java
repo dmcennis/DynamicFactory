@@ -125,10 +125,6 @@ public class BasicProperty implements Property { //extends ModelShell implements
 
     }
 
-
-
-    @Override
-
     public int compareTo(Property o) {
 
         if(this.getType().contentEquals(o.getType())){
@@ -228,7 +224,13 @@ public class BasicProperty implements Property { //extends ModelShell implements
 
     }
 
-    
 
+    @Override
+    public int compareTo(Object o) {
+        if(o instanceof Property){
+            return this.compareTo((Property)o);
+        }
+        else return -1;
+    }
 }
 

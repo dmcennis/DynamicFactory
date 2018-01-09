@@ -103,9 +103,9 @@ public class FactoryFactory extends AbstractFactory<GenericCreatable<AbstractFac
     }
 
     @Override
-    public GenericCreatable<AbstractFactory> create(Properties props) {
+    public AbstractFactory create(Properties props) {
         if((props != null)&&(props.get("FactoryName") != null)&&(props.get("FactoryName").getValue().size()>0)&&(map.containsKey(props.get("FactoryName").getValue().iterator().next()))&&(props.get("FactoryName").getParameterClass().getName().equals("java.lang.String"))){
-            return map.get("FactoryName");
+            return map.get("FactoryName").prototype();
         }else{
             if(props == null){
                 Logger.getLogger(FactoryFactory.class.getName()).log(Level.SEVERE, "Null properties found.");
@@ -114,7 +114,7 @@ public class FactoryFactory extends AbstractFactory<GenericCreatable<AbstractFac
             }else{
                 Logger.getLogger(FactoryFactory.class.getName()).log(Level.SEVERE, "The factory name is missing");
             }
-            return new GenericCreatable<AbstractFactory>(PropertiesFactory.newInstance());
+            return PropertiesFactory.newInstance();
         }
     }
 }

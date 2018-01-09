@@ -28,6 +28,7 @@ package org.dynamicfactory.descriptors;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.dynamicfactory.AbstractFactory;
+import org.dynamicfactory.property.InvalidObjectTypeException;
 import org.dynamicfactory.propertyQuery.NullPropertyQuery;
 import org.dynamicfactory.propertyQuery.PropertyQuery;
 
@@ -47,66 +48,70 @@ public class SyntaxCheckerFactory extends AbstractFactory<SyntaxObject> {
     }
 
     private SyntaxCheckerFactory() {
-        ParameterInternal parameter = new BasicParameter();
-        parameter.setParameterClass(String.class);
-        parameter.setType("SyntaxCheckerClass");
-        PropertyRestriction restriction = new PropertyRestriction();
-        restriction.setClassType(String.class);
-        restriction.setMinCount(1);
-        restriction.setMaxCount(1);
-        parameter.setRestrictions(restriction);
-        parameter.add("PropertyRestriction");
-        properties.add(parameter);
+        try {
+            ParameterInternal parameter = new BasicParameter();
+            parameter.setParameterClass(String.class);
+            parameter.setType("SyntaxCheckerClass");
+            PropertyRestriction restriction = new PropertyRestriction();
+            restriction.setClassType(String.class);
+            restriction.setMinCount(1);
+            restriction.setMaxCount(1);
+            parameter.setRestrictions(restriction);
+            parameter.add("PropertyRestriction");
+            properties.add(parameter);
 
-        parameter = new BasicParameter();
-        parameter.setParameterClass(Class.class);
-        parameter.setType("ClassType");
-        restriction = new PropertyRestriction();
-        restriction.setClassType(Class.class);
-        restriction.setMinCount(1);
-        restriction.setMaxCount(1);
-        parameter.setRestrictions(restriction);
-        parameter.add(Object.class);
-        properties.add(parameter);
+            parameter = new BasicParameter();
+            parameter.setParameterClass(Class.class);
+            parameter.setType("ClassType");
+            restriction = new PropertyRestriction();
+            restriction.setClassType(Class.class);
+            restriction.setMinCount(1);
+            restriction.setMaxCount(1);
+            parameter.setRestrictions(restriction);
+            parameter.add(Object.class);
+            properties.add(parameter);
 
-        parameter = new BasicParameter();
-        parameter.setParameterClass(Integer.class);
-        parameter.setType("MinCount");
-        restriction = new PropertyRestriction();
-        restriction.setClassType(Integer.class);
-        restriction.setMinCount(1);
-        restriction.setMaxCount(1);
-        parameter.setRestrictions(restriction);
-        parameter.add(new Integer(0));
-        properties.add(parameter);
+            parameter = new BasicParameter();
+            parameter.setParameterClass(Integer.class);
+            parameter.setType("MinCount");
+            restriction = new PropertyRestriction();
+            restriction.setClassType(Integer.class);
+            restriction.setMinCount(1);
+            restriction.setMaxCount(1);
+            parameter.setRestrictions(restriction);
+            parameter.add(new Integer(0));
+            properties.add(parameter);
 
-        parameter = new BasicParameter();
-        parameter.setParameterClass(Integer.class);
-        parameter.setType("MaxCount");
-        restriction = new PropertyRestriction();
-        restriction.setClassType(Integer.class);
-        restriction.setMinCount(1);
-        restriction.setMaxCount(1);
-        parameter.setRestrictions(restriction);
-        parameter.add(Integer.MAX_VALUE);
-        properties.add(parameter);
+            parameter = new BasicParameter();
+            parameter.setParameterClass(Integer.class);
+            parameter.setType("MaxCount");
+            restriction = new PropertyRestriction();
+            restriction.setClassType(Integer.class);
+            restriction.setMinCount(1);
+            restriction.setMaxCount(1);
+            parameter.setRestrictions(restriction);
+            parameter.add(Integer.MAX_VALUE);
+            properties.add(parameter);
 
-        parameter = new BasicParameter();
-        parameter.setParameterClass(PropertyQuery.class);
-        parameter.setType("Test");
-        restriction = new PropertyRestriction();
-        restriction.setClassType(PropertyQuery.class);
-        restriction.setMinCount(1);
-        restriction.setMaxCount(1);
-        parameter.setRestrictions(restriction);
-        NullPropertyQuery query = new NullPropertyQuery();
-        query.buildQuery(true);
-        parameter.add(query);
-        properties.add(parameter);
+            parameter = new BasicParameter();
+            parameter.setParameterClass(PropertyQuery.class);
+            parameter.setType("Test");
+            restriction = new PropertyRestriction();
+            restriction.setClassType(PropertyQuery.class);
+            restriction.setMinCount(1);
+            restriction.setMaxCount(1);
+            parameter.setRestrictions(restriction);
+            NullPropertyQuery query = new NullPropertyQuery();
+            query.buildQuery(true);
+            parameter.add(query);
+            properties.add(parameter);
 
-        properties.setDefaultRestriction(new PropertyRestriction());
+            properties.setDefaultRestriction(new PropertyRestriction());
 
-        map.put("PropertyRestriction", new PropertyRestriction());
+            map.put("PropertyRestriction", new PropertyRestriction());
+        } catch (InvalidObjectTypeException e) {
+            e.printStackTrace();
+        }
     }
 
     public SyntaxObject create(int minCount, int maxCount, PropertyQuery query, Class classType) {

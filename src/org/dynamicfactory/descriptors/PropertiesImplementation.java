@@ -92,19 +92,19 @@ public class PropertiesImplementation implements PropertiesInternal {
 
 
     @Override
-    public void set(String type, List value, String description) {
+    public void set(String type, List value, String description) throws InvalidObjectTypeException {
         set(type,value);
         get(type).setDescription(description);
     }
 
     @Override
-    public void set(String type, Class c, Object value, String description) {
+    public void set(String type, Class c, Object value, String description) throws InvalidObjectTypeException {
         set(type,c,value);
 
     }
 
     @Override
-    public void add(String name, Class type, Object value) {
+    public void add(String name, Class type, Object value) throws InvalidObjectTypeException{
         ParameterInternal internal = ParameterFactory.newInstance().create((Properties)null);
         internal.setParameterClass(type);
         internal.set(value);
@@ -112,7 +112,7 @@ public class PropertiesImplementation implements PropertiesInternal {
         propertyMap.put(name,internal);
     }
 
-    public void set(Property value){
+    public void set(Property value) throws InvalidObjectTypeException{
         if(value == null){
             Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "Null properties not permitted in a Properties object");
         }else if(propertyMap.containsKey(value.getType())){
@@ -134,7 +134,7 @@ public class PropertiesImplementation implements PropertiesInternal {
         }
     }
     
-    public void add(String type,Object value){
+    public void add(String type,Object value) throws InvalidObjectTypeException{
         if(type == null){
             Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "Null values not permitted in a Properties object");
         }else if(value == null){
@@ -339,7 +339,7 @@ public class PropertiesImplementation implements PropertiesInternal {
         }
     }
 
-    public void set(String type, Object value) {
+    public void set(String type, Object value) throws InvalidObjectTypeException {
         if(propertyMap.containsKey(type)){
             propertyMap.get(type).clear();
             propertyMap.get(type).add(value);
@@ -348,7 +348,7 @@ public class PropertiesImplementation implements PropertiesInternal {
         }
     }
 
-    public void set(String type, List value) {
+    public void set(String type, List value) throws InvalidObjectTypeException {
         if(propertyMap.containsKey(type)){
             propertyMap.get(type).clear();
             propertyMap.get(type).add(value);
@@ -356,7 +356,7 @@ public class PropertiesImplementation implements PropertiesInternal {
             add(type,value);
         }
     }
-    public void set(String type, Class c, Object value) {
+    public void set(String type, Class c, Object value) throws InvalidObjectTypeException {
         if(propertyMap.containsKey(type)){
             propertyMap.get(type).clear();
             propertyMap.get(type).add(value);
@@ -381,7 +381,7 @@ public class PropertiesImplementation implements PropertiesInternal {
     }
 
     @Override
-    public void set(String type, List value, String description, String longDescription) {
+    public void set(String type, List value, String description, String longDescription) throws InvalidObjectTypeException {
         set(type,value,description);
         get(type).setDescription(description);
         get(type).setLongDescription(longDescription);
@@ -389,7 +389,7 @@ public class PropertiesImplementation implements PropertiesInternal {
     }
 
     @Override
-    public void set(String type, Class c, Object value, String description, String longDescription) {
+    public void set(String type, Class c, Object value, String description, String longDescription) throws InvalidObjectTypeException {
         set(type,c,value);
         get(type).setDescription(description);
         get(type).setLongDescription(longDescription);

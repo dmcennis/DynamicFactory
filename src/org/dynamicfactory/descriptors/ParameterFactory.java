@@ -30,6 +30,8 @@ import java.util.LinkedList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.dynamicfactory.AbstractFactory;
+import org.dynamicfactory.Creatable;
+import org.dynamicfactory.GenericCreatable;
 import org.dynamicfactory.Python;
 import org.dynamicfactory.property.InvalidObjectTypeException;
 import sun.reflect.generics.reflectiveObjects.ParameterizedTypeImpl;
@@ -129,10 +131,6 @@ public class ParameterFactory<T> extends AbstractFactory<ParameterInternal<T>> {
 
             newInstance().map.put("BasicParameter", new BasicParameter());
 
-    }
-
-    public ParameterInternal<T> create(Properties props) {
-        return create(null, null, null, props);
     }
 
     public ParameterInternal<T> create(String type, Class<T> classType) {

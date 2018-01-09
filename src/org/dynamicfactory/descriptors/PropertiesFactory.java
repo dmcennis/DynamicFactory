@@ -29,6 +29,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.dynamicfactory.AbstractFactory;
 import org.dynamicfactory.Creatable;
+import org.dynamicfactory.property.InvalidObjectTypeException;
 
 /**
  *
@@ -47,14 +48,18 @@ public class PropertiesFactory extends AbstractFactory<PropertiesInternal>{
         
     private PropertiesFactory(){
         ParameterInternal type = new BasicParameter();
-        type.setType("PropertiesClass");
-        type.setParameterClass(String.class);
-        PropertyRestriction restriction = new PropertyRestriction();
-        restriction.setClassType(String.class);
-        restriction.setMaxCount(1);
-        restriction.setMinCount(1);
-        type.setRestrictions(restriction);
-        type.add("PropertiesImplementation");
+        try {
+            type.setParameterClass(String.class);
+            PropertyRestriction restriction = new PropertyRestriction();
+            restriction.setClassType(String.class);
+            restriction.setMaxCount(1);
+            restriction.setMinCount(1);
+            type.setRestrictions(restriction);
+            type.add("PropertiesImplementation");
+            type.setType("PropertiesClass");
+        } catch (InvalidObjectTypeException e) {
+            e.printStackTrace();
+        }
         properties.add(type);
         
         properties.setDefaultRestriction(new PropertyRestriction());

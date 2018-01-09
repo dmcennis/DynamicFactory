@@ -35,6 +35,7 @@ package org.dynamicfactory.property;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.dynamicfactory.AbstractFactory;
+import org.dynamicfactory.Creatable;
 import org.dynamicfactory.descriptors.Parameter;
 import org.dynamicfactory.descriptors.BasicParameter;
 import org.dynamicfactory.descriptors.ParameterInternal;
@@ -52,7 +53,7 @@ import org.dynamicfactory.descriptors.PropertyRestriction;
  * @author Daniel McEnnis
 
  */
-public class PropertyFactory extends AbstractFactory<Property>{
+public class PropertyFactory extends AbstractFactory<Property<Object>> {
 
     static PropertyFactory instance = null;
 
@@ -84,40 +85,44 @@ public class PropertyFactory extends AbstractFactory<Property>{
 
     /** Creates a new instance of PropertyFactory */
     public PropertyFactory() {
-        ParameterInternal name = new BasicParameter();
-        name.setType("PropertyClass");
-        name.setParameterClass(String.class);
-        PropertyRestriction restrictionPart = new PropertyRestriction();
-        restrictionPart.setMinCount(1);
-        restrictionPart.setMaxCount(1);
-        restrictionPart.setClassType(String.class);
-        name.setRestrictions(restrictionPart);
-        name.add("BasicProperty");
-        properties.add(name);
+        try {
+            ParameterInternal name = new BasicParameter();
+            name.setType("PropertyClass");
+            name.setParameterClass(String.class);
+            PropertyRestriction restrictionPart = new PropertyRestriction();
+            restrictionPart.setMinCount(1);
+            restrictionPart.setMaxCount(1);
+            restrictionPart.setClassType(String.class);
+            name.setRestrictions(restrictionPart);
+            name.add("BasicProperty");
+            properties.add(name);
 
-        name = new BasicParameter();
-        name.setType("PropertyValueClass");
-        name.setParameterClass(Class.class);
-        restrictionPart = new PropertyRestriction();
-        restrictionPart.setMinCount(1);
-        restrictionPart.setMaxCount(1);
-        restrictionPart.setClassType(Class.class);
-        name.setRestrictions(restrictionPart);
-        name.add(String.class);
-        properties.add(name);
+            name = new BasicParameter();
+            name.setType("PropertyValueClass");
+            name.setParameterClass(Class.class);
+            restrictionPart = new PropertyRestriction();
+            restrictionPart.setMinCount(1);
+            restrictionPart.setMaxCount(1);
+            restrictionPart.setClassType(Class.class);
+            name.setRestrictions(restrictionPart);
+            name.add(String.class);
+            properties.add(name);
 
-        name = new BasicParameter();
-        name.setType("PropertyID");
-        name.setParameterClass(String.class);
-        restrictionPart = new PropertyRestriction();
-        restrictionPart.setMinCount(1);
-        restrictionPart.setMaxCount(1);
-        restrictionPart.setClassType(String.class);
-        name.setRestrictions(restrictionPart);
-        name.add("Default");
-        properties.add(name);
+            name = new BasicParameter();
+            name.setType("PropertyID");
+            name.setParameterClass(String.class);
+            restrictionPart = new PropertyRestriction();
+            restrictionPart.setMinCount(1);
+            restrictionPart.setMaxCount(1);
+            restrictionPart.setClassType(String.class);
+            name.setRestrictions(restrictionPart);
+            name.add("Default");
+            properties.add(name);
 
-        properties.setDefaultRestriction(new PropertyRestriction());
+            properties.setDefaultRestriction(new PropertyRestriction());
+        } catch (InvalidObjectTypeException e) {
+            e.printStackTrace();
+        }
 
         map.put("BasicProperty", new BasicProperty("Default", String.class));
     }
@@ -156,9 +161,14 @@ public class PropertyFactory extends AbstractFactory<Property>{
             }
         }
         if (map.containsKey(propertyClass)) {
-            ret = map.get(propertyClass).prototype();
-            ret.setType(id);
-            ret.setClass(objectType);
+            try {
+                ret = map.get(propertyClass).prototype();
+                ret.setType(id);
+                ret.setClass(objectType);
+            } catch (InvalidObjectTypeException e) {
+                ret = null;
+                e.printStackTrace();
+            }
         } else {
             ret = new BasicProperty(id, objectType);
             Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "Unknown property type '" + propertyClass + "' requested: using BasicProperty as the default");

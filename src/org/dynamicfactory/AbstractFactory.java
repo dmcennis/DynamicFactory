@@ -38,9 +38,9 @@ import org.dynamicfactory.property.InvalidObjectTypeException;
  *
  * @author Daniel McEnnis
  */
-public abstract class AbstractFactory<Type extends Creatable<Type>> implements Creatable<AbstractFactory>{
+public abstract class AbstractFactory<Type> {
     
-    protected HashMap<String,Type> map = new HashMap<String,Type>();
+    protected HashMap<String,Creatable<Type>> map = new HashMap<String,Creatable<Type>>();
     protected PropertiesInternal properties = new PropertiesImplementation();
     
     public Type create(Properties props){
@@ -98,7 +98,7 @@ public abstract class AbstractFactory<Type extends Creatable<Type>> implements C
         return properties.get(type);
     }
     
-    public void addType(String type,Type prototype){
+    public void addType(String type,Creatable<Type> prototype){
         if(type == null){
             Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "Null org.dynamicfactory.property class name added");
         }   

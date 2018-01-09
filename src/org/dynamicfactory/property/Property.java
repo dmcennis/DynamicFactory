@@ -54,7 +54,7 @@ import org.dynamicfactory.Creatable;
  * 
  */
 
-public interface Property<Type> extends java.io.Serializable, Comparable<Property>, Creatable<Property>{//}, Model {
+public interface Property<Type> extends Creatable<Property<Type>>, java.io.Serializable, Comparable<Property>{//}, Model {
 
     
 

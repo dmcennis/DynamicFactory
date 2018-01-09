@@ -1,5 +1,6 @@
 package org.dynamicfactory.swing.classEditors;
 
+import org.dynamicfactory.Creatable;
 import org.dynamicfactory.descriptors.*;
 import org.dynamicfactory.swing.PropertyEditorTableModel;
 
@@ -12,7 +13,7 @@ public class IntegerRenderer extends TextFieldRendererObject<Integer>{
         return new IntegerEditor(ref,param,index);
     }
 
-    public IntegerRenderer(){ super(new PropertyEditorTableModel(PropertiesFactory.newInstance().create()), ParameterFactory.newInstance().create());}
+    public IntegerRenderer(){ super(new PropertyEditorTableModel(PropertiesFactory.newInstance().create()), (Parameter)ParameterFactory.newInstance().create());}
 
     public IntegerRenderer(PropertyEditorTableModel m, Properties p) {
         super(m, p);

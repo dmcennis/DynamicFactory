@@ -58,7 +58,7 @@ import java.util.List;
  * @author Daniel McEnnis
  */
 
-public interface ParameterInternal<Type> extends Parameter<Type>, Creatable<ParameterInternal<Type>>{
+public interface ParameterInternal<Type> extends Parameter<Type>{
 
     /**
      * Sets the name that this parameter will be accessed by
