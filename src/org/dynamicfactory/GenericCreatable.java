@@ -13,7 +13,7 @@ import java.lang.reflect.InvocationTargetException;
 /**
  * Default Description Google Interview Project
  */
-public class GenericCreatable<Type> implements Creatable<GenericCreatable<Type>> {
+public class GenericCreatable<Type> implements Creatable<Type> {
 
     public Type getContent() {
         return content;
@@ -33,13 +33,13 @@ public class GenericCreatable<Type> implements Creatable<GenericCreatable<Type>>
     }
 
     @Override
-    public GenericCreatable<Type> prototype() {
+    public Type prototype() {
         if(content == null){
             return null;
         }
         try {
             Type c = (Type)content.getClass().getConstructor().newInstance();
-            return new GenericCreatable<Type>(c);
+            return c;
         } catch (InstantiationException e) {
             e.printStackTrace();
         } catch (IllegalAccessException e) {
@@ -55,7 +55,7 @@ public class GenericCreatable<Type> implements Creatable<GenericCreatable<Type>>
 
 
     @Override
-    public GenericCreatable<Type> prototype(Properties props) {
-        return null;
+    public Type prototype(Properties props) {
+        return prototype();
     }
 }

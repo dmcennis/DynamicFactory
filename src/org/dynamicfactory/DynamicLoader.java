@@ -186,7 +186,7 @@ public class DynamicLoader extends ClassLoader {
             if(FactoryFactory.newInstance().getType(type).isAssignableFrom(name)) {
                 try {
                     Creatable item = (Creatable)name.getConstructor().newInstance();
-                    FactoryFactory.newInstance().create(type).getContent().addType(type,item);
+                    FactoryFactory.newInstance().create(type).addType(type,item);
                 } catch (InstantiationException e) {
                     e.printStackTrace();
                 } catch (IllegalAccessException e) {

@@ -26,6 +26,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import junit.framework.TestCase;
+import org.dynamicfactory.property.InvalidObjectTypeException;
 import org.dynamicfactory.property.Property;
 import org.dynamicfactory.property.PropertyFactory;
 
@@ -81,7 +82,11 @@ public class PropertiesImplementationTest extends TestCase {
         System.out.println("set");
         Property value = PropertyFactory.newInstance().create("BasicProperty","Type", String.class);
         PropertiesImplementation instance = new PropertiesImplementation();
-        instance.set(value);
+        try {
+            instance.set(value);
+        } catch (InvalidObjectTypeException e) {
+            fail("Expected Type of class string, but found "+e.getMessage());
+        }
         ParameterInternal result = instance.get("Type");
         assertNotNull(result);
         assertEquals("Type",result.getType());
@@ -95,7 +100,11 @@ public class PropertiesImplementationTest extends TestCase {
         System.out.println("set");
         Property value = null;
         PropertiesImplementation instance = new PropertiesImplementation();
-        instance.set(value);
+        try {
+            instance.set(value);
+        } catch (InvalidObjectTypeException e) {
+            fail("Expected Type of class string, but found "+e.getMessage());
+        }
         assertEquals(0,instance.get().size());
     }
 
@@ -111,7 +120,11 @@ public class PropertiesImplementationTest extends TestCase {
         start.setParameterClass(String.class);
         PropertiesImplementation instance = new PropertiesImplementation();
         instance.add(start);
-        instance.add(type, value);
+        try {
+            instance.set(type, value);
+        } catch (InvalidObjectTypeException e) {
+            fail("Expected Type of class string with value 'Object', but found "+e.getMessage());
+        }
         Parameter param = instance.get("Type");
         assertEquals("Object",param.get());
     }
@@ -126,7 +139,11 @@ public class PropertiesImplementationTest extends TestCase {
         PropertiesImplementation instance = new PropertiesImplementation();
         SyntaxObject object = SyntaxCheckerFactory.newInstance().create(0, Integer.MAX_VALUE, null, String.class);
         instance.setDefaultRestriction(object);
-        instance.add(type, value);
+        try {
+            instance.set(type, value);
+        } catch (InvalidObjectTypeException e) {
+            fail("Expected Type of class string with value 'Object', but found "+e.getMessage());
+        }
         assertNull(instance.get("Type"));
     }
 
@@ -138,7 +155,11 @@ public class PropertiesImplementationTest extends TestCase {
         String type = "Type";
         Object value = "Object";
         PropertiesImplementation instance = new PropertiesImplementation();
-        instance.add(type, value);
+        try {
+            instance.set(type, value);
+        } catch (InvalidObjectTypeException e) {
+            fail("Expected Type of class string with value 'Object', but found "+e.getMessage());
+        }
         Parameter param = instance.get("Type");
         assertEquals("Object",param.get());
     }
@@ -635,7 +656,11 @@ public class PropertiesImplementationTest extends TestCase {
         String type = "Type";
         Object value = "Value";
         PropertiesImplementation instance = new PropertiesImplementation();
-        instance.set(type, value);
+        try {
+            instance.set(type, value);
+        } catch (InvalidObjectTypeException e) {
+            fail("Expected Type of class string with value 'Value', but found "+e.getMessage());
+        }
         assertEquals(1,instance.get().size());
     }
 
@@ -647,7 +672,11 @@ public class PropertiesImplementationTest extends TestCase {
         String type = "Type";
         List value = new LinkedList<String>();
         PropertiesImplementation instance = new PropertiesImplementation();
-        instance.set(type, value);
+        try {
+            instance.set(type, value);
+        } catch (InvalidObjectTypeException e) {
+            fail("Expected Type of class string with value 'Value', but found "+e.getMessage());
+        }
         assertEquals(1,instance.get().size());
     }
 

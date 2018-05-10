@@ -29,11 +29,10 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- *
  * @author mcennis
  */
 public class ParameterFactoryTest extends TestCase {
-    
+
     public ParameterFactoryTest(String testName) {
         super(testName);
     }
@@ -71,32 +70,32 @@ public class ParameterFactoryTest extends TestCase {
             fail("New properties had existing non-string types for ParameterClass");
 
         }
-        try{
-            props.set("Name","Type");
-    } catch (InvalidObjectTypeException e) {
-        fail("New properties had existing non-string types for Name");
-
-    }
-        try{
-            props.set("Class", Double.class);
-} catch (InvalidObjectTypeException e) {
-        fail("New properties had existing non-string types for Class");
+        try {
+            props.set("Name", "Type");
+        } catch (InvalidObjectTypeException e) {
+            fail("New properties had existing non-string types for Name");
 
         }
-        try{
-            props.set("Description","Description");
+        try {
+            props.set("Class", Double.class);
+        } catch (InvalidObjectTypeException e) {
+            fail("New properties had existing non-string types for Class");
+
+        }
+        try {
+            props.set("Description", "Description");
         } catch (InvalidObjectTypeException e) {
             fail("New properties had existing non-string types for Description");
 
         }
         ParameterFactory instance = ParameterFactory.newInstance();
-        ParameterInternal result = instance.create(props);
+        ParameterInternal result = instance.create((ParameterInternal)props);
         assertNotNull(result);
         assertTrue(result instanceof BasicParameter);
-        assertEquals("Type",result.getType());
-        assertEquals(Double.class,result.getParameterClass());
-        assertEquals("Description",result.getDescription());
-        assertEquals(0,result.getValue().size());
+        assertEquals("Type", result.getType());
+        assertEquals(Double.class, result.getParameterClass());
+        assertEquals("Description", result.getDescription());
+        assertEquals(0, result.getValue().size());
     }
 
     /**
@@ -110,10 +109,10 @@ public class ParameterFactoryTest extends TestCase {
         ParameterInternal result = instance.create(type, classType);
         assertNotNull(result);
         assertTrue(result instanceof BasicParameter);
-        assertEquals("Type",result.getType());
-        assertEquals(Double.class,result.getParameterClass());
-        assertEquals("No Description Provided",result.getDescription());
-        assertEquals(0,result.getValue().size());
+        assertEquals("Type", result.getType());
+        assertEquals(Double.class, result.getParameterClass());
+        assertEquals("No Description Provided", result.getDescription());
+        assertEquals(0, result.getValue().size());
     }
 
     /**
@@ -128,10 +127,10 @@ public class ParameterFactoryTest extends TestCase {
         ParameterInternal result = instance.create(type, classType, description);
         assertNotNull(result);
         assertTrue(result instanceof BasicParameter);
-        assertEquals("Type",result.getType());
-        assertEquals(Double.class,result.getParameterClass());
-        assertEquals("Description",result.getDescription());
-        assertEquals(0,result.getValue().size());
+        assertEquals("Type", result.getType());
+        assertEquals(Double.class, result.getParameterClass());
+        assertEquals("Description", result.getDescription());
+        assertEquals(0, result.getValue().size());
     }
 
     /**
@@ -147,10 +146,10 @@ public class ParameterFactoryTest extends TestCase {
         ParameterInternal result = instance.create(type, classType, description, props);
         assertNotNull(result);
         assertTrue(result instanceof BasicParameter);
-        assertEquals("Type",result.getType());
-        assertEquals(Double.class,result.getParameterClass());
-        assertEquals("Description",result.getDescription());
-        assertEquals(0,result.getValue().size());
+        assertEquals("Type", result.getType());
+        assertEquals(Double.class, result.getParameterClass());
+        assertEquals("Description", result.getDescription());
+        assertEquals(0, result.getValue().size());
     }
 
     /**
@@ -168,17 +167,17 @@ public class ParameterFactoryTest extends TestCase {
             fail("New properties had existing non-string types for ParameterClass");
         }
         try {
-            props.set("Name","Type");
+            props.set("Name", "Type");
         } catch (InvalidObjectTypeException e) {
             fail("New properties had existing non-string types for Name");
-       }
+        }
         try {
             props.set("Class", Double.class);
         } catch (InvalidObjectTypeException e) {
             fail("New properties had existing non-string types for Class");
         }
         try {
-            props.set("Description","Description");
+            props.set("Description", "Description");
         } catch (InvalidObjectTypeException e) {
             fail("New properties had existing non-string types for Description");
         }
@@ -186,10 +185,10 @@ public class ParameterFactoryTest extends TestCase {
         ParameterInternal result = instance.create(type, classType, description, props);
         assertNotNull(result);
         assertTrue(result instanceof BasicParameter);
-        assertEquals("Type",result.getType());
-        assertEquals(Double.class,result.getParameterClass());
-        assertEquals("Description",result.getDescription());
-        assertEquals(0,result.getValue().size());
+        assertEquals("Type", result.getType());
+        assertEquals(Double.class, result.getParameterClass());
+        assertEquals("Description", result.getDescription());
+        assertEquals(0, result.getValue().size());
     }
 
     /**
@@ -208,7 +207,7 @@ public class ParameterFactoryTest extends TestCase {
 
         }
         try {
-            props.set("Name","T");
+            props.set("Name", "T");
         } catch (InvalidObjectTypeException e) {
             fail("New properties had existing non-string types for Name");
 
@@ -220,7 +219,7 @@ public class ParameterFactoryTest extends TestCase {
 
         }
         try {
-            props.set("Description","Bogus");
+            props.set("Description", "Bogus");
         } catch (InvalidObjectTypeException e) {
             fail("New properties had existing non-string types for Description");
 
@@ -229,10 +228,10 @@ public class ParameterFactoryTest extends TestCase {
         ParameterInternal result = instance.create(type, classType, description, props);
         assertNotNull(result);
         assertTrue(result instanceof BasicParameter);
-        assertEquals("Type",result.getType());
-        assertEquals(Double.class,result.getParameterClass());
-        assertEquals("Description",result.getDescription());
-        assertEquals(0,result.getValue().size());
+        assertEquals("Type", result.getType());
+        assertEquals(Double.class, result.getParameterClass());
+        assertEquals("Description", result.getDescription());
+        assertEquals(0, result.getValue().size());
     }
 
     /**
@@ -243,7 +242,7 @@ public class ParameterFactoryTest extends TestCase {
         ParameterFactory instance = ParameterFactory.newInstance();
         Parameter result = instance.getClassParameter();
         assertNotNull(result);
-        assertEquals("ParameterClass",result.getType());
+        assertEquals("ParameterClass", result.getType());
     }
 
 }

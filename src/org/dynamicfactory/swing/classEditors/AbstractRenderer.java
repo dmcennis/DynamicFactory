@@ -263,7 +263,7 @@ public abstract class AbstractRenderer<Type> extends DefaultTableCellRenderer im
 
 
     protected Type defaultItem(){
-        return (Type)FactoryFactory.newInstance().create(param.getParameterClass().getInterfaces()[0].getSimpleName()).getContent().create(param.getParameterClass().getSimpleName());
+        return (Type)FactoryFactory.newInstance().create(param.getParameterClass().getInterfaces()[0].getSimpleName()).create(param.getParameterClass().getSimpleName());
     }
 
     @Override

@@ -105,7 +105,7 @@ public class PropertiesImplementation implements PropertiesInternal {
 
     @Override
     public void add(String name, Class type, Object value) throws InvalidObjectTypeException{
-        ParameterInternal internal = ParameterFactory.newInstance().create((Properties)null);
+        ParameterInternal internal = ParameterFactory.newInstance().create((ParameterInternal)null);
         internal.setParameterClass(type);
         internal.set(value);
         internal.setType(name);

@@ -30,7 +30,7 @@ import java.util.logging.Logger;
 /**
  * Created by dmcennis on 7/1/2014.
  */
-public class FactoryFactory extends AbstractFactory<GenericCreatable<AbstractFactory>> implements Creatable<AbstractFactory> {
+public class FactoryFactory extends AbstractFactory<AbstractFactory> implements Creatable<AbstractFactory> {
 
     static private FactoryFactory instance = null;
 
