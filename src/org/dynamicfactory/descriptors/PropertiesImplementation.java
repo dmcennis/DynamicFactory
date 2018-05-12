@@ -426,7 +426,7 @@ public class PropertiesImplementation implements PropertiesInternal {
         if(!propertyMap.containsKey(s)){
             return false;
         }
-        if(propertyMap.get(s).getType().compareTo(type.getName())!=0){
+        if(propertyMap.get(s).getParameterClass().getName().compareTo(type.getName())!=0){
             return false;
         }
         if(propertyMap.get(s).getValue().size()==0){

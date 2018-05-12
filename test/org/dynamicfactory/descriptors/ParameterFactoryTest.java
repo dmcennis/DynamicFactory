@@ -65,7 +65,7 @@ public class ParameterFactoryTest extends TestCase {
         System.out.println("create");
         PropertiesInternal props = PropertiesFactory.newInstance().create();
         try {
-            props.set("ParameterClass", "BasicParameter");
+            props.set("PropertiesClass", "BasicParameter");
         } catch (InvalidObjectTypeException e) {
             fail("New properties had existing non-string types for ParameterClass");
 
@@ -89,7 +89,7 @@ public class ParameterFactoryTest extends TestCase {
 
         }
         ParameterFactory instance = ParameterFactory.newInstance();
-        ParameterInternal result = instance.create((ParameterInternal)props);
+        ParameterInternal result = (ParameterInternal)instance.create(props);
         assertNotNull(result);
         assertTrue(result instanceof BasicParameter);
         assertEquals("Type", result.getType());

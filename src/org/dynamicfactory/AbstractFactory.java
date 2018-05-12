@@ -49,11 +49,13 @@ public abstract class AbstractFactory<Type> {
                 return map.get(props.quickGet("ClassName")).prototype(props);
             }else{
                 Logger.getLogger(this.getClass().getName()).log(Level.WARNING,String.format("Class %s is unknown. Using the default instead", props.quickGet("ClassName")));
-                return map.get("Default").prototype(props);
+                String name = (String)properties.getQuick("Default");
+                return map.get(name).prototype(props);
             }
         }else{
             Logger.getLogger(this.getClass().getName()).log(Level.WARNING,"Class parameter is missing. Using the default instead");
-            return map.get("Default").prototype(props);
+            String name = (String)properties.getQuick("Default");
+            return map.get(name).prototype(props);
         }
     }
 

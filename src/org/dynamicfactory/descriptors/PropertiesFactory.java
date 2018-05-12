@@ -61,18 +61,18 @@ public class PropertiesFactory extends AbstractFactory<PropertiesInternal>{
             e.printStackTrace();
         }
         properties.add(type);
-        
+
         properties.setDefaultRestriction(new PropertyRestriction());
-        
+
         map.put("PropertiesImplementation", new PropertiesImplementation());
     }
-    
+
     public PropertiesInternal create(){
         return create(properties);
     }
     
     public PropertiesInternal create(Properties props){
-        if((props != null)&&(map.containsKey("PropertiesClass"))&&(map.containsKey(props.get("PropertiesClass").getValue().iterator().next()))){
+        if((props != null)&&(props.quickCheck("PropertiesClass",String.class))&&(map.containsKey(props.get("PropertiesClass").getValue().iterator().next()))){
             String type = (String) props.get("PropertiesClass").getValue().iterator().next();
             return map.get(type).prototype();
         }else if(props == null){

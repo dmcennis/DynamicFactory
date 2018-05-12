@@ -283,7 +283,24 @@ public class BasicParameter<Type> implements ParameterInternal<Type> {
 
     @Override
     public ParameterInternal<Type> prototype(Properties props) {
-        return prototype();
+        ParameterInternal<Type> ret = prototype();
+        if(props.quickCheck("Name",String.class)){
+            ret.setType((String)props.getQuick("Name"));
+        }
+        try {
+            if(props.quickCheck("Class",Class.class)){
+                ret.setParameterClass((Class)props.getQuick("Class"));
+            }
+        } catch (InvalidObjectTypeException e) {
+            Logger.getLogger(this.getClass().getName()).log(Level.SEVERE,"INTERNAL ERROR: Found a non-class object after checking for its type: "+props.getQuick("Class").getClass().getName());
+        }
+        if(props.quickCheck("Description",String.class)){
+            ret.setDescription((String)props.getQuick("Description"));
+        }
+        if(props.quickCheck("LongDescription",String.class)){
+            ret.setLongDescription((String)props.getQuick("LongDescription"));
+        }
+        return ret;
     }
 
     public ParameterInternal<Type> prototype() {

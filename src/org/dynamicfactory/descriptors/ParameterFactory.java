@@ -29,6 +29,7 @@ import java.lang.reflect.Type;
 import java.util.LinkedList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 import org.dynamicfactory.AbstractFactory;
 import org.dynamicfactory.Creatable;
 import org.dynamicfactory.GenericCreatable;
@@ -37,7 +38,6 @@ import org.dynamicfactory.property.InvalidObjectTypeException;
 import sun.reflect.generics.reflectiveObjects.ParameterizedTypeImpl;
 
 /**
- *
  * @author Daniel McEnnis
  */
 public class ParameterFactory<T> extends AbstractFactory<ParameterInternal<T>> {
@@ -47,6 +47,7 @@ public class ParameterFactory<T> extends AbstractFactory<ParameterInternal<T>> {
     static public ParameterFactory newInstance() {
         if (instance == null) {
             instance = new ParameterFactory(0);
+            instance.load();
         }
 
         return instance;
@@ -54,94 +55,114 @@ public class ParameterFactory<T> extends AbstractFactory<ParameterInternal<T>> {
 
     @Override
     public ParameterFactory<T> prototype() {
-        return newInstance();
-    }
-
-    private ParameterFactory(int o){
-        load();
+        return instance;
     }
 
     public ParameterFactory() {
         super();
-        newInstance();
+        if (instance == null) {
+            newInstance();
+        }
     }
 
-    private void load(){
-            ParameterInternal name = new BasicParameter<String>();
-            name.setType("Name");
-            try {
-                name.setParameterClass(String.class);
-            } catch (InvalidObjectTypeException e) {
-                Logger.getLogger(newInstance().getClass().getName()).log(Level.WARNING, String.format("Warning - error occurred: %s\n%s", e.getLocalizedMessage(), Python.join(e.getStackTrace(), "\n")));
-            }
-            PropertyRestriction restriction = new PropertyRestriction();
-            restriction.setMinCount(1);
-            restriction.setMaxCount(1);
-            restriction.setClassType(String.class);
-            name.setRestrictions(restriction);
-            name.add("GenericParameter");
-            properties.add(name);
-
-            name = new BasicParameter<String>();
-            name.setType("ParameterClass");
-            try {
-                name.setParameterClass(String.class);
-            } catch (InvalidObjectTypeException e) {
-                Logger.getLogger(newInstance().getClass().getName()).log(Level.WARNING, String.format("Warning - error occurred: %s\n%s", e.getLocalizedMessage(), Python.join(e.getStackTrace(), "\n")));
-            }
-            restriction = new PropertyRestriction();
-            restriction.setMinCount(1);
-            restriction.setMaxCount(1);
-            restriction.setClassType(String.class);
-            name.setRestrictions(restriction);
-            name.add("BasicParameter");
-            properties.add(name);
-
-            name = new BasicParameter<Class>();
-            name.setType("Class");
-            try {
-                name.setParameterClass(Class.class);
-            } catch (InvalidObjectTypeException e) {
-                Logger.getLogger(newInstance().getClass().getName()).log(Level.WARNING, String.format("Warning - error occurred: %s\n%s", e.getLocalizedMessage(), Python.join(e.getStackTrace(), "\n")));
-            }
-            restriction = new PropertyRestriction();
-            restriction.setMinCount(1);
-            restriction.setMaxCount(1);
-            restriction.setClassType(Class.class);
-            name.setRestrictions(restriction);
-            name.add(String.class);
-            properties.add(name);
-
-            name = new BasicParameter<String>();
-            name.setType("Description");
-            try {
-                name.setParameterClass(String.class);
-            } catch (InvalidObjectTypeException e) {
-                Logger.getLogger(newInstance().getClass().getName()).log(Level.WARNING, String.format("Warning - error occurred: %s\n%s", e.getLocalizedMessage(), Python.join(e.getStackTrace(), "\n")));
-            }
-            restriction = new PropertyRestriction();
-            restriction.setMinCount(1);
-            restriction.setMaxCount(1);
-            restriction.setClassType(String.class);
-            name.setRestrictions(restriction);
-            name.add("No Description Provided");
-            properties.add(name);
-
-            properties.setDefaultRestriction(new PropertyRestriction());
-
-            newInstance().map.put("BasicParameter", new BasicParameter());
+    private ParameterFactory(int non){
 
     }
 
-    public ParameterInternal<T> create(String type, Class<T> classType) {
+    private void load() {
+        ParameterInternal name = new BasicParameter<String>();
+        name.setType("Name");
+        try {
+            name.setParameterClass(String.class);
+        } catch (InvalidObjectTypeException e) {
+            Logger.getLogger(newInstance().getClass().getName()).log(Level.WARNING, String.format("Warning - error occurred: %s\n%s", e.getLocalizedMessage(), Python.join(e.getStackTrace(), "\n")));
+        }
+        PropertyRestriction restriction = new PropertyRestriction();
+        restriction.setMinCount(1);
+        restriction.setMaxCount(1);
+        restriction.setClassType(String.class);
+        name.setRestrictions(restriction);
+        name.add("GenericParameter");
+        properties.add(name);
+
+        name = new BasicParameter<String>();
+        name.setType("Default");
+        try {
+            name.setParameterClass(String.class);
+        } catch (InvalidObjectTypeException e) {
+            Logger.getLogger(newInstance().getClass().getName()).log(Level.WARNING, String.format("Warning - error occurred: %s\n%s", e.getLocalizedMessage(), Python.join(e.getStackTrace(), "\n")));
+        }
+        name.add("BasicParameter");
+        properties.add(name);
+
+        name = new BasicParameter<String>();
+        name.setType("ParameterClass");
+        try {
+            name.setParameterClass(String.class);
+        } catch (InvalidObjectTypeException e) {
+            Logger.getLogger(newInstance().getClass().getName()).log(Level.WARNING, String.format("Warning - error occurred: %s\n%s", e.getLocalizedMessage(), Python.join(e.getStackTrace(), "\n")));
+        }
+        restriction = new PropertyRestriction();
+        restriction.setMinCount(1);
+        restriction.setMaxCount(1);
+        restriction.setClassType(String.class);
+        name.setRestrictions(restriction);
+        name.add("BasicParameter");
+        properties.add(name);
+
+        name = new BasicParameter<Class>();
+        name.setType("Class");
+        try {
+            name.setParameterClass(Class.class);
+        } catch (InvalidObjectTypeException e) {
+            Logger.getLogger(newInstance().getClass().getName()).log(Level.WARNING, String.format("Warning - error occurred: %s\n%s", e.getLocalizedMessage(), Python.join(e.getStackTrace(), "\n")));
+        }
+        restriction = new PropertyRestriction();
+        restriction.setMinCount(1);
+        restriction.setMaxCount(1);
+        restriction.setClassType(Class.class);
+        name.setRestrictions(restriction);
+        name.add(String.class);
+        properties.add(name);
+
+        name = new BasicParameter<String>();
+        name.setType("Description");
+        try {
+            name.setParameterClass(String.class);
+        } catch (InvalidObjectTypeException e) {
+            Logger.getLogger(newInstance().getClass().getName()).log(Level.WARNING, String.format("Warning - error occurred: %s\n%s", e.getLocalizedMessage(), Python.join(e.getStackTrace(), "\n")));
+        }
+        restriction = new PropertyRestriction();
+        restriction.setMinCount(1);
+        restriction.setMaxCount(1);
+        restriction.setClassType(String.class);
+        name.setRestrictions(restriction);
+        name.add("No Description Provided");
+        properties.add(name);
+
+        properties.setDefaultRestriction(new PropertyRestriction());
+
+        instance.map.put("BasicParameter", new BasicParameter());
+
+    }
+
+    protected ParameterInternal<T> createInternal(String type, Class<T> classType) {
         return create(type, classType, null, properties);
     }
 
-    public ParameterInternal<T> create(String type, Class<T> classType, String description) {
-        return create(type, classType, description, properties);
+    public ParameterInternal<T> create(String type, Class<T> classType) {
+        return instance.createInternal(type, classType);
     }
 
-    public ParameterInternal<T> create(String type, Class<T> classType, String description, Properties props) {
+    protected ParameterInternal<T> createInternal(String type, Class<T> classType, String description) {
+        return instance.createInternal(type, classType, description, properties);
+    }
+
+    public ParameterInternal<T> create(String type, Class<T> classType, String description) {
+        return instance.createInternal(type, classType, description, properties);
+    }
+
+    protected ParameterInternal<T> createInternal(String type, Class<T> classType, String description, Properties props) {
         if (type == null) {
             if ((props.get("Name") != null) && (props.get("Name").getParameterClass().getName().contentEquals("java.lang.String"))) {
                 type = (String) props.get("Name").getValue().iterator().next();
@@ -159,13 +180,13 @@ public class ParameterFactory<T> extends AbstractFactory<ParameterInternal<T>> {
         }
 
         String parameterType = (String) properties.get("ParameterClass").getValue().iterator().next();
-        if ((props != null)&&(props.get("ParameterClass") != null) && (props.get("ParameterClass").getParameterClass().getName().contentEquals("java.lang.String"))) {
+        if ((props != null) && (props.get("ParameterClass") != null) && (props.get("ParameterClass").getParameterClass().getName().contentEquals("java.lang.String"))) {
             parameterType = (String) props.get("ParameterClass").getValue().iterator().next();
         }
 
         ParameterInternal ret = null;
         if (newInstance().map.containsKey(parameterType)) {
-            ret = ((ParameterInternal<T>)newInstance().map.get(parameterType)).prototype();
+            ret = ((ParameterInternal<T>) newInstance().map.get(parameterType)).prototype();
         } else {
             ret = new BasicParameter<T>();
             Logger.getLogger(newInstance().getClass().getName()).log(Level.SEVERE, "Requested Parameter type '" + parameterType + "' does not exist");
@@ -188,31 +209,47 @@ public class ParameterFactory<T> extends AbstractFactory<ParameterInternal<T>> {
         return ret;
     }
 
-    public ParameterInternal<T> create(Parameter p,Properties props){
+    public ParameterInternal<T> create(String type, Class<T> classType, String description, Properties props) {
+        return instance.createInternal(type, classType, description, props);
+    }
+
+    protected ParameterInternal<T> createInternal(Parameter p, Properties props) {
         PropertiesInternal merge = new PropertiesImplementation();
-        if(props != null){
+        if (props != null) {
             merge.merge(props);
         }
         try {
             merge.mergeDefaults(properties);
         } catch (InvalidObjectTypeException e) {
-            Logger.getLogger(newInstance().getClass().getName()).log(Level.WARNING,"Defaults were not merged in as the new parameters contained properties incompatible with the types of the defaults");
+            Logger.getLogger(newInstance().getClass().getName()).log(Level.WARNING, "Defaults were not merged in as the new parameters contained properties incompatible with the types of the defaults");
         }
-        if(p == null){
+        if (p == null) {
             return create(merge);
         }
-        ParameterInternal ret = create(p.getType(),p.getParameterClass(),p.getDescription(),merge);
+        ParameterInternal ret = create(p.getType(), p.getParameterClass(), p.getDescription(), merge);
         LinkedList l = new LinkedList();
         l.addAll(p.getValue());
-        ret.set(p.getType(),p.getParameterClass(),false, l,p.getDescription(),p.getLongDescription());
+        ret.set(p.getType(), p.getParameterClass(), false, l, p.getDescription(), p.getLongDescription());
         return ret;
     }
 
-    public ParameterInternal<T> create(Parameter p){
-        return create(p,null);
+    public ParameterInternal<T> create(Parameter p, Properties props) {
+        return instance.createInternal(p,props);
     }
 
-    public Parameter<String> getClassParameter(){
+    protected ParameterInternal<T> createInternal(Parameter p) {
+        return create(p, null);
+    }
+
+    public ParameterInternal<T> create(Parameter p) {
+        return instance.createInternal(p);
+    }
+
+    protected Parameter<String> getClassParameterInternal() {
         return properties.get("ParameterClass");
+    }
+
+    public Parameter<String> getClassParameter() {
+        return instance.properties.get("ParameterClass");
     }
 }
